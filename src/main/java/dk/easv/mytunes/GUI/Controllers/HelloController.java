@@ -1,4 +1,4 @@
-package dk.easv.mytunes;
+package dk.easv.mytunes.GUI.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
