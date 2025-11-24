@@ -38,5 +38,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-config/
 config/database.settings
