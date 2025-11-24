@@ -11,9 +11,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/views/hello-view.fxml"));
-        primaryStage.setTitle("MRS");
-        primaryStage.setScene(new Scene(root, 320, 240));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/MainView.fxml"));
+        primaryStage.setTitle("MyTunes");
+        primaryStage.setResizable(false);
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 
