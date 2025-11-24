@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane fx:controller="dk.easv.mytunes.GUI.Controllers.MainViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="836.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="836.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.MainViewController">
    <children>
       <Button fx:id="playPauseButton" layoutX="81.0" layoutY="35.0" mnemonicParsing="false" onAction="#onBtnClickPlayPause" text="Play" />
       <Button fx:id="previousSong" layoutX="41.0" layoutY="35.0" mnemonicParsing="false" onAction="#onBtnClickPreviousSong" text="&lt;&lt;" />
