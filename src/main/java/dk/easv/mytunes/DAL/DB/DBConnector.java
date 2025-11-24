@@ -21,9 +21,7 @@ public class DBConnector {
         dataSource = new SQLServerDataSource();
 
         dataSource.setServerName(databaseProperties.getProperty("Server"));
-        //dataSource.setPortNumber(1433);
         dataSource.setDatabaseName(databaseProperties.getProperty("Database"));
-
         dataSource.setUser(databaseProperties.getProperty("User"));
         dataSource.setPassword(databaseProperties.getProperty("Password"));
 
