@@ -49,3 +49,4 @@ public class MainViewController {
     @FXML
     private void onBtnClickSearch() { }
 }
+}
