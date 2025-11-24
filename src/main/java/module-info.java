@@ -7,4 +7,6 @@ module dk.easv.mytunes {
     exports dk.easv.mytunes;
     exports dk.easv.mytunes.GUI.Controllers;
     opens dk.easv.mytunes.GUI.Controllers to javafx.fxml;
+    exports dk.easv.mytunes.GUI;
+    opens dk.easv.mytunes.GUI to javafx.fxml;
 }
