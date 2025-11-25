@@ -1,17 +1,24 @@
 package dk.easv.mytunes.BE;
 
 public class Song {
-    private int id;
+    private int id=-1;
+    private int user_id=-1;
+    private String filepath;
     private String title;
     private String artist;
     private String genre;
     private String duration;
 
-    public Song(int id,String title,String artist,String genre,String duration){
+
+    public Song(int id,int user_id,String filepath,String title,String artist,String genre,String duration){
+        setId(id);
+        setFilepath(filepath);
         setTitle(title);
         setArtist(artist);
         setGenre(genre);
         setDuration(duration);
+        setUser_id(user_id);
+
 
     }
 
@@ -55,5 +62,26 @@ public class Song {
         return id;
     }
 
+    private void setId(int id) {
+        if(id!=-1)
+         this.id = id;
+    }
 
+    public String getFilepath() {
+        return filepath;
+    }
+
+    private void setFilepath(String filepath) {
+       if(filepath!=null&&!filepath.isBlank())
+        this.filepath = filepath;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    private void setUser_id(int user_id) {
+       if(user_id!=-1)
+        this.user_id = user_id;
+    }
 }
