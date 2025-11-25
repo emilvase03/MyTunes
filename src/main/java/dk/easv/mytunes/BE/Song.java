@@ -6,6 +6,7 @@ public class Song {
     private String artist;
     private String genre;
     private String duration;
+
     public Song(int id,String title,String artist,String genre,String duration){
         setTitle(title);
         setArtist(artist);
