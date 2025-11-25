@@ -1,7 +1,7 @@
 package dk.easv.mytunes.DAL;
 
 import dk.easv.mytunes.BE.Playlist;
-//import dk.easv.mytunes.BE.Song;
+import dk.easv.mytunes.BE.Song;
 
 import java.util.List;
 
@@ -15,8 +15,7 @@ public interface IPlaylistDataAccess {
 
     void deletePlaylist(int playlistId) throws Exception;
 
-    // needs song dao
-    //List<Song> getSongsInPlaylist(int playlistId) throws Exception;
+    List<Song> getSongsInPlaylist(int playlistId) throws Exception;
 
     void addSongToPlaylist(int playlistId, int songId) throws Exception;
 
