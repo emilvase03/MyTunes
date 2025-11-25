@@ -4,7 +4,7 @@ public class User {
 
     private int id = -1;
     private String username = "";
-    private String passwordHash = "";
+    private String password_hash = "";
 
     public User (int id, String username, String password_hash){
         setId(id);
