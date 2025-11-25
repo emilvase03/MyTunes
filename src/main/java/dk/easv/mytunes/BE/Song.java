@@ -26,7 +26,7 @@ public class Song {
         return title;
     }
 
-    private void setTitle(String title) {
+    public void setTitle(String title) {
         if(title!=null && !title.isBlank() )
             this.title = title;
     }
@@ -35,7 +35,7 @@ public class Song {
         return artist;
     }
 
-    private void setArtist(String artist) {
+    public void setArtist(String artist) {
        if(artist!=null&&!artist.isBlank())
         this.artist = artist;
     }
@@ -44,7 +44,7 @@ public class Song {
         return genre;
     }
 
-    private void setGenre(String genre) {
+    public void setGenre(String genre) {
         if(genre!=null&&!genre.isBlank())
             this.genre = genre;
     }
@@ -53,7 +53,7 @@ public class Song {
         return duration;
     }
 
-    private void setDuration(String duration) {
+    public void setDuration(String duration) {
         if (duration !=null&&duration.isBlank())
          this.duration = duration;
     }
@@ -62,7 +62,7 @@ public class Song {
         return id;
     }
 
-    private void setId(int id) {
+    public void setId(int id) {
         if(id!=-1)
          this.id = id;
     }
@@ -71,7 +71,7 @@ public class Song {
         return filepath;
     }
 
-    private void setFilepath(String filepath) {
+    public void setFilepath(String filepath) {
        if(filepath!=null&&!filepath.isBlank())
         this.filepath = filepath;
     }
@@ -80,7 +80,7 @@ public class Song {
         return user_id;
     }
 
-    private void setUser_id(int user_id) {
+    public void setUser_id(int user_id) {
        if(user_id!=-1)
         this.user_id = user_id;
     }
