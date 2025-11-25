@@ -1,8 +1,60 @@
 package dk.easv.mytunes.GUI.Controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-public class MainViewController {
+import java.io.IOException;
+
+public class MainViewController implements Initializable {
+
+    private String currentUser;
+
+    @Override
+    public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
+        // Show register page when main view initializes
+        Platform.runLater(() -> {
+            try {
+                showRegisterPage();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Platform.exit();
+            }
+        });
+    }
+
+    private void showRegisterPage() throws IOException {
+        // Load the register view
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
+        Parent root = loader.load();
+        RegisterViewController registerController = loader.getController();
+
+        // Create and show register stage
+        Stage registerStage = new Stage();
+        registerStage.setTitle("Welcome to MyTunes");
+        registerStage.initModality(Modality.APPLICATION_MODAL);
+        registerStage.setScene(new Scene(root));
+        registerStage.setResizable(false);
+        registerStage.showAndWait();
+
+        // Check if login was successful
+        if (registerController.isLoginSuccess()) {
+            currentUser = registerController.getCurrentUser();
+            System.out.println("User logged in: " + currentUser);
+        } else {
+            // User cancelled, close the application
+            Platform.exit();
+        }
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
+    }
 
     @FXML
     private void onBtnClickPlayPause() { }
@@ -44,9 +96,10 @@ public class MainViewController {
     private void onBtnDeleteSong() { }
 
     @FXML
-    private void onBtnCloseProgram() { }
+    private void onBtnCloseProgram() {
+        Platform.exit();
+    }
 
     @FXML
     private void onBtnClickSearch() { }
 }
-
