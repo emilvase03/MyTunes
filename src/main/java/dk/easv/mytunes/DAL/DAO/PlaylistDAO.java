@@ -131,6 +131,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                     if (srs.next()) {
                         Song s = new Song(
                                 srs.getInt("id"),
+                                srs.getInt("user_id"),
+                                srs.getString("filepath"),
                                 srs.getString("title"),
                                 srs.getString("artist"),
                                 srs.getString("category"),
