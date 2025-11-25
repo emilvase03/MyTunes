@@ -1,11 +1,12 @@
 package dk.easv.mytunes.BE;
 
 public class Song {
+    private int id;
     private String title;
     private String artist;
     private String genre;
     private String duration;
-    public Song(String title,String artist,String genre,String duration){
+    public Song(int id,String title,String artist,String genre,String duration){
         setTitle(title);
         setArtist(artist);
         setGenre(genre);
@@ -13,7 +14,7 @@ public class Song {
 
     }
 
-    private String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -22,7 +23,7 @@ public class Song {
             this.title = title;
     }
 
-    private String getArtist() {
+    public String getArtist() {
         return artist;
     }
 
@@ -31,7 +32,7 @@ public class Song {
         this.artist = artist;
     }
 
-    private String getGenre() {
+    public String getGenre() {
         return genre;
     }
 
@@ -40,7 +41,7 @@ public class Song {
             this.genre = genre;
     }
 
-    private String getDuration() {
+    public String getDuration() {
         return duration;
     }
 
@@ -48,4 +49,10 @@ public class Song {
         if (duration !=null&&duration.isBlank())
          this.duration = duration;
     }
+
+    public int getId() {
+        return id;
+    }
+
+
 }
