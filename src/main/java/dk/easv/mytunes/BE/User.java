@@ -4,7 +4,7 @@ public class User {
 
     private int id = -1;
     private String username = "";
-    private String passwordHash = "";
+    private String password_hash = "";
 
     public User (int id, String username, String password_hash){
         setId(id);
@@ -12,7 +12,7 @@ public class User {
         setPassword_hash(password_hash);
     }
 
-    private int getId() {
+    public int getId() {
         return id;
     }
 
@@ -21,7 +21,7 @@ public class User {
             this.id = id;
     }
 
-    private String getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -30,7 +30,7 @@ public class User {
             this.username = username;
     }
 
-    private String getPassword_hash() {
+    public String getPassword_hash() {
         return password_hash;
     }
 
