@@ -16,7 +16,7 @@ public class User {
         return id;
     }
 
-    private void setId(int id) {
+    public void setId(int id) {
         if (id != -1)
             this.id = id;
     }
@@ -25,7 +25,7 @@ public class User {
         return username;
     }
 
-    private void setUsername(String username) {
+    public void setUsername(String username) {
         if (username != null && !username.isBlank())
             this.username = username;
     }
@@ -34,7 +34,7 @@ public class User {
         return password_hash;
     }
 
-    private void setPassword_hash(String password_hash) {
+    public void setPassword_hash(String password_hash) {
         if (password_hash != null && !password_hash.isBlank())
             this.password_hash = password_hash;
     }
