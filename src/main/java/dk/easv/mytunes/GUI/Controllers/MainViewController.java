@@ -5,16 +5,23 @@ import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.GUI.Models.MainViewModel;
 
 // Java imports
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
+
+    private MainViewModel mainViewModel;
+    private String currentUser;
 
     @FXML
     private TableView<Song> songList;
@@ -26,6 +33,56 @@ public class MainViewController implements Initializable {
     private TableColumn colGenre;
     @FXML
     private TableColumn colTime;
+
+    @FXML
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+        songList.setItems(mainViewModel.getObservableSongs());
+
+        // Show register page when main view initializes
+        Platform.runLater(() -> {
+            try {
+                showRegisterPage();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Platform.exit();
+            }
+        });
+    }
+
+    private void showRegisterPage() throws IOException {
+        // Load the register view
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
+        Parent root = loader.load();
+        RegisterViewController registerController = loader.getController();
+
+        // Create and show register stage
+        Stage registerStage = new Stage();
+        registerStage.setTitle("Welcome to MyTunes");
+        registerStage.initModality(Modality.APPLICATION_MODAL);
+        registerStage.setScene(new Scene(root));
+        registerStage.setResizable(false);
+        registerStage.showAndWait();
+
+        // Check if login was successful
+        if (registerController.isLoginSuccess()) {
+            currentUser = registerController.getCurrentUser();
+            System.out.println("User logged in: " + currentUser);
+        } else {
+            // User cancelled, close the application
+            Platform.exit();
+        }
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
     @FXML
     private void onBtnClickPlayPause() { }
 
@@ -71,9 +128,6 @@ public class MainViewController implements Initializable {
     @FXML
     private void onBtnClickSearch() { }
 
-    private MainViewModel mainViewModel;
-
-
     public MainViewController() {
         try {
             mainViewModel = new MainViewModel();
@@ -82,17 +136,5 @@ public class MainViewController implements Initializable {
             System.out.println("Could not instantiate MainViewModel");
         }
     }
-
-    @FXML
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
-        colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
-        colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
-
-        songList.setItems(mainViewModel.getObservableSongs());
-    }
-
 }
 
