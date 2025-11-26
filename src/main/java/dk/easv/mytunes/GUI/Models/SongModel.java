@@ -9,13 +9,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
-public class MainViewModel {
+public class SongModel {
 
     private SongManager songManager = new SongManager();
     private ObservableList<Song> songsToBeViewed;
 
 
-    public MainViewModel() throws Exception {
+    public SongModel() throws Exception {
         songsToBeViewed = FXCollections.observableArrayList();
         songsToBeViewed.addAll(songManager.getAllSongs());
 

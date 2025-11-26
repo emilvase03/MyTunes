@@ -2,7 +2,7 @@ package dk.easv.mytunes.GUI.Controllers;
 
 // Project imports
 import dk.easv.mytunes.BE.Song;
-import dk.easv.mytunes.GUI.Models.MainViewModel;
+import dk.easv.mytunes.GUI.Models.SongModel;
 
 // Java imports
 import javafx.application.Platform;
@@ -18,12 +18,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
 
-    private MainViewModel mainViewModel;
+    private SongModel songModel;
     private String currentUser;
 
     @FXML
@@ -44,7 +42,7 @@ public class MainViewController implements Initializable {
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("Duration"));
 
-        songList.setItems(mainViewModel.getObservableSongs());
+        songList.setItems(songModel.getObservableSongs());
       
         // Show register page when main view initializes
         Platform.runLater(() -> {
@@ -59,7 +57,7 @@ public class MainViewController implements Initializable {
   
     public MainViewController() {
         try {
-            mainViewModel = new MainViewModel();
+            songModel = new SongModel();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Could not instantiate MainViewModel");
