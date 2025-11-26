@@ -3,8 +3,8 @@ package dk.easv.mytunes.GUI.Controllers;
 // Project imports
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
-import dk.easv.mytunes.GUI.Models.MainViewModel;
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
+import dk.easv.mytunes.GUI.Models.SongModel;
 
 // Java imports
 import javafx.application.Platform;
@@ -26,8 +26,8 @@ import java.io.IOException;
 
 public class MainViewController implements Initializable {
 
-    private MainViewModel mainViewModel;
     private PlaylistModel playlistModel;
+    private SongModel songModel;
     private String currentUser;
 
     // songs
@@ -61,8 +61,6 @@ public class MainViewController implements Initializable {
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("Duration"));
 
-        songList.setItems(mainViewModel.getObservableSongs());
-
         // playlist table setup
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colSongs.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Playlist, Integer>, ObservableValue<Integer>>) cellData -> {
@@ -73,6 +71,7 @@ public class MainViewController implements Initializable {
         colPlaylistTime.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
         playlistView.setItems(playlistModel.getObservablePlaylists());
+        songList.setItems(songModel.getObservableSongs());
       
         // Show register page when main view initializes
         Platform.runLater(() -> {
@@ -87,8 +86,8 @@ public class MainViewController implements Initializable {
   
     public MainViewController() {
         try {
-            mainViewModel = new MainViewModel();
             playlistModel = new PlaylistModel();
+            songModel = new SongModel();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Could not instantiate MainViewModel");
