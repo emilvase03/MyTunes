@@ -42,7 +42,7 @@ public class MainViewController implements Initializable {
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
-        colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
+        colTime.setCellValueFactory(new PropertyValueFactory<>("Duration"));
 
         songList.setItems(mainViewModel.getObservableSongs());
       
