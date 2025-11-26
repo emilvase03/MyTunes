@@ -1,4 +1,4 @@
-/*
+
 package dk.easv.mytunes.DAL.DAO;
 
 // Project imports
@@ -237,4 +237,4 @@ public class PlaylistDAO implements IPlaylistDataAccess {
 }
 
 
- */
+

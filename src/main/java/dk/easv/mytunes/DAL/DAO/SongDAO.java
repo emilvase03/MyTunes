@@ -111,7 +111,7 @@ public class SongDAO implements ISongDataAccess {
             stmt.executeUpdate();
         } catch (SQLException ex) {
 
-            throw new Exception("Could not get movies from database.", ex);
+            throw new Exception("Could not update song from database.", ex);
         }
     }
 
@@ -119,7 +119,7 @@ public class SongDAO implements ISongDataAccess {
     @Override
     public void deleteSong(Song song) throws Exception {
         // SQL command
-        String sql = "DELETE FROM dbo.songs WHERE id = ?;";
+        String sql = "DELETE FROM songs WHERE id = ?;";
 
         try (Connection conn = databaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -128,7 +128,7 @@ public class SongDAO implements ISongDataAccess {
             // Run the specified SQL statement
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            throw new Exception("Could not get movies from database.", ex);
+            throw new Exception("Could not delete song from database.", ex);
 
         }
     }
