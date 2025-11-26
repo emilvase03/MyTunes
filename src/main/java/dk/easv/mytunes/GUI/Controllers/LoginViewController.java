@@ -23,7 +23,7 @@ public class LoginViewController implements Initializable {
     private TextField txtUsername;
 
     @FXML
-    private TextField txtPassword;
+    private PasswordField txtPassword;
 
     private boolean loginSuccess = false;
     private String currentUser;

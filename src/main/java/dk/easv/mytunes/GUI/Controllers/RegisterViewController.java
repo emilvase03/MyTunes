@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -28,7 +29,7 @@ public class RegisterViewController implements Initializable {
     private TextField txtUsername;
 
     @FXML
-    private TextField txtPassword;
+    private PasswordField txtPassword;
 
     private boolean loginSuccess = false;
     private String currentUser;
