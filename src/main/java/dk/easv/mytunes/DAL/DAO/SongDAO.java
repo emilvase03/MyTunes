@@ -1,9 +1,11 @@
 package dk.easv.mytunes.DAL.DAO;
 
+// Project imports
 import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.DAL.DB.DBConnector;
 import dk.easv.mytunes.DAL.ISongDataAccess;
 
+// Java imports
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ public class SongDAO implements ISongDataAccess {
 
         try (Connection conn = databaseConnector.getConnection();//try with resources.The connection should be closed after so it is in () with try.
              Statement stmt = conn.createStatement()) {
-            String sql = "SELECT * FROM dbo.songs;";
+            String sql = "SELECT * FROM songs;";
             ResultSet rs = stmt.executeQuery(sql);
 
             // Loop through rows from the database result set
@@ -129,5 +131,6 @@ public class SongDAO implements ISongDataAccess {
             throw new Exception("Could not get movies from database.", ex);
 
         }
+    }
 
-}}
+}

@@ -1,9 +1,11 @@
 package dk.easv.mytunes.DAL.DAO;
 
+// Project imports
 import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.DAL.DB.DBConnector;
 import dk.easv.mytunes.DAL.IUserDataAccess;
 
+// Java imports
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;

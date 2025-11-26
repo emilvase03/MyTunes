@@ -1,7 +1,9 @@
 package dk.easv.mytunes.DAL;
 
+// Project imports
 import dk.easv.mytunes.BE.User;
 
+// Java imports
 import java.util.List;
 
 public interface IUserDataAccess {

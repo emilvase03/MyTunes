@@ -55,7 +55,7 @@ public class Song {
 
     public void setDuration(String duration) {
         if (duration !=null&&duration.isBlank())
-         this.duration = duration;
+            this.duration = duration;
     }
 
     public int getId() {

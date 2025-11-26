@@ -1,7 +1,9 @@
 package dk.easv.mytunes.DAL;
 
+// Project imports
 import dk.easv.mytunes.BE.Song;
 
+// Java imports
 import java.util.List;
 
 public interface ISongDataAccess {
