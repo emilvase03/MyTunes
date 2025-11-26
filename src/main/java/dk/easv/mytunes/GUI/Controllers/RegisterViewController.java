@@ -1,5 +1,7 @@
 package dk.easv.mytunes.GUI.Controllers;
 
+import dk.easv.mytunes.BE.User;
+import dk.easv.mytunes.GUI.Models.UserModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +32,10 @@ public class RegisterViewController implements Initializable {
 
     private boolean loginSuccess = false;
     private String currentUser;
+    private UserModel userModel;
+
+    public RegisterViewController() {
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,8 +44,8 @@ public class RegisterViewController implements Initializable {
 
     @FXML
     private void onBtnRegisterClick() {
-        String username = txtUsername.getText();
-        String password = txtPassword.getText();
+        String username = txtUsername.getText().trim();
+        String password = txtPassword.getText().trim();
 
         // Validate input
         if (username.isEmpty() || password.isEmpty()) {
@@ -47,25 +53,35 @@ public class RegisterViewController implements Initializable {
             return;
         }
 
-        // Validate username length
         if (username.length() < 3) {
             showAlert("Registration Error", "Username must be at least 3 characters long", Alert.AlertType.ERROR);
             return;
         }
 
-        // Validate password length
         if (password.length() < 4) {
             showAlert("Registration Error", "Password must be at least 4 characters long", Alert.AlertType.ERROR);
             return;
         }
 
-        // TODO: Save user to database here
-        // For now, just show success and proceed to login
+        userModel = new UserModel(-1, username, password);
+
+        try {
+            User createdUser = userModel.createUser(new User(-1, username, password));
+            if (createdUser == null) {
+                showAlert("Registration Error", "Username already exists. Choose another.", Alert.AlertType.ERROR);
+                return;
+            }
+        } catch (Exception e) {
+            showAlert("Registration Error", "Could not register user: " + e.getMessage(), Alert.AlertType.ERROR);
+            return;
+        }
+
         showAlert("Success", "Account created successfully! Please login.", Alert.AlertType.INFORMATION);
 
         // Open login popup
         openLoginPopup();
     }
+
 
     @FXML
     private void onTxtLoginClick(MouseEvent event) {
