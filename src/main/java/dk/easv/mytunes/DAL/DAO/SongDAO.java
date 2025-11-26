@@ -31,12 +31,14 @@ public class SongDAO implements ISongDataAccess {
 
                 //Map DB row to Movie object
                 int id=rs.getInt("id");
+                int user_id=rs.getInt("user_id");
+                String filepath= rs.getString("filepath");
                 String title = rs.getString("Title");
                 String artist=rs.getString("Artist");
                 String genre = rs.getString("Genre");
                 String duration=rs.getString("Duration");
 
-                Song song = new Song(id,title, artist, genre,duration);
+                Song song = new Song(id,user_id,filepath,title, artist, genre,duration);
                 allSongs.add(song);
             }
             return allSongs;
@@ -48,7 +50,7 @@ public class SongDAO implements ISongDataAccess {
     }
     @Override
     public Song createSong(Song newSong) throws Exception {
-        String sql = "INSERT INTO dbo.songs (id,title,artist,genre,duration) VALUES (?,?,?,?,?);";
+        String sql = "INSERT INTO dbo.songs (id,user_id,filepath,title,artist,genre,duration) VALUES (?,?,?,?,?,?,?);";
 
         // try-with-resources makes sure we close db connection etc.
         try (Connection conn = databaseConnector.getConnection()) {
@@ -56,10 +58,12 @@ public class SongDAO implements ISongDataAccess {
 
             // Bind parameters
             stmt.setInt   (1, newSong.getId());
-            stmt.setString(2, newSong.getTitle());
-            stmt.setString(3, newSong.getArtist());
-            stmt.setString(4, newSong.getGenre());
-            stmt.setString(5, newSong.getDuration());
+            stmt.setInt   (2,newSong.getUser_id());
+            stmt.setString(3, newSong.getFilepath());
+            stmt.setString(4, newSong.getTitle());
+            stmt.setString(5, newSong.getArtist());
+            stmt.setString(6, newSong.getGenre());
+            stmt.setString(7, newSong.getDuration());
 
             // Run the specified SQL statement
             stmt.executeUpdate();
@@ -73,7 +77,7 @@ public class SongDAO implements ISongDataAccess {
             }
 
 
-            Song createdSong = new Song(id, newSong.getTitle(), newSong.getArtist(),newSong.getGenre(),newSong.getDuration());
+            Song createdSong = new Song(id,newSong.getUser_id(),newSong.getFilepath(),newSong.getTitle(), newSong.getArtist(),newSong.getGenre(),newSong.getDuration());
 
 
             return createdSong;
@@ -86,17 +90,20 @@ public class SongDAO implements ISongDataAccess {
 
     @Override
     public void updateSong(Song song) throws Exception {
-        String sql = "UPDATE dbo.songs SET title = ?,artist = ?,genre = ?,duration = ? WHERE id = ?";
+        String sql = "UPDATE dbo.songs SET user_id =?, filepath = ?, title = ?,artist = ?,genre = ?,duration = ? WHERE id = ?";
 
         try (Connection conn = databaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             // Bind parameters
-            stmt.setString(1, song.getTitle());
-            stmt.setString(2, song.getArtist());
-            stmt.setString(3, song.getGenre());
-            stmt.setString(4,song.getDuration());
-            stmt.setInt   (5,song.getId());
 
+           ;
+            stmt.setInt   (1,song.getUser_id());
+            stmt.setString(2, song.getFilepath());
+            stmt.setString(3, song.getTitle());
+            stmt.setString(4, song.getArtist());
+            stmt.setString(5, song.getGenre());
+            stmt.setString(6, song.getDuration());
+            stmt.setInt   (7, song.getId());
 
 
 

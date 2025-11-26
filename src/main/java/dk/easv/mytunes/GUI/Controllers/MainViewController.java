@@ -9,6 +9,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -34,16 +37,15 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn colTime;
 
-    @FXML
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
+    @Override
+    public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
 
         songList.setItems(mainViewModel.getObservableSongs());
-
+      
         // Show register page when main view initializes
         Platform.runLater(() -> {
             try {
@@ -53,6 +55,15 @@ public class MainViewController implements Initializable {
                 Platform.exit();
             }
         });
+    }
+  
+    public MainViewController() {
+        try {
+            mainViewModel = new MainViewModel();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Could not instantiate MainViewModel");
+        }
     }
 
     private void showRegisterPage() throws IOException {
@@ -123,18 +134,11 @@ public class MainViewController implements Initializable {
     private void onBtnDeleteSong() { }
 
     @FXML
-    private void onBtnCloseProgram() { }
+    private void onBtnCloseProgram() {
+        Platform.exit();
+    }
 
     @FXML
     private void onBtnClickSearch() { }
-
-    public MainViewController() {
-        try {
-            mainViewModel = new MainViewModel();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Could not instantiate MainViewModel");
-        }
-    }
 }
 

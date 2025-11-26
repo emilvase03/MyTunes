@@ -36,8 +36,8 @@ public class Song {
     }
 
     public void setArtist(String artist) {
-        if(artist!=null&&!artist.isBlank())
-            this.artist = artist;
+       if(artist!=null&&!artist.isBlank())
+        this.artist = artist;
     }
 
     public String getGenre() {
@@ -64,7 +64,7 @@ public class Song {
 
     public void setId(int id) {
         if(id!=-1)
-            this.id = id;
+         this.id = id;
     }
 
     public String getFilepath() {
@@ -72,8 +72,8 @@ public class Song {
     }
 
     public void setFilepath(String filepath) {
-        if(filepath!=null&&!filepath.isBlank())
-            this.filepath = filepath;
+       if(filepath!=null&&!filepath.isBlank())
+        this.filepath = filepath;
     }
 
     public int getUser_id() {
@@ -81,7 +81,7 @@ public class Song {
     }
 
     public void setUser_id(int user_id) {
-        if(user_id!=-1)
-            this.user_id = user_id;
+       if(user_id!=-1)
+        this.user_id = user_id;
     }
 }
