@@ -4,10 +4,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -17,10 +19,13 @@ import java.util.ResourceBundle;
 public class LoginViewController implements Initializable {
 
     @FXML
-    private TextField usernameField;
+    private AnchorPane rootPane;
 
     @FXML
-    private PasswordField passwordField;
+    private TextField txtUsername;
+
+    @FXML
+    private TextField txtPassword;
 
     @FXML
     private Label messageLabel;
@@ -31,25 +36,25 @@ public class LoginViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize login view
-        if (messageLabel != null) {
-            messageLabel.setText("");
-        }
+//        if (messageLabel != null) {
+//            messageLabel.setText("");
+//        }
     }
 
     @FXML
     private void handleLogin() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
 
         // Validate input
         if (username.isEmpty() || password.isEmpty()) {
-            showMessage("Please enter both username and password", false);
+            showAlert("Login failed", "Please enter both username and password", Alert.AlertType.ERROR);
             return;
         }
 
         // Simple authentication (replace with real authentication)
         if (username.equals("admin") && password.equals("password")) {
-            showMessage("Login successful!", true);
+            showAlert("Login success", "Logged in successfully", Alert.AlertType.INFORMATION);
             currentUser = username;
             loginSuccess = true;
 
@@ -58,7 +63,7 @@ public class LoginViewController implements Initializable {
                 try {
                     Thread.sleep(500);
                     Platform.runLater(() -> {
-                        Stage stage = (Stage) usernameField.getScene().getWindow();
+                        Stage stage = (Stage) rootPane.getScene().getWindow();
                         stage.close();
                     });
                 } catch (InterruptedException ex) {
@@ -66,21 +71,24 @@ public class LoginViewController implements Initializable {
                 }
             }).start();
         } else {
-            showMessage("Invalid username or password", false);
-            passwordField.clear();
+            showAlert("Login failed", "Invalid username or password", Alert.AlertType.ERROR);
+            txtPassword.clear();
             loginSuccess = false;
         }
     }
 
-    @FXML
-    private void handleCancel() {
-        Stage stage = (Stage) usernameField.getScene().getWindow();
-        stage.close();
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
-    private void showMessage(String message, boolean success) {
-        messageLabel.setText(message);
-        messageLabel.setTextFill(success ? Color.GREEN : Color.RED);
+    @FXML
+    private void handleCancel() {
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        stage.close();
     }
 
     public boolean isLoginSuccess() {
@@ -93,10 +101,11 @@ public class LoginViewController implements Initializable {
 
     @FXML
     private void onTxtRegisterClick(MouseEvent mouseEvent) {
+        handleCancel();
     }
 
     @FXML
     private void onBtnLoginClick(ActionEvent actionEvent) {
-
+        handleLogin();
     }
 }

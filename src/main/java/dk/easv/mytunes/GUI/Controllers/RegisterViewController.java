@@ -20,6 +20,9 @@ import java.util.ResourceBundle;
 public class RegisterViewController implements Initializable {
 
     @FXML
+    private AnchorPane rootPane;
+
+    @FXML
     private TextField txtUsername;
 
     @FXML
@@ -27,8 +30,6 @@ public class RegisterViewController implements Initializable {
 
     private boolean loginSuccess = false;
     private String currentUser;
-    @FXML
-    private AnchorPane rootPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -126,7 +127,7 @@ public class RegisterViewController implements Initializable {
     }
 
     private void closeStage() {
-        Stage stage = (Stage) txtUsername.getScene().getWindow();
+        Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
     }
 }
