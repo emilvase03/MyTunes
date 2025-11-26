@@ -19,9 +19,9 @@
       <Text fx:id="playlistTxt" layoutX="27.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Playlists" />
       <TableView fx:id="playlistView" layoutX="25.0" layoutY="136.0" prefHeight="333.0" prefWidth="222.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Name" />
-          <TableColumn prefWidth="75.0" text="Songs" />
-            <TableColumn prefWidth="75.0" text="Time" />
+          <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="colSongs" prefWidth="75.0" text="Songs" />
+            <TableColumn fx:id="colPlaylistTime" prefWidth="75.0" text="Time" />
         </columns>
       </TableView>
       <Button fx:id="newPlaylist" layoutX="37.0" layoutY="493.0" mnemonicParsing="false" onAction="#onBtnClickNewPlaylist" text="New" />
