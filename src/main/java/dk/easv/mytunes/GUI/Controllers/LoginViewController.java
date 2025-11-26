@@ -1,16 +1,14 @@
 package dk.easv.mytunes.GUI.Controllers;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import dk.easv.mytunes.BE.User;
+import dk.easv.mytunes.BLL.UserManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -27,18 +25,14 @@ public class LoginViewController implements Initializable {
     @FXML
     private TextField txtPassword;
 
-    @FXML
-    private Label messageLabel;
-
     private boolean loginSuccess = false;
     private String currentUser;
 
+    private final UserManager userManager = new UserManager();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize login view
-//        if (messageLabel != null) {
-//            messageLabel.setText("");
-//        }
+
     }
 
     @FXML
@@ -46,31 +40,25 @@ public class LoginViewController implements Initializable {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
-        // Validate input
+        // Validate
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Login failed", "Please enter both username and password", Alert.AlertType.ERROR);
             return;
         }
+        User user = userManager.login(username, password);
 
-        // Simple authentication (replace with real authentication)
-        if (username.equals("admin") && password.equals("password")) {
+        if (user != null) {
+            // SUCCESS
             showAlert("Login success", "Logged in successfully", Alert.AlertType.INFORMATION);
-            currentUser = username;
             loginSuccess = true;
+            currentUser = username;
 
-            // Close dialog after short delay
-            new Thread(() -> {
-                try {
-                    Thread.sleep(500);
-                    Platform.runLater(() -> {
-                        Stage stage = (Stage) rootPane.getScene().getWindow();
-                        stage.close();
-                    });
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }).start();
+            // close login window
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.close();
+
         } else {
+            // FAIL
             showAlert("Login failed", "Invalid username or password", Alert.AlertType.ERROR);
             txtPassword.clear();
             loginSuccess = false;
@@ -100,12 +88,12 @@ public class LoginViewController implements Initializable {
     }
 
     @FXML
-    private void onTxtRegisterClick(MouseEvent mouseEvent) {
-        handleCancel();
+    private void onBtnLoginClick() {
+        handleLogin();
     }
 
     @FXML
-    private void onBtnLoginClick(ActionEvent actionEvent) {
-        handleLogin();
+    private void onTxtRegisterClick(MouseEvent mouseEvent) {
+        handleCancel();
     }
 }
