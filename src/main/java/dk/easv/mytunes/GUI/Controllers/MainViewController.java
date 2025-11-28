@@ -73,7 +73,6 @@ public class MainViewController implements Initializable {
         playlistView.setItems(playlistModel.getObservablePlaylists());
         songList.setItems(songModel.getObservableSongs());
       
-        // Show register page when main view initializes
         Platform.runLater(() -> {
             try {
                 showRegisterPage();
