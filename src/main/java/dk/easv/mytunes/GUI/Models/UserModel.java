@@ -28,7 +28,7 @@ public class UserModel {
     }
 
     public User createUser(User newUser) throws Exception {
-        return userManager.register(newUser.getUsername(), newUser.getPassword_hash());
+        return userManager.createUser(newUser.getUsername(), newUser.getPassword_hash());
     }
 
     // ID property

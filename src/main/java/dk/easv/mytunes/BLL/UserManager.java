@@ -10,7 +10,7 @@ public class UserManager {
 
     private final UserDAO userDAO = new UserDAO();
 
-    public User login(String username, String password) {
+    public User loginUser(String username, String password) {
         try {
             for (User u : userDAO.getAllUsers()) {
                 if (u.getUsername().equals(username)
@@ -25,7 +25,7 @@ public class UserManager {
         return null;
     }
 
-    public User register(String username, String password) {
+    public User createUser(String username, String password) {
         try {
             String hashedPassword = Encrypter.hashPassword(password); // hash the raw password
             return userDAO.createUser(new User(-1, username, hashedPassword));

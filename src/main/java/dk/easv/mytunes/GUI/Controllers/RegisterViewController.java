@@ -76,16 +76,16 @@ public class RegisterViewController implements Initializable {
             return;
         }
 
-        showAlert("Success", "Account created successfully! Please login.", Alert.AlertType.INFORMATION);
+        showAlert("Success", "Account created successfully! Please loginUser.", Alert.AlertType.INFORMATION);
 
-        // Open login popup
+        // Open loginUser popup
         openLoginPopup();
     }
 
 
     @FXML
     private void onTxtLoginClick(MouseEvent event) {
-        // User clicked "Already have an account?" - open login popup
+        // User clicked "Already have an account?" - open loginUser popup
         openLoginPopup();
     }
 
@@ -100,7 +100,7 @@ public class RegisterViewController implements Initializable {
             // Disable the root pane instead of the stage
             rootPane.setDisable(true);
 
-            // Create login stage
+            // Create loginUser stage
             Stage loginStage = new Stage();
             loginStage.setTitle("Login - MyTunes");
             loginStage.initOwner(registerStage);
@@ -108,10 +108,10 @@ public class RegisterViewController implements Initializable {
             loginStage.setScene(new Scene(root));
             loginStage.setResizable(false);
 
-            // Show login modally
+            // Show loginUser modally
             loginStage.showAndWait();
 
-            // Re-enable register root pane after login closes
+            // Re-enable register root pane after loginUser closes
             rootPane.setDisable(false);
 
             if (loginController.isLoginSuccess()) {
@@ -121,7 +121,7 @@ public class RegisterViewController implements Initializable {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "Could not load login view", Alert.AlertType.ERROR);
+            showAlert("Error", "Could not load loginUser view", Alert.AlertType.ERROR);
         }
     }
 

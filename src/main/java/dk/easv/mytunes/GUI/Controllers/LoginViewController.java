@@ -49,7 +49,7 @@ public class LoginViewController implements Initializable {
             showAlert("Login failed", "Please enter both username and password", Alert.AlertType.ERROR);
             return;
         }
-        User user = userManager.login(username, password);
+        User user = userManager.loginUser(username, password);
 
         if (user != null) {
             // SUCCESS
@@ -57,7 +57,7 @@ public class LoginViewController implements Initializable {
             loginSuccess = true;
             currentUser.setCurrentUser(user);
 
-            // close login window
+            // close loginUser window
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.close();
 
