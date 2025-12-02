@@ -60,10 +60,10 @@ public class NewSongController {
                 return;
             }
 
-            if (!filePath.endsWith("mp3") || !filePath.endsWith("wav")) {
-                showAlert("Incorrect file type", "Please only use MP3 or WAV files", Alert.AlertType.ERROR);
-                return;
-            }
+//            if (!filePath.endsWith("mp3") || !filePath.endsWith("wav")) {
+//                showAlert("Incorrect file type", "Please only use MP3 or WAV files", Alert.AlertType.ERROR);
+//                return;
+//            }
 
             Song newSong = new Song(-1, userId, filePath, title, artist, genre, duration);
             songModel.createSong(newSong);

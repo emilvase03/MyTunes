@@ -21,8 +21,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 import java.io.IOException;
 
@@ -131,50 +129,7 @@ public class MainViewController implements Initializable {
     private void onBtnClickEditPlaylist() { }
 
     @FXML
-    private void onBtnClickDeletePlaylist() {
-
-        Playlist selectedPlaylist = playlistView.getSelectionModel().getSelectedItem();
-
-        if (selectedPlaylist == null) {
-
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Playlist Selected");
-            alert.setContentText("Please select a playlist to delete.");
-            alert.showAndWait();
-            return;
-        }
-
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Delete Playlist");
-        confirmAlert.setHeaderText("Delete " + selectedPlaylist.getName() + "?");
-        confirmAlert.setContentText("Are you sure you want to delete this playlist? This action cannot be undone.");
-
-        confirmAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-
-                    playlistModel.deletePlaylist(selectedPlaylist.getId());
-
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Playlist deleted successfully.");
-                    successAlert.showAndWait();
-
-                } catch (Exception e) {
-
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Error");
-                    errorAlert.setHeaderText("Could not delete playlist");
-                    errorAlert.setContentText(e.getMessage());
-                    errorAlert.showAndWait();
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
+    private void onBtnClickDeletePlaylist() { }
 
     @FXML
     private void onBtnClickAddToPlaylist() { }
@@ -186,7 +141,7 @@ public class MainViewController implements Initializable {
     private void onBtnMoveSongDown() { }
 
     @FXML
-    private void onBtnDeleteSongFromPlaylist() {  }
+    private void onBtnDeleteSongFromPlaylist() { }
 
     @FXML
     private void onBtnAddSong() {
@@ -230,52 +185,7 @@ public class MainViewController implements Initializable {
     private void onBtnEditSong() { }
 
     @FXML
-    private void onBtnDeleteSong() {
-        // Get the selected song from the table
-        Song selectedSong = songList.getSelectionModel().getSelectedItem();
-
-        // Check if a song is selected
-        if (selectedSong == null) {
-            // Show alert if no song is selected
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Song Selected");
-            alert.setContentText("Please select a song to delete.");
-            alert.showAndWait();
-            return;
-        }
-
-        // Confirmation dialog
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Delete Song");
-        confirmAlert.setHeaderText("Delete " + selectedSong.getTitle() + "?");
-        confirmAlert.setContentText("Are you sure you want to delete this song? This action cannot be undone.");
-
-        confirmAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    // Delete the song through the model
-                    songModel.deleteSong(selectedSong);
-
-                    // Optional: Show success message
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Song deleted successfully.");
-                    successAlert.showAndWait();
-
-                } catch (Exception e) {
-                    // Show error alert
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Error");
-                    errorAlert.setHeaderText("Could not delete song");
-                    errorAlert.setContentText(e.getMessage());
-                    errorAlert.showAndWait();
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    private void onBtnDeleteSong() { }
 
     @FXML
     private void onBtnCloseProgram() {
