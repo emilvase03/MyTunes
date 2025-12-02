@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -43,11 +44,21 @@ public class NewSongController {
 
     @FXML
     private void onBtnChoose(ActionEvent actionEvent) {
-        String filePath = txtFilePath.getText();
-        String duration;
+        javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
 
-        if (!filePath.isBlank()) {
-            duration = getSongDuration(filePath);
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        FileChooser.ExtensionFilter extFilter =
+                new FileChooser.ExtensionFilter("Audio Files (*.mp3, *.wav)", "*.mp3", "*.wav");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File selectedFile = fileChooser.showOpenDialog(txtFilePath.getScene().getWindow());
+
+        if (selectedFile != null) {
+            String filePath = selectedFile.getAbsolutePath();
+            txtFilePath.setText(filePath);
+
+            String duration = getSongDuration(filePath);
             txtTime.setText(duration);
         }
     }
