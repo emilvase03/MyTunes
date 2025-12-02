@@ -1,6 +1,7 @@
 package dk.easv.mytunes.DAL.DAO;
 
 // Project imports
+import dk.easv.mytunes.BE.CurrentUser;
 import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.DAL.DB.DBConnector;
 import dk.easv.mytunes.DAL.ISongDataAccess;
@@ -21,24 +22,26 @@ public class SongDAO implements ISongDataAccess {
     public List<Song> getAllSongs() throws Exception {
         ArrayList<Song> allSongs = new ArrayList<>();
 
+        String sql = "SELECT * FROM songs WHERE user_id = ?;";
         try (Connection conn = databaseConnector.getConnection();//try with resources.The connection should be closed after so it is in () with try.
-             Statement stmt = conn.createStatement()) {
-            String sql = "SELECT * FROM songs;";
-            ResultSet rs = stmt.executeQuery(sql);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, CurrentUser.getInstance().getCurrentUser().getId());
+
+            ResultSet rs = stmt.executeQuery();
 
             // Loop through rows from the database result set
             while (rs.next()) {
 
                 //Map DB row to Movie object
-                int id=rs.getInt("id");
-                int user_id=rs.getInt("user_id");
-                String filepath= rs.getString("filepath");
+                int id = rs.getInt("id");
+                int user_id = rs.getInt("user_id");
+                String filepath = rs.getString("filepath");
                 String title = rs.getString("Title");
-                String artist=rs.getString("Artist");
+                String artist = rs.getString("Artist");
                 String genre = rs.getString("Genre");
-                String duration=rs.getString("Duration");
+                String duration = rs.getString("Duration");
 
-                Song song = new Song(id,user_id,filepath,title, artist, genre,duration);
+                Song song = new Song(id, user_id, filepath, title, artist, genre, duration);
                 allSongs.add(song);
             }
             return allSongs;

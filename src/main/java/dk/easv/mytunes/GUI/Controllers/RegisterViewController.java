@@ -81,51 +81,16 @@ public class RegisterViewController implements Initializable {
         showAlert("Success", "Account created successfully! Please loginUser.", Alert.AlertType.INFORMATION);
 
         // Open loginUser popup
-        openLoginPopup();
+        closeStage();
     }
 
 
     @FXML
     private void onTxtLoginClick(MouseEvent event) {
-        // User clicked "Already have an account?" - open loginUser popup
-        openLoginPopup();
+        // User clicked "Already have an account?" - close stage
+        closeStage();
     }
 
-    private void openLoginPopup() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
-            Parent root = loader.load();
-            LoginViewController loginController = loader.getController();
-
-            Stage registerStage = (Stage) txtUsername.getScene().getWindow();
-
-            // Disable the root pane instead of the stage
-            rootPane.setDisable(true);
-
-            // Create loginUser stage
-            Stage loginStage = new Stage();
-            loginStage.setTitle("Login - MyTunes");
-            loginStage.initOwner(registerStage);
-            loginStage.initModality(Modality.WINDOW_MODAL);
-            loginStage.setScene(new Scene(root));
-            loginStage.setResizable(false);
-
-            // Show loginUser modally
-            loginStage.showAndWait();
-
-            // Re-enable register root pane after loginUser closes
-            rootPane.setDisable(false);
-
-            if (loginController.isLoginSuccess()) {
-                loginSuccess = true;
-                registerStage.close(); // close register window
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Could not load loginUser view", Alert.AlertType.ERROR);
-        }
-    }
 
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
@@ -140,7 +105,7 @@ public class RegisterViewController implements Initializable {
     }
 
     private void closeStage() {
-        Stage stage = (Stage) rootPane.getScene().getWindow();
+        Stage stage = (Stage) txtUsername.getScene().getWindow();
         stage.close();
     }
 
