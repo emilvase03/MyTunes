@@ -16,7 +16,7 @@
         </Text>
         <Text layoutX="170.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please login to enter" />
         <TextField fx:id="txtUsername" alignment="CENTER" layoutX="145.0" layoutY="138.0" promptText="Username" />
-        <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="146.0" layoutY="171.0" promptText="Password" />
+        <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="146.0" layoutY="171.0" onKeyPressed="#onEnterLogin" promptText="Password" />
         <Button layoutX="202.0" layoutY="211.0" mnemonicParsing="false" onAction="#onBtnLoginClick" text="Login" />
         <Text layoutX="176.0" layoutY="258.0" onMouseClicked="#onTxtRegisterClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Need an account?" />
     </children>

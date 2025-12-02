@@ -24,6 +24,12 @@
       <artifactId>javafx-fxml</artifactId>
       <version>21.0.6</version>
     </dependency>
+      <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+      <dependency>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-media</artifactId>
+          <version>21.0.3</version>
+      </dependency>
 
 <dependency>
       <groupId>org.junit.jupiter</groupId>

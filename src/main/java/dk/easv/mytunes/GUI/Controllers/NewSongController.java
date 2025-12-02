@@ -77,7 +77,6 @@ public class NewSongController {
                 return;
             }
 
-
             Song newSong = new Song(-1, userId, filePath, title, artist, genre, duration);
             songModel.createSong(newSong);
 
