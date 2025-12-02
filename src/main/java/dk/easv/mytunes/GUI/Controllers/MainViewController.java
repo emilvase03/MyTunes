@@ -131,7 +131,50 @@ public class MainViewController implements Initializable {
     private void onBtnClickEditPlaylist() { }
 
     @FXML
-    private void onBtnClickDeletePlaylist() { }
+    private void onBtnClickDeletePlaylist() {
+
+        Playlist selectedPlaylist = playlistView.getSelectionModel().getSelectedItem();
+
+        if (selectedPlaylist == null) {
+
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Playlist Selected");
+            alert.setContentText("Please select a playlist to delete.");
+            alert.showAndWait();
+            return;
+        }
+
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Delete Playlist");
+        confirmAlert.setHeaderText("Delete " + selectedPlaylist.getName() + "?");
+        confirmAlert.setContentText("Are you sure you want to delete this playlist? This action cannot be undone.");
+
+        confirmAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+
+                    playlistModel.deletePlaylist(selectedPlaylist.getId());
+
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("Playlist deleted successfully.");
+                    successAlert.showAndWait();
+
+                } catch (Exception e) {
+
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText("Could not delete playlist");
+                    errorAlert.setContentText(e.getMessage());
+                    errorAlert.showAndWait();
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     @FXML
     private void onBtnClickAddToPlaylist() { }
@@ -143,7 +186,7 @@ public class MainViewController implements Initializable {
     private void onBtnMoveSongDown() { }
 
     @FXML
-    private void onBtnDeleteSongFromPlaylist() { }
+    private void onBtnDeleteSongFromPlaylist() {  }
 
     @FXML
     private void onBtnAddSong() {
