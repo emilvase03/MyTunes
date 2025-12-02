@@ -50,20 +50,19 @@ public class SongDAO implements ISongDataAccess {
     }
     @Override
     public Song createSong(Song newSong) throws Exception {
-        String sql = "INSERT INTO dbo.songs (id,user_id,filepath,title,artist,genre,duration) VALUES (?,?,?,?,?,?,?);";
+        String sql = "INSERT INTO dbo.songs (user_id,filepath,title,artist,genre,duration) VALUES (?,?,?,?,?,?);";
 
         // try-with-resources makes sure we close db connection etc.
         try (Connection conn = databaseConnector.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             // Bind parameters
-            stmt.setInt   (1, newSong.getId());
-            stmt.setInt   (2,newSong.getUser_id());
-            stmt.setString(3, newSong.getFilepath());
-            stmt.setString(4, newSong.getTitle());
-            stmt.setString(5, newSong.getArtist());
-            stmt.setString(6, newSong.getGenre());
-            stmt.setString(7, newSong.getDuration());
+            stmt.setInt   (1, newSong.getUser_id());
+            stmt.setString(2, newSong.getFilepath());
+            stmt.setString(3, newSong.getTitle());
+            stmt.setString(4, newSong.getArtist());
+            stmt.setString(5, newSong.getGenre());
+            stmt.setString(6, newSong.getDuration());
 
             // Run the specified SQL statement
             stmt.executeUpdate();

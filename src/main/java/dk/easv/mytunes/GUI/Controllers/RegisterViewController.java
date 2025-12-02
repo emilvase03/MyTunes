@@ -32,7 +32,6 @@ public class RegisterViewController implements Initializable {
     private PasswordField txtPassword;
 
     private boolean loginSuccess = false;
-    private String currentUser;
     private UserModel userModel;
 
     public RegisterViewController() {
@@ -117,7 +116,6 @@ public class RegisterViewController implements Initializable {
 
             if (loginController.isLoginSuccess()) {
                 loginSuccess = true;
-                currentUser = loginController.getCurrentUser();
                 registerStage.close(); // close register window
             }
 
@@ -137,10 +135,6 @@ public class RegisterViewController implements Initializable {
 
     public boolean isLoginSuccess() {
         return loginSuccess;
-    }
-
-    public String getCurrentUser() {
-        return currentUser;
     }
 
     private void closeStage() {

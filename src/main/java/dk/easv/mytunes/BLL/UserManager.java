@@ -4,6 +4,8 @@ import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.DAL.DAO.UserDAO;
 import dk.easv.mytunes.BLL.UTIL.Encrypter;
 
+import java.util.List;
+
 public class UserManager {
 
     private final UserDAO userDAO = new UserDAO();

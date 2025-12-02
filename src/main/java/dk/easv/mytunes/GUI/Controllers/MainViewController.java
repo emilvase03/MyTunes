@@ -28,7 +28,6 @@ public class MainViewController implements Initializable {
 
     private PlaylistModel playlistModel;
     private SongModel songModel;
-    private String currentUser;
 
     // songs
     @FXML
@@ -86,7 +85,7 @@ public class MainViewController implements Initializable {
     public MainViewController() {
         try {
             playlistModel = new PlaylistModel();
-            songModel = new SongModel();
+            songModel = SongModel.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Could not instantiate MainViewModel");
@@ -108,17 +107,10 @@ public class MainViewController implements Initializable {
         registerStage.showAndWait();
 
         // Check if login was successful
-        if (registerController.isLoginSuccess()) {
-            currentUser = registerController.getCurrentUser();
-            System.out.println("User logged in: " + currentUser);
-        } else {
+        if (!registerController.isLoginSuccess()) {
             // User cancelled, close the application
             Platform.exit();
         }
-    }
-
-    public String getCurrentUser() {
-        return currentUser;
     }
 
     @FXML
@@ -152,7 +144,42 @@ public class MainViewController implements Initializable {
     private void onBtnDeleteSongFromPlaylist() { }
 
     @FXML
-    private void onBtnAddSong() { }
+    private void onBtnAddSong() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/NewSongView.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("New Song");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+
+            //CSS
+            //scene.getStylesheets().add(getClass().getResource("FilePath").toExternalForm());
+
+            stage.showAndWait();
+
+            songList.setItems(songModel.getObservableSongs());
+
+            // Auto-select/-scroll to the newly added movie
+            NewSongController controller = fxmlLoader.getController();
+            if (controller.isSongAdded()) {
+                try {
+                    int newIndex = SongModel.getInstance().getObservableSongs().size() -1;
+                    if (newIndex >= 0) {
+                        songList.getSelectionModel().select(newIndex);
+                        songList.scrollTo(newIndex);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     private void onBtnEditSong() { }

@@ -10,15 +10,22 @@ import javafx.collections.ObservableList;
 
 
 public class SongModel {
-
+    private static SongModel instance;
     private SongManager songManager = new SongManager();
     private ObservableList<Song> songsToBeViewed;
 
 
-    public SongModel() throws Exception {
+    private SongModel() throws Exception {
         songsToBeViewed = FXCollections.observableArrayList();
         songsToBeViewed.addAll(songManager.getAllSongs());
 
+    }
+
+    public static SongModel getInstance() throws Exception {
+        if (instance == null) {
+            instance = new SongModel();
+        }
+        return instance;
     }
 
     public ObservableList<Song> getObservableSongs() {
