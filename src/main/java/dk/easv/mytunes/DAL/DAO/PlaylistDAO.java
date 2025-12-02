@@ -2,6 +2,7 @@
 package dk.easv.mytunes.DAL.DAO;
 
 // Project imports
+import dk.easv.mytunes.BE.CurrentUser;
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.DAL.DB.DBConnector;
@@ -27,10 +28,11 @@ public class PlaylistDAO implements IPlaylistDataAccess {
     public List<Playlist> getAllPlaylists() throws Exception {
         List<Playlist> playlists = new ArrayList<>();
 
-        String sql = "SELECT id, user_id, name, song_filepaths, duration FROM playlists ORDER BY name";
+        String sql = "SELECT id, user_id, name, song_filepaths, duration FROM playlists WHERE user_id = ? ORDER BY name";
 
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, CurrentUser.getInstance().getCurrentUser().getId());
 
             ResultSet rs = stmt.executeQuery();
 
