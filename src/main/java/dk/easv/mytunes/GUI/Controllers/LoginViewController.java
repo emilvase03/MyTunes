@@ -6,8 +6,12 @@ import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.BLL.UserManager;
 
 // Java imports
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -15,8 +19,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -42,7 +48,7 @@ public class LoginViewController implements Initializable {
     }
 
     @FXML
-    private void handleLogin() {
+    private void handleLogin() throws IOException {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
@@ -59,10 +65,20 @@ public class LoginViewController implements Initializable {
             loginSuccess = true;
             currentUser.setCurrentUser(user);
 
+            // Open MyTunes MainView Window
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainView.fxml"));
+            Parent root = loader.load();
+
+            Stage registerStage = new Stage();
+            registerStage.setTitle("MyTunes");
+            registerStage.initModality(Modality.APPLICATION_MODAL);
+            registerStage.setScene(new Scene(root));
+            registerStage.setResizable(false);
+            registerStage.showAndWait();
+
             // close loginUser window
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.close();
-
         } else {
             // FAIL
             showAlert("Login failed", "Invalid username or password", Alert.AlertType.ERROR);
@@ -91,12 +107,35 @@ public class LoginViewController implements Initializable {
 
     @FXML
     private void onBtnLoginClick() {
-        handleLogin();
+        try {
+            handleLogin();
+        } catch (IOException e) {
+            showAlert("Error", "Login failed", Alert.AlertType.ERROR);
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     private void onTxtRegisterClick(MouseEvent mouseEvent) {
-        handleCancel();
+        try {
+            showRegisterPage();
+        } catch (IOException e) {
+            showAlert("Error", "Could not open register window", Alert.AlertType.ERROR);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void showRegisterPage() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
+        Parent root = loader.load();
+        RegisterViewController registerController = loader.getController();
+
+        Stage registerStage = new Stage();
+        registerStage.setTitle("Welcome to MyTunes");
+        registerStage.initModality(Modality.APPLICATION_MODAL);
+        registerStage.setScene(new Scene(root));
+        registerStage.setResizable(false);
+        registerStage.showAndWait();
     }
 
     public void onEnterLogin(KeyEvent keyEvent) {

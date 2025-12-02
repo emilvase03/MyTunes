@@ -88,14 +88,14 @@ public class MainViewController implements Initializable {
             }
         });
 
-        Platform.runLater(() -> {
-            try {
-                showRegisterPage();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Platform.exit();
-            }
-        });
+//        Platform.runLater(() -> {
+//            try {
+//                showRegisterPage();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                Platform.exit();
+//            }
+//        });
     }
 
     private void setupTables() {
@@ -128,22 +128,7 @@ public class MainViewController implements Initializable {
         );
     }
 
-    private void showRegisterPage() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
-        Parent root = loader.load();
-        RegisterViewController registerController = loader.getController();
 
-        Stage registerStage = new Stage();
-        registerStage.setTitle("Welcome to MyTunes");
-        registerStage.initModality(Modality.APPLICATION_MODAL);
-        registerStage.setScene(new Scene(root));
-        registerStage.setResizable(false);
-        registerStage.showAndWait();
-
-        if (!registerController.isLoginSuccess()) {
-            Platform.exit();
-        }
-    }
 
     @FXML
     private void onBtnClickPlayPause() {
