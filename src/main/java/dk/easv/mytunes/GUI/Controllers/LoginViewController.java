@@ -1,7 +1,11 @@
 package dk.easv.mytunes.GUI.Controllers;
 
+// Project imports
+import dk.easv.mytunes.BE.CurrentUser;
 import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.BLL.UserManager;
+
+// Java imports
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -26,7 +30,7 @@ public class LoginViewController implements Initializable {
     private PasswordField txtPassword;
 
     private boolean loginSuccess = false;
-    private String currentUser;
+    private CurrentUser currentUser = CurrentUser.getInstance();
 
     private final UserManager userManager = new UserManager();
 
@@ -51,7 +55,7 @@ public class LoginViewController implements Initializable {
             // SUCCESS
             showAlert("Login success", "Logged in successfully", Alert.AlertType.INFORMATION);
             loginSuccess = true;
-            currentUser = username;
+            currentUser.setCurrentUser(user);
 
             // close loginUser window
             Stage stage = (Stage) rootPane.getScene().getWindow();
@@ -81,10 +85,6 @@ public class LoginViewController implements Initializable {
 
     public boolean isLoginSuccess() {
         return loginSuccess;
-    }
-
-    public String getCurrentUser() {
-        return currentUser;
     }
 
     @FXML
