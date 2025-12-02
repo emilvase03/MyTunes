@@ -136,10 +136,6 @@ public class LoginViewController implements Initializable {
         registerStage.setScene(new Scene(root));
         registerStage.setResizable(false);
         registerStage.showAndWait();
-
-        if (!registerController.isLoginSuccess()) {
-            Platform.exit();
-        }
     }
 
     public void onEnterLogin(KeyEvent keyEvent) {

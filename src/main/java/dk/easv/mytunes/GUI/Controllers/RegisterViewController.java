@@ -1,7 +1,10 @@
 package dk.easv.mytunes.GUI.Controllers;
 
+// Project imports
 import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.GUI.Models.UserModel;
+
+// Java imports
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RegisterViewController implements Initializable {
+public class RegisterViewController {
 
     @FXML
     private AnchorPane rootPane;
@@ -35,14 +38,6 @@ public class RegisterViewController implements Initializable {
 
     private boolean loginSuccess = false;
     private UserModel userModel;
-
-    public RegisterViewController() {
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // Initialize register view
-    }
 
     @FXML
     private void onBtnRegisterClick() {
