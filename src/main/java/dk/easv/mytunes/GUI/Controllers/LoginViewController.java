@@ -11,6 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -95,5 +97,11 @@ public class LoginViewController implements Initializable {
     @FXML
     private void onTxtRegisterClick(MouseEvent mouseEvent) {
         handleCancel();
+    }
+
+    public void onEnterLogin(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            onBtnLoginClick();
+        }
     }
 }
