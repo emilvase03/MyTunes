@@ -19,11 +19,11 @@
       </VBox>
       <TextField fx:id="txtTitle" layoutX="70.0" layoutY="26.0" prefHeight="26.0" prefWidth="222.0" />
       <TextField fx:id="txtArtist" layoutX="70.0" layoutY="63.0" prefHeight="26.0" prefWidth="222.0" />
-      <TextField fx:id="txtTime" layoutX="70.0" layoutY="139.0" prefHeight="26.0" prefWidth="72.0" />
-      <TextField fx:id="txtFilePath" layoutX="70.0" layoutY="176.0" prefHeight="26.0" prefWidth="222.0" promptText="Path" />
-      <Button layoutX="304.0" layoutY="176.0" mnemonicParsing="false" onAction="#onBtnChoose" text="Choose" />
-      <Button layoutX="304.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnSave" prefHeight="26.0" prefWidth="56.0" text="Save" />
-      <Button layoutX="240.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnCancel" text="Cancel" />
       <TextField fx:id="txtGenre" layoutX="70.0" layoutY="100.0" prefHeight="26.0" prefWidth="222.0" />
+      <TextField fx:id="txtTime" editable="false" layoutX="70.0" layoutY="139.0" prefHeight="26.0" prefWidth="72.0" />
+      <TextField fx:id="txtFilePath" layoutX="70.0" layoutY="176.0" prefHeight="26.0" prefWidth="222.0" promptText="Path" />
+      <Button layoutX="304.0" layoutY="176.0" mnemonicParsing="false" onAction="#onBtnChoose" text="Confirm" />
+      <Button layoutX="304.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnSave" prefHeight="26.0" prefWidth="59.0" text="Save" />
+      <Button layoutX="240.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnCancel" text="Cancel" />
    </children>
 </AnchorPane>

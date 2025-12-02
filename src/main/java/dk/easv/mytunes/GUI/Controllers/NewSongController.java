@@ -11,6 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+
+import java.io.File;
 
 public class NewSongController {
     @FXML
@@ -39,10 +43,18 @@ public class NewSongController {
 
     @FXML
     private void onBtnChoose(ActionEvent actionEvent) {
+        String filePath = txtFilePath.getText();
+        String duration;
+
+        if (!filePath.isBlank()) {
+            duration = getSongDuration(filePath);
+            txtTime.setText(duration);
+        }
     }
 
     @FXML
     private void onBtnCancel(ActionEvent actionEvent) {
+        closeStage();
     }
 
     @FXML
@@ -60,10 +72,11 @@ public class NewSongController {
                 return;
             }
 
-            if (!filePath.endsWith("mp3") || !filePath.endsWith("wav")) {
+            if (!filePath.endsWith("mp3") && !filePath.endsWith("wav")) {
                 showAlert("Incorrect file type", "Please only use MP3 or WAV files", Alert.AlertType.ERROR);
                 return;
             }
+
 
             Song newSong = new Song(-1, userId, filePath, title, artist, genre, duration);
             songModel.createSong(newSong);
@@ -84,6 +97,23 @@ public class NewSongController {
 
     public boolean isSongAdded() {
         return songAdded;
+    }
+
+    private String getSongDuration(String filePath) {
+        try {
+            AudioFile audioFile = AudioFileIO.read(new File(filePath));
+
+            int totalSec = audioFile.getAudioHeader().getTrackLength();
+
+            int minutes = totalSec / 60;
+            int seconds = totalSec % 60;
+
+            return String.format("%02d:%02d", minutes, seconds);
+
+        } catch (Exception e) {
+            showAlert("Error", "Failed to get song duration", Alert.AlertType.ERROR);
+            throw new RuntimeException(e);
+        }
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {
