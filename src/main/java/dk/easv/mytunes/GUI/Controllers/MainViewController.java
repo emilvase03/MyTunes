@@ -107,7 +107,7 @@ public class MainViewController implements Initializable {
         registerStage.setResizable(false);
         registerStage.showAndWait();
 
-        // Check if login was successful
+        // Check if loginUser was successful
         if (registerController.isLoginSuccess()) {
             currentUser = registerController.getCurrentUser();
             System.out.println("User logged in: " + currentUser);
