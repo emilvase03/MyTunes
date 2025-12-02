@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="836.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.MainViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="853.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.MainViewController">
    <children>
       <Button fx:id="playPauseButton" layoutX="81.0" layoutY="35.0" mnemonicParsing="false" onAction="#onBtnClickPlayPause" text="Play" />
       <Button fx:id="previousSong" layoutX="41.0" layoutY="35.0" mnemonicParsing="false" onAction="#onBtnClickPreviousSong" text="&lt;&lt;" />
@@ -30,12 +30,12 @@
       <ListView fx:id="songListInPlaylist" layoutX="265.0" layoutY="136.0" prefHeight="334.0" prefWidth="137.0" />
       <Text fx:id="songOnPlaylistTxt" layoutX="265.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs on playlist" />
       <Button fx:id="moveToPlaylist" layoutX="409.0" layoutY="135.0" mnemonicParsing="false" onAction="#onBtnClickAddToPlaylist" text="&lt;&lt;" />
-      <TableView fx:id="songList" layoutX="448.0" layoutY="135.0" prefHeight="334.0" prefWidth="360.0">
+      <TableView fx:id="songList" layoutX="448.0" layoutY="135.0" prefHeight="334.0" prefWidth="365.0">
         <columns>
           <TableColumn fx:id="colTitle" prefWidth="126.0128173828125" text="Title" />
           <TableColumn fx:id="colArtist" prefWidth="116.38714599609375" text="Artist" />
             <TableColumn fx:id="colGenre" prefWidth="72.9376220703125" text="Genre" />
-            <TableColumn fx:id="colTime" prefWidth="44.6658935546875" text="Time" />
+            <TableColumn fx:id="colTime" prefWidth="52.0" text="Time" />
         </columns>
       </TableView>
       <Button fx:id="moveSongUp" layoutX="264.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnMoveSongUp" text="Up" />
@@ -44,10 +44,10 @@
       <Button fx:id="addSong" layoutX="446.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnAddSong" text="New" />
       <Button fx:id="editSong" layoutX="496.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnEditSong" text="Edit" />
       <Button fx:id="deleteSong" layoutX="539.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnDeleteSong" text="Delete" />
-      <Button fx:id="closeProgram" layoutX="763.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnCloseProgram" text="Close" />
+      <Button fx:id="closeProgram" layoutX="770.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnCloseProgram" text="Close" />
       <Label layoutX="316.0" layoutY="60.0" text="(none) ... Is playing" />
-      <Text fx:id="filterTxt" layoutX="610.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Filter :" />
-      <TextField fx:id="songSearcherTxtField" layoutX="648.0" layoutY="22.0" prefWidth="101.0" />
-      <Button fx:id="searchBtn" layoutX="755.0" layoutY="22.0" mnemonicParsing="false" onAction="#onBtnClickSearch" text="Search" />
+      <Text fx:id="filterTxt" layoutX="617.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Filter :" />
+      <TextField fx:id="songSearcherTxtField" layoutX="655.0" layoutY="22.0" prefWidth="101.0" />
+      <Button fx:id="searchBtn" layoutX="761.0" layoutY="22.0" mnemonicParsing="false" onAction="#onBtnClickSearch" text="Search" />
    </children>
 </AnchorPane>
