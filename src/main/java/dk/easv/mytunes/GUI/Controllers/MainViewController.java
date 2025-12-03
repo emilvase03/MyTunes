@@ -63,6 +63,7 @@ public class MainViewController implements Initializable {
     private Slider volumeBar;
     @FXML
     private TextField songSearcherTxtField;
+    @FXML
     private Label lblCurrentSong;
 
     public MainViewController() {
