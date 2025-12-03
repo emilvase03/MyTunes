@@ -70,16 +70,14 @@ public class PlaylistDAO implements IPlaylistDataAccess {
 
     @Override
     public void updatePlaylist(Playlist playlist) throws Exception {
-        String sql = "UPDATE playlists SET name = ?, song_filepaths = ?, duration = ? WHERE id = ? AND user_id = ?";
+        String sql = "UPDATE playlists SET name = ? WHERE id = ? AND user_id = ?";
 
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, playlist.getName());
-            stmt.setString(2, playlist.getSongFilepaths());
-            stmt.setString(3, playlist.getDuration());
-            stmt.setInt(4, playlist.getId());
-            stmt.setInt(5, playlist.getUserId());
+            stmt.setInt(2, playlist.getId());
+            stmt.setInt(3, playlist.getUserId());
             stmt.executeUpdate();
         }
     }
