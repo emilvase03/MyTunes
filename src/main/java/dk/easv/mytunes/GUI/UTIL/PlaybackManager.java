@@ -1,11 +1,10 @@
 package dk.easv.mytunes.GUI.UTIL;
 
 import dk.easv.mytunes.BE.Song;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+
+import javafx.beans.property.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
 import java.io.File;
 
 public class PlaybackManager {
@@ -13,86 +12,119 @@ public class PlaybackManager {
     private MediaPlayer mediaPlayer;
     private String currentFilePath;
 
+    private final ObjectProperty<Song> currentSong = new SimpleObjectProperty<>();
     private final BooleanProperty playing = new SimpleBooleanProperty(false);
 
-    private double volume = 0.5;
+    public Song getCurrentSong() {
+        return currentSong.get();
+    }
 
-    public BooleanProperty playingProperty() {
-        return playing;
+    public void setCurrentSong(Song song) {
+        currentSong.set(song);
+    }
+
+    public ObjectProperty<Song> currentSongProperty() {
+        return currentSong;
     }
 
     public boolean isPlaying() {
         return playing.get();
     }
 
-    public void setVolume(double volume) {
-        this.volume = clamp(volume, 0.0, 1.0);
-        if (mediaPlayer != null) {
-            mediaPlayer.setVolume(this.volume);
-        }
+    public void setPlaying(boolean state) {
+        playing.set(state);
     }
 
-    public double getVolume() {
-        return volume;
+    public BooleanProperty playingProperty() {
+        return playing;
     }
 
     public void playSong(Song song) {
+        if (song == null || song.getFilepath() == null)
+            return;
+
         String path = song.getFilepath();
-        if (path == null) return;
 
         if (path.equals(currentFilePath) && mediaPlayer != null) {
             togglePause();
-        } else {
-            stopIfNeeded();
-            mediaPlayer = createPlayer(path);
-            currentFilePath = path;
-
-            mediaPlayer.statusProperty().addListener((obs, oldStatus, newStatus) ->
-                    playing.set(newStatus == MediaPlayer.Status.PLAYING)
-            );
-
-            mediaPlayer.setOnEndOfMedia(() -> playing.set(false));
-
-            mediaPlayer.play();
+            return;
         }
+
+        stopCurrentPlayer();
+
+        currentFilePath = path;
+        setCurrentSong(song);
+
+        Media media = new Media(new File(path).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
+
+        mediaPlayer.statusProperty().addListener((obs, oldStatus, newStatus) -> {
+            setPlaying(newStatus == MediaPlayer.Status.PLAYING);
+        });
+
+        mediaPlayer.setOnEndOfMedia(() -> {
+            setPlaying(false);
+            // next song automatically here.
+        });
+
+        mediaPlayer.play();
     }
 
     public void togglePause() {
-        if (mediaPlayer == null) return;
+        if (mediaPlayer == null)
+            return;
 
-        switch (mediaPlayer.getStatus()) {
-            case PLAYING -> mediaPlayer.pause();
-            case PAUSED, STOPPED, READY -> mediaPlayer.play();
-            default -> mediaPlayer.play();
-        }
-
-        if (mediaPlayer != null) {
-            playing.set(mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING);
+        if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            mediaPlayer.pause();
+            setPlaying(false);
+        } else {
+            mediaPlayer.play();
+            setPlaying(true);
         }
     }
 
-    private void stopIfNeeded() {
+    public void stop() {
+        stopCurrentPlayer();
+        currentFilePath = null;
+        setCurrentSong(null);
+        setPlaying(false);
+    }
+
+    private void stopCurrentPlayer() {
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
+            try {
+                mediaPlayer.stop();
+            } catch (Exception ignored) {}
             mediaPlayer.dispose();
+            mediaPlayer = null;
         }
-        playing.set(false);
     }
 
-    private MediaPlayer createPlayer(String path) {
-        Media media = new Media(new File(path).toURI().toString());
-        MediaPlayer player = new MediaPlayer(media);
-        player.setVolume(volume); // apply current volume
-        return player;
+    public void setVolume(double value) {
+        if (mediaPlayer != null)
+            mediaPlayer.setVolume(value);
+    }
+
+    public double getVolume() {
+        return mediaPlayer != null ? mediaPlayer.getVolume() : 0.5;
     }
 
     public boolean isCurrentSong(Song song) {
-        if (song == null || currentFilePath == null) return false;
-        return song.getFilepath().equals(currentFilePath) && isPlaying();
+        return song != null && song.equals(getCurrentSong()) && isPlaying();
     }
 
-    // Helper: clamp value to min/max
-    private double clamp(double value, double min, double max) {
-        return Math.max(min, Math.min(max, value));
+    public boolean isSongLoaded(Song song) {
+        return song != null && song.equals(getCurrentSong());
+    }
+
+    public void next() {
+        // implement next track logic here
+        stop();
+    }
+
+    public void prev() {
+        // implement previous track logic here
+        stop();
     }
 }
+
