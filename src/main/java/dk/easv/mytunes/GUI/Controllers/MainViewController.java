@@ -3,6 +3,7 @@ package dk.easv.mytunes.GUI.Controllers;
 // Project imports
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
+import dk.easv.mytunes.BLL.UTIL.SongSearcher;
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
 import dk.easv.mytunes.GUI.Models.SongModel;
 import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
@@ -10,6 +11,7 @@ import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
 // Java imports
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +23,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
@@ -57,6 +61,8 @@ public class MainViewController implements Initializable {
     private Button playPauseButton;
     @FXML
     private Slider volumeBar;
+    @FXML
+    private TextField songSearcherTxtField;
 
     public MainViewController() {
         try {
@@ -242,7 +248,46 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void onBtnEditSong() { }
+    private void onBtnEditSong() {
+
+        Song selectedSong = songList.getSelectionModel().getSelectedItem();
+
+        if (selectedSong == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Song Selected");
+            alert.setContentText("Please select a song to edit.");
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/EditSongView.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Edit Song");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+
+
+            songList.setItems(songModel.getObservableSongs());
+
+            EditSongController controller = fxmlLoader.getController();
+            controller.setSong(selectedSong);
+
+
+            stage.showAndWait();
+
+            // Refresh table after editing
+            songList.setItems(songModel.getObservableSongs());
+
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+    }
 
     @FXML
     private void onBtnDeleteSong() {
@@ -291,7 +336,20 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void onBtnClickSearch() { }
+    private void onBtnClickSearch() {
+
+        String query = songSearcherTxtField.getText();
+        try{
+
+                songModel.searchSongs(query); // Filter songs
+            songList.setItems(songModel.getObservableSongs());
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Show error alert
+        }
+
+
+    }
 
     // Helper methods
     private boolean songSelected() {

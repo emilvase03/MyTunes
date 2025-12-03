@@ -13,12 +13,15 @@ public class SongSearcher {
             return new ArrayList<>(searchBase); // return all if query empty
         }
 
+
         String q = query.toLowerCase().trim();
 
 
         for (Song song : searchBase) {
-            if(compareToSongTitle(query, song) || compareToSongArtist(query, song)|| compareToSongGenre(query,song) )
-            {
+
+            if (comparedTo(song.getTitle(), q) ||
+                    comparedTo(song.getArtist(), q) ||
+                    comparedTo(song.getGenre(), q)) {
                 searchResult.add(song);
             }
         }
@@ -26,15 +29,11 @@ public class SongSearcher {
         return searchResult;
     }
 
-    private boolean compareToSongTitle(String query, Song song) {
-        return song.getTitle().toLowerCase().contains(query.toLowerCase());
+    private boolean comparedTo(String field, String query) {
+        return field != null &&
+                field.toLowerCase().contains(query);
     }
 
-    private boolean compareToSongArtist(String query, Song song) {
-        return song.getArtist().toLowerCase().contains(query.toLowerCase());
-    }
-    private boolean compareToSongGenre(String query,Song song){
-        return song.getGenre().toLowerCase().contains(query.toLowerCase());
-    }
+
 
 }
