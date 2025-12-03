@@ -47,7 +47,6 @@ public class SongDAO implements ISongDataAccess {
             return allSongs;
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new Exception("Could not get songs from database", ex);
         }
     }
@@ -83,9 +82,8 @@ public class SongDAO implements ISongDataAccess {
 
 
             return createdSong;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Could not create song", ex);
+        } catch (Exception e) {
+            throw new Exception("Could not create song", e);
         }
     }
 
@@ -111,9 +109,8 @@ public class SongDAO implements ISongDataAccess {
 
             // Run the specified SQL statement
             stmt.executeUpdate();
-        } catch (SQLException ex) {
-
-            throw new Exception("Could not update song from database.", ex);
+        } catch (Exception e) {
+            throw new Exception("Could not update song from database.", e);
         }
     }
 
@@ -129,8 +126,8 @@ public class SongDAO implements ISongDataAccess {
 
             // Run the specified SQL statement
             stmt.executeUpdate();
-        } catch (SQLException ex) {
-            throw new Exception("Could not delete song from database.", ex);
+        } catch (Exception e) {
+            throw new Exception("Could not delete song from database.", e);
 
         }
     }
