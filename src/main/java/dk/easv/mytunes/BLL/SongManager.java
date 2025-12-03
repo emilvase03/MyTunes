@@ -2,6 +2,7 @@ package dk.easv.mytunes.BLL;
 
 // Project imports
 import dk.easv.mytunes.BE.Song;
+import dk.easv.mytunes.BLL.UTIL.SongSearcher;
 import dk.easv.mytunes.DAL.DAO.SongDAO;
 import dk.easv.mytunes.DAL.ISongDataAccess;
 
@@ -10,11 +11,17 @@ import java.io.IOException;
 import java.util.List;
 
 public class SongManager {
-
+    private SongSearcher songSearcher = new SongSearcher();
     private ISongDataAccess songDAO;
 
     public SongManager() throws IOException {
         songDAO = new SongDAO();
+    }
+    public List<Song> searchSongs(String query) throws Exception {// retrieves all movies from data source.
+        // Throws exception in case something goes wrong
+        List<Song> allSongs = getAllSongs();//get all movies into a list
+        List<Song> searchResult = songSearcher.search(allSongs, query);//filter movies based on query string
+        return searchResult;
     }
 
     /**

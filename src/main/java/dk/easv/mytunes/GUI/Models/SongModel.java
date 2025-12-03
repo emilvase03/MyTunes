@@ -8,6 +8,9 @@ import dk.easv.mytunes.BLL.SongManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SongModel {
     private static SongModel instance;
@@ -32,8 +35,15 @@ public class SongModel {
         return songsToBeViewed;
     }
 
+    public void searchSongs(String query) throws Exception {
+        List<Song> searchResults = songManager.searchSongs(query);
+        songsToBeViewed.clear();
+        songsToBeViewed.addAll(searchResults);
+    }
+
     /**
      * Method for creating a song down through the layers
+     *
      * @param newSong
      * @return
      */
@@ -45,6 +55,7 @@ public class SongModel {
 
     /**
      * Method for updating a song down through the layers
+     *
      * @param songToBeUpdated
      * @throws Exception
      */
@@ -58,6 +69,7 @@ public class SongModel {
 
     /**
      * Method for deleting a song down through the layers
+     *
      * @param selectedSong
      * @throws Exception
      */
@@ -68,6 +80,4 @@ public class SongModel {
         // Update observable list
         songsToBeViewed.remove(selectedSong);
     }
-
-
 }
