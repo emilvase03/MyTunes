@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="rootPane" prefHeight="258.0" prefWidth="386.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.EditPlaylistViewController">
+   <children>
+      <Text layoutX="114.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit the playlist" wrappingWidth="157.64968872070312">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txtPlaylistName" alignment="TOP_CENTER" layoutX="118.0" layoutY="103.0" promptText="New playlist name" />
+      <Button fx:id="btnSaveChanges" layoutX="70.0" layoutY="192.0" mnemonicParsing="false" onAction="#onBtnSaveChanges" text="Save changes" />
+      <Button fx:id="btnCancelChanges" layoutX="242.0" layoutY="191.0" mnemonicParsing="false" onAction="#onBtnCancelChanges" prefHeight="26.0" prefWidth="88.0" text="Cancel" />
+   </children>
+</AnchorPane>

@@ -191,7 +191,26 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void onBtnClickEditPlaylist() { }
+    private void onBtnClickEditPlaylist() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/EditPlaylistView.fxml"));
+            Parent root = fxmlLoader.load();
+
+            EditPlaylistViewController controller = fxmlLoader.getController();
+            controller.setData(getSelectedPlaylist(), playlistModel);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Playlist");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @FXML
     private void onBtnClickDeletePlaylist() {
