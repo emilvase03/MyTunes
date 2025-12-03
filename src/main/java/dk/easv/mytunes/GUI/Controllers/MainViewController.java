@@ -128,8 +128,6 @@ public class MainViewController implements Initializable {
         );
     }
 
-
-
     @FXML
     private void onBtnClickPlayPause() {
         if (playlistSelected()) {
@@ -242,11 +240,32 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void onBtnEditSong() { }
+    private void onBtnEditSong() {
+        Song selectedSong = songList.getSelectionModel().getSelectedItem();
+        if (playbackManager.isCurrentSong(selectedSong)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cannot Edit");
+            alert.setHeaderText("Song is currently playing");
+            alert.setContentText("Please stop playback before editing the song.");
+            alert.showAndWait();
+            return;
+        }
+
+        // todo: implement edit song functionality
+    }
 
     @FXML
     private void onBtnDeleteSong() {
         Song selectedSong = songList.getSelectionModel().getSelectedItem();
+
+        if (playbackManager.isCurrentSong(selectedSong)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cannot Delete");
+            alert.setHeaderText("Song is currently playing");
+            alert.setContentText("Please stop playback before deleting the song.");
+            alert.showAndWait();
+            return;
+        }
 
         if (selectedSong == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);

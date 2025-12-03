@@ -86,6 +86,11 @@ public class PlaybackManager {
         return player;
     }
 
+    public boolean isCurrentSong(Song song) {
+        if (song == null || currentFilePath == null) return false;
+        return song.getFilepath().equals(currentFilePath) && isPlaying();
+    }
+
     // Helper: clamp value to min/max
     private double clamp(double value, double min, double max) {
         return Math.max(min, Math.min(max, value));
