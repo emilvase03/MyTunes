@@ -45,6 +45,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                         rs.getString("duration")
                 ));
             }
+        } catch (Exception e) {
+            throw new Exception("Could not get playlists", e);
         }
         return playlists;
     }
@@ -66,6 +68,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             if (keys.next()) {
                 playlist.setId(keys.getInt(1));
             }
+        } catch (Exception e) {
+            throw new Exception("Could not create Playlist", e);
         }
         return playlist;
     }
@@ -81,6 +85,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             stmt.setInt(2, playlist.getId());
             stmt.setInt(3, playlist.getUserId());
             stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception("Could not update playlist", e);
         }
     }
 
@@ -93,6 +99,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
 
             stmt.setInt(1, playlistId);
             stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception("Could not delete playlist", e);
         }
     }
 
@@ -147,6 +155,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                     }
                 }
             }
+        } catch (Exception e) {
+            throw new Exception("Could not get songs in playlist", e);
         }
         return songs;
     }
