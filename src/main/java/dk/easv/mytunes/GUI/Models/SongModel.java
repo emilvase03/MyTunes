@@ -63,8 +63,13 @@ public class SongModel {
         // update song in DAL layer (Through the layers)
         songManager.updateSong(songToBeUpdated);
 
-        int index = songsToBeViewed.indexOf(songsToBeViewed);
+        int index = songsToBeViewed.indexOf(songToBeUpdated);
         songsToBeViewed.set(index, songToBeUpdated);
+
+        if (index >= 0) {
+            songsToBeViewed.set(index, songToBeUpdated);
+
+        }
     }
 
     /**
