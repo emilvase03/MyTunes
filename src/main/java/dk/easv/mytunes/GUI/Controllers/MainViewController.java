@@ -265,11 +265,7 @@ public class MainViewController implements Initializable {
         Song selectedSong = songList.getSelectionModel().getSelectedItem();
 
         if (selectedSong == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Song Selected");
-            alert.setContentText("Please select a song to edit.");
-            alert.showAndWait();
+            showAlert("Error", "No Song Selected. Please select a song to edit.", Alert.AlertType.ERROR);
             return;
         }
 
@@ -282,22 +278,18 @@ public class MainViewController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
 
-
             songList.setItems(songModel.getObservableSongs());
 
             EditSongController controller = fxmlLoader.getController();
             controller.setSong(selectedSong);
 
-
             stage.showAndWait();
 
-            // Refresh table after editing
             songList.setItems(songModel.getObservableSongs());
 
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -341,12 +333,10 @@ public class MainViewController implements Initializable {
 
         String query = songSearcherTxtField.getText();
         try{
-
-                songModel.searchSongs(query); // Filter songs
+            songModel.searchSongs(query); // Filter songs
             songList.setItems(songModel.getObservableSongs());
         } catch (Exception e) {
-            e.printStackTrace();
-            // Show error alert
+            showAlert("Error", "Could not search.", Alert.AlertType.ERROR);
         }
 
 
