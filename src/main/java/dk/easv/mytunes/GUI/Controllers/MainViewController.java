@@ -15,12 +15,12 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -63,6 +63,7 @@ public class MainViewController implements Initializable {
     private Slider volumeBar;
     @FXML
     private TextField songSearcherTxtField;
+    private Label lblCurrentSong;
 
     public MainViewController() {
         try {
@@ -80,11 +81,22 @@ public class MainViewController implements Initializable {
         setupTables();
         bindVolumeSlider();
 
-        playbackManager.playingProperty().addListener((obs, wasPlaying, isPlaying) ->
-                Platform.runLater(() -> playPauseButton.setText(isPlaying ? "Pause" : "Play"))
-        );
-        playPauseButton.setText("Play");
+        // handle playback UI updates
+        playbackManager.playingProperty().addListener((obs, oldVal, newVal) -> {
+            playPauseButton.setText(newVal ? "Pause" : "Play");
 
+            Song song = playbackManager.getCurrentSong();
+            if (song == null) {
+                lblCurrentSong.setText("nothing is playing..");
+                return;
+            }
+
+            lblCurrentSong.setText(
+                    song.getTitle() + (newVal ? " ... is playing" : " ... is paused")
+            );
+        });
+
+        // double click to play
         songList.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 Song song = getSelectedSong();
@@ -93,15 +105,6 @@ public class MainViewController implements Initializable {
                 }
             }
         });
-
-//        Platform.runLater(() -> {
-//            try {
-//                showRegisterPage();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                Platform.exit();
-//            }
-//        });
     }
 
     private void setupTables() {
@@ -109,7 +112,7 @@ public class MainViewController implements Initializable {
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
-        colTime.setCellValueFactory(new PropertyValueFactory<>("Duration"));
+        colTime.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
         // playlists table
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -134,12 +137,12 @@ public class MainViewController implements Initializable {
         );
     }
 
-
+    // button actions
 
     @FXML
     private void onBtnClickPlayPause() {
         if (playlistSelected()) {
-            // playbackManager.playPlaylist(getSelectedPlaylist());
+            // play playlist
         } else if (songSelected()) {
             playbackManager.playSong(getSelectedSong());
         } else {
@@ -162,46 +165,27 @@ public class MainViewController implements Initializable {
     @FXML
     private void onBtnClickDeletePlaylist() {
 
-        Playlist selectedPlaylist = playlistView.getSelectionModel().getSelectedItem();
+        Playlist selectedPlaylist = getSelectedPlaylist();
 
         if (selectedPlaylist == null) {
-
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Playlist Selected");
-            alert.setContentText("Please select a playlist to delete.");
-            alert.showAndWait();
+            showAlert("No Selection", "Please select a playlist to delete.", Alert.AlertType.WARNING);
             return;
         }
 
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Delete Playlist");
-        confirmAlert.setHeaderText("Delete " + selectedPlaylist.getName() + "?");
-        confirmAlert.setContentText("Are you sure you want to delete this playlist? This action cannot be undone.");
+        boolean confirmed = showConfirmation(
+                "Delete Playlist",
+                "Are you sure you want to delete \"" + selectedPlaylist.getName() + "\"?"
+        );
 
-        confirmAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
+        if (!confirmed) return;
 
-                    playlistModel.deletePlaylist(selectedPlaylist.getId());
-
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Playlist deleted successfully.");
-                    successAlert.showAndWait();
-
-                } catch (Exception e) {
-
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Error");
-                    errorAlert.setHeaderText("Could not delete playlist");
-                    errorAlert.setContentText(e.getMessage());
-                    errorAlert.showAndWait();
-                    e.printStackTrace();
-                }
-            }
-        });
+        try {
+            playlistModel.deletePlaylist(selectedPlaylist.getId());
+            showAlert("Success", "Playlist deleted successfully.", Alert.AlertType.INFORMATION);
+        } catch (Exception e) {
+            showAlert("Error", "Could not delete playlist:\n" + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -232,18 +216,14 @@ public class MainViewController implements Initializable {
 
             NewSongController controller = fxmlLoader.getController();
             if (controller.isSongAdded()) {
-                try {
-                    int newIndex = SongModel.getInstance().getObservableSongs().size() - 1;
-                    if (newIndex >= 0) {
-                        songList.getSelectionModel().select(newIndex);
-                        songList.scrollTo(newIndex);
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+                int newIndex = songModel.getObservableSongs().size() - 1;
+                if (newIndex >= 0) {
+                    songList.getSelectionModel().select(newIndex);
+                    songList.scrollTo(newIndex);
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            showAlert("Error", "Could not load window:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -291,43 +271,32 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void onBtnDeleteSong() {
-        Song selectedSong = songList.getSelectionModel().getSelectedItem();
+        Song selectedSong = getSelectedSong();
 
         if (selectedSong == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Song Selected");
-            alert.setContentText("Please select a song to delete.");
-            alert.showAndWait();
+            showAlert("No Selection", "Please select a song to delete.", Alert.AlertType.WARNING);
             return;
         }
 
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Delete Song");
-        confirmAlert.setHeaderText("Delete " + selectedSong.getTitle() + "?");
-        confirmAlert.setContentText("Are you sure you want to delete this song? This action cannot be undone.");
+        if (playbackManager.isCurrentSong(selectedSong)) {
+            showAlert("Cannot Delete", "Please stop playback before deleting.", Alert.AlertType.WARNING);
+            return;
+        }
 
-        confirmAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    songModel.deleteSong(selectedSong);
+        boolean confirmed = showConfirmation(
+                "Delete Song",
+                "Are you sure you want to delete \"" + selectedSong.getTitle() + "\"?"
+        );
 
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Song deleted successfully.");
-                    successAlert.showAndWait();
+        if (!confirmed) return;
 
-                } catch (Exception e) {
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Error");
-                    errorAlert.setHeaderText("Could not delete song");
-                    errorAlert.setContentText(e.getMessage());
-                    errorAlert.showAndWait();
-                    e.printStackTrace();
-                }
-            }
-        });
+        try {
+            songModel.deleteSong(selectedSong);
+            showAlert("Success", "Song deleted successfully.", Alert.AlertType.INFORMATION);
+        } catch (Exception e) {
+            showAlert("Error", "Could not delete song:\n" + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -351,7 +320,8 @@ public class MainViewController implements Initializable {
 
     }
 
-    // Helper methods
+    // helpers
+
     private boolean songSelected() {
         return songList.getSelectionModel().getSelectedItem() != null;
     }
@@ -366,5 +336,28 @@ public class MainViewController implements Initializable {
 
     private Playlist getSelectedPlaylist() {
         return playlistView.getSelectionModel().getSelectedItem();
+    }
+
+    // alert helpers
+
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private boolean showConfirmation(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+
+        return alert.showAndWait()
+                .filter(response -> response == ButtonType.OK)
+                .isPresent();
     }
 }
