@@ -8,8 +8,6 @@ public class Playlist {
     private String songFilepaths;
     private String duration;
 
-    public Playlist() {}
-
     public Playlist(int id, int userId, String name, String songFilepaths, String duration) {
         this.id = id;
         this.userId = userId;
@@ -18,11 +16,13 @@ public class Playlist {
         this.duration = duration;
     }
 
-    public Playlist(int userId, String name, String songFilepaths, String duration) {
-        this.userId = userId;
+    public Playlist(String name, int userId) {
         this.name = name;
-        this.songFilepaths = songFilepaths;
-        this.duration = duration;
+        this.userId = userId;
+
+        this.id = -1;
+        this.songFilepaths = "";
+        this.duration = "00:00";
     }
 
     public int getId() {

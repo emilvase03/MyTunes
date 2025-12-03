@@ -60,7 +60,7 @@ public class MainViewController implements Initializable {
 
     public MainViewController() {
         try {
-            playlistModel = new PlaylistModel();
+            playlistModel = PlaylistModel.getInstance();
             songModel = SongModel.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,15 +87,6 @@ public class MainViewController implements Initializable {
                 }
             }
         });
-
-//        Platform.runLater(() -> {
-//            try {
-//                showRegisterPage();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                Platform.exit();
-//            }
-//        });
     }
 
     private void setupTables() {
@@ -148,7 +139,37 @@ public class MainViewController implements Initializable {
     private void onBtnClickNextSong() { }
 
     @FXML
-    private void onBtnClickNewPlaylist() { }
+    private void onBtnClickNewPlaylist() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/NewPlaylistView.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("New Playlist");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+
+            playlistView.setItems(playlistModel.getObservablePlaylists());
+
+            // Scroll to new Playlist in view
+            NewPlaylistController controller = fxmlLoader.getController();
+            if (controller.isPlaylistAdded()) {
+                try {
+                    int newIndex = playlistModel.getObservablePlaylists().size() - 1;
+                    if (newIndex >= 0) {
+                        playlistView.getSelectionModel().select(newIndex);
+                        playlistView.scrollTo(newIndex);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } catch (IOException e) {
+            // Show Alert method
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     private void onBtnClickEditPlaylist() { }
@@ -224,6 +245,7 @@ public class MainViewController implements Initializable {
 
             songList.setItems(songModel.getObservableSongs());
 
+            // Scroll to new Song
             NewSongController controller = fxmlLoader.getController();
             if (controller.isSongAdded()) {
                 try {
