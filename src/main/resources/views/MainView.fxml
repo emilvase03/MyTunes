@@ -45,7 +45,7 @@
       <Button fx:id="editSong" layoutX="496.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnEditSong" text="Edit" />
       <Button fx:id="deleteSong" layoutX="539.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnDeleteSong" text="Delete" />
       <Button fx:id="closeProgram" layoutX="770.0" layoutY="492.0" mnemonicParsing="false" onAction="#onBtnCloseProgram" text="Close" />
-      <Label layoutX="316.0" layoutY="60.0" text="(none) ... Is playing" />
+      <Label fx:id="lblCurrentSong" layoutX="316.0" layoutY="60.0" text="nothing is playing.." />
       <Text fx:id="filterTxt" layoutX="617.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Filter :" />
       <TextField fx:id="songSearcherTxtField" layoutX="655.0" layoutY="22.0" prefWidth="101.0" />
       <Button fx:id="searchBtn" layoutX="761.0" layoutY="22.0" mnemonicParsing="false" onAction="#onBtnClickSearch" text="Search" />
