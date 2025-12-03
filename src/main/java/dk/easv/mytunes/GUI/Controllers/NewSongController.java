@@ -48,8 +48,7 @@ public class NewSongController {
 
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-        FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("Audio Files (*.mp3, *.wav)", "*.mp3", "*.wav");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Audio Files (*.mp3, *.wav)", "*.mp3", "*.wav");
         fileChooser.getExtensionFilters().add(extFilter);
 
         File selectedFile = fileChooser.showOpenDialog(txtFilePath.getScene().getWindow());
@@ -95,7 +94,7 @@ public class NewSongController {
             closeStage();
 
         } catch (Exception e) {
-            showAlert("Error","Could not save song", Alert.AlertType.ERROR);
+            showAlert("Error","Could not save song. Do you already have this song?", Alert.AlertType.ERROR);
             throw new RuntimeException(e);
         }
     }

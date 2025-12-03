@@ -69,16 +69,15 @@ public class LoginViewController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainView.fxml"));
             Parent root = loader.load();
 
-            Stage registerStage = new Stage();
-            registerStage.setTitle("MyTunes");
-            registerStage.initModality(Modality.APPLICATION_MODAL);
-            registerStage.setScene(new Scene(root));
-            registerStage.setResizable(false);
-            registerStage.showAndWait();
+            Stage mainStage = new Stage();
+            mainStage.setTitle("MyTunes");
+            mainStage.initModality(Modality.APPLICATION_MODAL);
+            mainStage.setScene(new Scene(root));
+            mainStage.setResizable(false);
+            mainStage.show();
 
             // close loginUser window
-            Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.close();
+            closeStage();
         } else {
             // FAIL
             showAlert("Login failed", "Invalid username or password", Alert.AlertType.ERROR);
@@ -97,6 +96,10 @@ public class LoginViewController implements Initializable {
 
     @FXML
     private void handleCancel() {
+       closeStage();
+    }
+
+    private void closeStage() {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
     }
