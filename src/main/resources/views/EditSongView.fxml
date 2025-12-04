@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="255.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.EditSongController">
+<AnchorPane prefHeight="255.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.EditSongViewController">
     <children>
         <VBox alignment="CENTER_RIGHT" layoutX="8.0" layoutY="28.0" prefHeight="171.0" prefWidth="46.0" spacing="20.0">
             <children>
