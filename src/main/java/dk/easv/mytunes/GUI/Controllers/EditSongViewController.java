@@ -14,7 +14,7 @@ import org.jaudiotagger.audio.AudioFileIO;
 
 import java.io.File;
 
-public class EditSongController {
+public class EditSongViewController {
     @FXML
     private TextField txtTitleEdit;
     @FXML
@@ -31,7 +31,7 @@ public class EditSongController {
     private boolean songAdded = false;
     private Song song;
 
-    public EditSongController() {
+    public EditSongViewController() {
         try {
             songModel = SongModel.getInstance();
         } catch (Exception e) {
