@@ -84,7 +84,7 @@ public class EditSongViewController {
 
     @FXML
     private void onBtnSaveEdit(ActionEvent actionEvent) {
-        /**
+
         try {
             String title = txtTitleEdit.getText();
             String artist = txtArtistEdit.getText();
@@ -98,12 +98,19 @@ public class EditSongViewController {
                 return;
             }
 
-            if (!filePath.endsWith("mp3") || !filePath.endsWith("wav")) {
-               showAlert("Incorrect file type", "Please only use MP3 or WAV files", Alert.AlertType.ERROR);
-                return;
-            }
 
-// Update existing song
+
+           if (!filePath.equals(song.getFilepath())) {
+                String lowerPath = filePath.toLowerCase().trim();
+                if (!(lowerPath.endsWith(".mp3") || lowerPath.endsWith(".wav"))) {
+                    showAlert("Incorrect file type", "Please only use MP3 or WAV files", Alert.AlertType.ERROR);
+                    return;
+                }
+                duration = getSongDuration(filePath);
+
+
+          }
+// Update song details
             song.setTitle(title);
             song.setArtist(artist);
             song.setDuration(duration);
@@ -112,14 +119,13 @@ public class EditSongViewController {
 
             songModel.updateSong(song);
 
-
             songAdded = true;
             closeStage();
 
         } catch (Exception e) {
             showAlert("Error","Could not save song", Alert.AlertType.ERROR);
             throw new RuntimeException(e);
-        }*/
+        }
     }
 
     private void closeStage() {

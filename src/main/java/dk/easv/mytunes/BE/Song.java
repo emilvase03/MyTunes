@@ -1,5 +1,7 @@
 package dk.easv.mytunes.BE;
 
+import java.util.Objects;
+
 public class Song {
     private int id=-1;
     private int user_id=-1;
@@ -84,4 +86,18 @@ public class Song {
        if(user_id!=-1)
         this.user_id = user_id;
     }
+//so index would find the correct song
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Song)) return false;
+        Song song = (Song) o;
+        return id == song.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }
