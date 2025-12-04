@@ -3,6 +3,7 @@ package dk.easv.mytunes.GUI.Controllers;
 // Project imports
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
+
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
 import dk.easv.mytunes.GUI.Models.SongModel;
 import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
@@ -10,8 +11,6 @@ import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
 // Java imports
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

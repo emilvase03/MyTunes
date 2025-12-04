@@ -34,10 +34,10 @@ public class EditPlaylistViewController {
     private void onBtnSaveChanges(ActionEvent actionEvent) {
         try {
             String newName = txtPlaylistName.getText().trim();
-            if (newName.isEmpty()) return; // optional: show an error popup
+            if (newName.isEmpty()) return;
 
-            playlistToEdit.setName(newName);   // update object
-            playlistModel.updatePlaylist(playlistToEdit); // save to DB + ObservableList
+            playlistToEdit.setName(newName);
+            playlistModel.updatePlaylist(playlistToEdit);
 
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.close();
