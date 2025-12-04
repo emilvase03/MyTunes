@@ -12,6 +12,7 @@ import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +32,7 @@ public class MainViewController implements Initializable {
 
     private PlaylistModel playlistModel;
     private SongModel songModel;
+    private FilteredList<Song> filteredSongs;
 
     private final PlaybackManager playbackManager = new PlaybackManager();
 
@@ -69,6 +71,7 @@ public class MainViewController implements Initializable {
         try {
             playlistModel = new PlaylistModel();
             songModel = SongModel.getInstance();
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Could not instantiate MainViewModel");
@@ -80,6 +83,21 @@ public class MainViewController implements Initializable {
 
         setupTables();
         bindVolumeSlider();
+ //
+       filteredSongs = new FilteredList<>(songModel.getObservableSongs(), s -> true);
+        songList.setItems(filteredSongs);
+
+//Only react when search becomes empty -> show all automatically
+
+
+        songSearcherTxtField.textProperty().addListener((obs, oldText, newText) -> {
+            if (newText == null || newText.trim().isEmpty()) {
+                filteredSongs.setPredicate(s -> true); // show everything
+            }
+
+        });
+
+
 
         // handle playback UI updates
         playbackManager.playingProperty().addListener((obs, oldVal, newVal) -> {
@@ -124,7 +142,9 @@ public class MainViewController implements Initializable {
         colPlaylistTime.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
         playlistView.setItems(playlistModel.getObservablePlaylists());
-        songList.setItems(songModel.getObservableSongs());
+
+
+       // songList.setItems(songModel.getObservableSongs());
     }
 
     private void bindVolumeSlider() {
@@ -308,17 +328,34 @@ public class MainViewController implements Initializable {
     private void onBtnClickSearch() {
 
         String query = songSearcherTxtField.getText();
-        try{
 
-                songModel.searchSongs(query); // Filter songs
-            songList.setItems(songModel.getObservableSongs());
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Show error alert
+        String q = songSearcherTxtField.getText();
+
+        if (q != null && !q.trim().isEmpty()) {
+            final String qu = q.trim().toLowerCase();
+
+            // Apply filtering when the button is pressed
+            filteredSongs.setPredicate(song -> {
+                String title = song.getTitle() == null ? "" : song.getTitle().toLowerCase();
+                String artist = song.getArtist() == null ? "" : song.getArtist().toLowerCase();
+                String genre = song.getGenre() == null ? "" : song.getGenre().toLowerCase();
+                String durStr = song.getDuration() == null ? "" : song.getDuration().toString();
+
+
+            //Match  fields
+                return title.contains(query)
+                        || artist.contains(query)
+                        || genre.contains(query)
+                        || durStr.contains(query);
+            });
+        } else {
+            // Search pressed with empty text -> show all
+
+            filteredSongs.setPredicate(s -> true);
         }
 
 
-    }
+                    }
 
     // helpers
 
