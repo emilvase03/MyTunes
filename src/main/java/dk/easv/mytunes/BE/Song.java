@@ -1,5 +1,6 @@
 package dk.easv.mytunes.BE;
 
+// Java imports
 import java.util.Objects;
 
 public class Song {
