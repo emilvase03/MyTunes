@@ -11,6 +11,7 @@ import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
 // Java imports
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
