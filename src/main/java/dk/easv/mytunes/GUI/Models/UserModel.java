@@ -1,13 +1,14 @@
 package dk.easv.mytunes.GUI.Models;
 
+// Project imports
 import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.BLL.UserManager;
+
+// Java imports
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
-import java.util.List;
 
 public class UserModel {
 
