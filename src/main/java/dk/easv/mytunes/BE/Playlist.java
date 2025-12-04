@@ -1,28 +1,31 @@
 package dk.easv.mytunes.BE;
 
+// Java imports
+import java.util.List;
+
 public class Playlist {
 
     private int id;
     private int userId;
     private String name;
-    private String songFilepaths;
+    private List<Song> allSongs;
     private String duration;
 
-    public Playlist() {}
-
-    public Playlist(int id, int userId, String name, String songFilepaths, String duration) {
+    public Playlist(int id, int userId, String name, List<Song> allSongs, String duration) {
         this.id = id;
         this.userId = userId;
         this.name = name;
-        this.songFilepaths = songFilepaths;
+        this.allSongs = allSongs;
         this.duration = duration;
     }
 
-    public Playlist(int userId, String name, String songFilepaths, String duration) {
-        this.userId = userId;
+    public Playlist(String name, int userId) {
         this.name = name;
-        this.songFilepaths = songFilepaths;
-        this.duration = duration;
+        this.userId = userId;
+
+        this.id = -1;
+        this.allSongs = null; // This doesn't seem correct??
+        this.duration = "00:00";
     }
 
     public int getId() {
@@ -49,12 +52,8 @@ public class Playlist {
         this.name = name;
     }
 
-    public String getSongFilepaths() {
-        return songFilepaths;
-    }
-
-    public void setSongFilepaths(String songFilepaths) {
-        this.songFilepaths = songFilepaths;
+    public List<Song> getAllSongsFromPlaylist() {
+        return allSongs;
     }
 
     public String getDuration() {

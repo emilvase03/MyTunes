@@ -1,7 +1,9 @@
 package dk.easv.mytunes.BLL.UTIL;
 
+// Project imports
 import dk.easv.mytunes.BE.Song;
 
+// Java imports
 import java.util.ArrayList;
 import java.util.List;
 

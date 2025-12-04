@@ -12,14 +12,20 @@ import javafx.collections.ObservableList;
 import java.util.SequencedCollection;
 
 public class PlaylistModel {
-
+    private static PlaylistModel instance;
     private PlaylistManager playlistManager;
     private ObservableList<Playlist> playlistsToBeViewed;
 
-    public PlaylistModel() throws Exception {
+    private PlaylistModel() throws Exception {
         playlistManager = new PlaylistManager();
         playlistsToBeViewed = FXCollections.observableArrayList();
         playlistsToBeViewed.addAll(playlistManager.getAllPlaylists());
+    }
+
+    public static PlaylistModel getInstance() throws Exception {
+        if(instance == null)
+            return instance = new PlaylistModel();
+        return instance;
     }
 
     public ObservableList<Playlist> getObservablePlaylists() {
@@ -28,7 +34,7 @@ public class PlaylistModel {
 
     public Playlist createPlaylist(Playlist newPlaylist) throws Exception {
         Playlist playlistCreated = playlistManager.createPlaylist(newPlaylist);
-        playlistsToBeViewed.add(playlistCreated);
+        getObservablePlaylists().add(playlistCreated);
         return playlistCreated;
     }
 

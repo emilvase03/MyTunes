@@ -3,7 +3,6 @@ package dk.easv.mytunes.GUI.Controllers;
 // Project imports
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
-import dk.easv.mytunes.BLL.UTIL.SongSearcher;
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
 import dk.easv.mytunes.GUI.Models.SongModel;
 import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
@@ -16,6 +15,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -24,8 +24,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
@@ -65,11 +63,12 @@ public class MainViewController implements Initializable {
     private Slider volumeBar;
     @FXML
     private TextField songSearcherTxtField;
+    @FXML
     private Label lblCurrentSong;
 
     public MainViewController() {
         try {
-            playlistModel = new PlaylistModel();
+            playlistModel = PlaylistModel.getInstance();
             songModel = SongModel.getInstance();
 
         } catch (Exception e) {
@@ -177,10 +176,59 @@ public class MainViewController implements Initializable {
     private void onBtnClickNextSong() { }
 
     @FXML
-    private void onBtnClickNewPlaylist() { }
+    private void onBtnClickNewPlaylist() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/NewPlaylistView.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("New Playlist");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+
+            playlistView.setItems(playlistModel.getObservablePlaylists());
+
+            // Scroll to new Playlist in view
+            NewPlaylistController controller = fxmlLoader.getController();
+            if (controller.isPlaylistAdded()) {
+                try {
+                    int newIndex = playlistModel.getObservablePlaylists().size() - 1;
+                    if (newIndex >= 0) {
+                        playlistView.getSelectionModel().select(newIndex);
+                        playlistView.scrollTo(newIndex);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } catch (IOException e) {
+            // Show Alert method
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
-    private void onBtnClickEditPlaylist() { }
+    private void onBtnClickEditPlaylist() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/EditPlaylistView.fxml"));
+            Parent root = fxmlLoader.load();
+
+            EditPlaylistViewController controller = fxmlLoader.getController();
+            controller.setData(getSelectedPlaylist(), playlistModel);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Playlist");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @FXML
     private void onBtnClickDeletePlaylist() {
@@ -234,6 +282,7 @@ public class MainViewController implements Initializable {
 
             songList.setItems(songModel.getObservableSongs());
 
+            // Scroll to new Song
             NewSongController controller = fxmlLoader.getController();
             if (controller.isSongAdded()) {
                 int newIndex = songModel.getObservableSongs().size() - 1;
@@ -253,11 +302,7 @@ public class MainViewController implements Initializable {
         Song selectedSong = songList.getSelectionModel().getSelectedItem();
 
         if (selectedSong == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Song Selected");
-            alert.setContentText("Please select a song to edit.");
-            alert.showAndWait();
+            showAlert("Error", "No Song Selected. Please select a song to edit.", Alert.AlertType.ERROR);
             return;
         }
 
@@ -270,22 +315,18 @@ public class MainViewController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
 
-
             songList.setItems(songModel.getObservableSongs());
 
-            EditSongController controller = fxmlLoader.getController();
+            EditSongViewController controller = fxmlLoader.getController();
             controller.setSong(selectedSong);
-
 
             stage.showAndWait();
 
-            // Refresh table after editing
             songList.setItems(songModel.getObservableSongs());
 
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

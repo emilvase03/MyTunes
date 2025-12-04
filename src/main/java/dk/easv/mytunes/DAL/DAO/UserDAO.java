@@ -41,9 +41,8 @@ public class UserDAO implements IUserDataAccess {
             }
             return allUsers;
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Could not get users from database", ex);
+        } catch (Exception e) {
+            throw new Exception("Could not get users from database", e);
         }
     }
 
@@ -58,9 +57,8 @@ public class UserDAO implements IUserDataAccess {
                 return rs.getInt(1) > 0;
             }
             return false;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Could not check username", ex);
+        } catch (Exception e) {
+            throw new Exception("Could not check username", e);
         }
     }
 
@@ -86,9 +84,8 @@ public class UserDAO implements IUserDataAccess {
 
             return new User(id, newUser.getUsername(), newUser.getPassword_hash());
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Could not create user", ex);
+        } catch (Exception e) {
+            throw new Exception("Could not create user", e);
         }
     }
 
@@ -104,8 +101,8 @@ public class UserDAO implements IUserDataAccess {
             stmt.setInt(3, user.getId());
             stmt.executeUpdate();
 
-        } catch (SQLException ex) {
-            throw new Exception("Could not update user", ex);
+        } catch (Exception e) {
+            throw new Exception("Could not update user", e);
         }
     }
 
@@ -119,8 +116,8 @@ public class UserDAO implements IUserDataAccess {
             stmt.setInt(1, user.getId());
             stmt.executeUpdate();
 
-        } catch (SQLException ex) {
-            throw new Exception("Could not delete user", ex);
+        } catch (Exception e) {
+            throw new Exception("Could not delete user", e);
         }
     }
 }

@@ -1,8 +1,11 @@
 package dk.easv.mytunes.GUI.Controllers;
 
+// Project imports
 import dk.easv.mytunes.BE.CurrentUser;
 import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.GUI.Models.SongModel;
+
+// Java imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -14,7 +17,7 @@ import org.jaudiotagger.audio.AudioFileIO;
 
 import java.io.File;
 
-public class EditSongController {
+public class EditSongViewController {
     @FXML
     private TextField txtTitleEdit;
     @FXML
@@ -31,7 +34,7 @@ public class EditSongController {
     private boolean songAdded = false;
     private Song song;
 
-    public EditSongController() {
+    public EditSongViewController() {
         try {
             songModel = SongModel.getInstance();
         } catch (Exception e) {

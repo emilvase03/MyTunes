@@ -2,6 +2,7 @@
 package dk.easv.mytunes.DAL.DAO;
 
 // Project imports
+import dk.easv.mytunes.BE.CurrentUser;
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.DAL.DB.DBConnector;
@@ -27,10 +28,11 @@ public class PlaylistDAO implements IPlaylistDataAccess {
     public List<Playlist> getAllPlaylists() throws Exception {
         List<Playlist> playlists = new ArrayList<>();
 
-        String sql = "SELECT id, user_id, name, song_filepaths, duration FROM playlists ORDER BY name";
+        String sql = "SELECT id, user_id, name, song_filepaths, duration FROM playlists WHERE user_id = ? ORDER BY name";
 
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, CurrentUser.getInstance().getCurrentUser().getId());
 
             ResultSet rs = stmt.executeQuery();
 
@@ -43,6 +45,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                         rs.getString("duration")
                 ));
             }
+        } catch (Exception e) {
+            throw new Exception("Could not get playlists", e);
         }
         return playlists;
     }
@@ -64,23 +68,25 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             if (keys.next()) {
                 playlist.setId(keys.getInt(1));
             }
+        } catch (Exception e) {
+            throw new Exception("Could not create Playlist", e);
         }
         return playlist;
     }
 
     @Override
     public void updatePlaylist(Playlist playlist) throws Exception {
-        String sql = "UPDATE playlists SET name = ?, song_filepaths = ?, duration = ? WHERE id = ? AND user_id = ?";
+        String sql = "UPDATE playlists SET name = ? WHERE id = ? AND user_id = ?";
 
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, playlist.getName());
-            stmt.setString(2, playlist.getSongFilepaths());
-            stmt.setString(3, playlist.getDuration());
-            stmt.setInt(4, playlist.getId());
-            stmt.setInt(5, playlist.getUserId());
+            stmt.setInt(2, playlist.getId());
+            stmt.setInt(3, playlist.getUserId());
             stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception("Could not update playlist", e);
         }
     }
 
@@ -93,6 +99,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
 
             stmt.setInt(1, playlistId);
             stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception("Could not delete playlist", e);
         }
     }
 
@@ -147,6 +155,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                     }
                 }
             }
+        } catch (Exception e) {
+            throw new Exception("Could not get songs in playlist", e);
         }
         return songs;
     }
