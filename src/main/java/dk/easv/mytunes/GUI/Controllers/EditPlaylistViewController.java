@@ -1,7 +1,10 @@
 package dk.easv.mytunes.GUI.Controllers;
 
+// Project imports
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
+
+// Java imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -31,10 +34,10 @@ public class EditPlaylistViewController {
     private void onBtnSaveChanges(ActionEvent actionEvent) {
         try {
             String newName = txtPlaylistName.getText().trim();
-            if (newName.isEmpty()) return; // optional: show an error popup
+            if (newName.isEmpty()) return;
 
-            playlistToEdit.setName(newName);   // update object
-            playlistModel.updatePlaylist(playlistToEdit); // save to DB + ObservableList
+            playlistToEdit.setName(newName);
+            playlistModel.updatePlaylist(playlistToEdit);
 
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.close();

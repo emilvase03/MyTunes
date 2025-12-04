@@ -3,7 +3,7 @@ package dk.easv.mytunes.GUI.Controllers;
 // Project imports
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
-import dk.easv.mytunes.BLL.UTIL.SongSearcher;
+
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
 import dk.easv.mytunes.GUI.Models.SongModel;
 import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
@@ -11,7 +11,6 @@ import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
 // Java imports
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,8 +23,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
