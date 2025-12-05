@@ -4,8 +4,9 @@ package dk.easv.mytunes.BE;
 import java.util.Objects;
 
 public class Song {
-    private int id=-1;
-    private int user_id=-1;
+
+    private int id = -1;
+    private int user_id = -1;
     private String filepath;
     private String title;
     private String artist;

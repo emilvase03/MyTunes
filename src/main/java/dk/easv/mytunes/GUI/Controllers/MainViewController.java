@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.collections.transformation.FilteredList;
 
 import java.io.IOException;
 import java.net.URL;
@@ -71,8 +72,7 @@ public class MainViewController implements Initializable {
             songModel = SongModel.getInstance();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Could not instantiate MainViewModel");
+            showAlert("Error", "Could not get instance from PlaylistModel or SongModel", Alert.AlertType.ERROR);
         }
     }
 
@@ -141,8 +141,6 @@ public class MainViewController implements Initializable {
 
         playlistView.setItems(playlistModel.getObservablePlaylists());
 
-
-       // songList.setItems(songModel.getObservableSongs());
     }
 
     private void bindVolumeSlider() {
@@ -198,11 +196,12 @@ public class MainViewController implements Initializable {
                         playlistView.scrollTo(newIndex);
                     }
                 } catch (Exception e) {
+                    showAlert("Error", "Could not scroll to new playlist", Alert.AlertType.ERROR);
                     throw new RuntimeException(e);
                 }
             }
-        } catch (IOException e) {
-            // Show Alert method
+        } catch (Exception e) {
+            showAlert("Error", "Could not create new playlist", Alert.AlertType.ERROR);
             throw new RuntimeException(e);
         }
     }
@@ -223,7 +222,8 @@ public class MainViewController implements Initializable {
             stage.setResizable(false);
             stage.showAndWait();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            showAlert("Error", "Could not edit playlist", Alert.AlertType.ERROR);
             throw new RuntimeException(e);
         }
     }
@@ -251,7 +251,7 @@ public class MainViewController implements Initializable {
             showAlert("Success", "Playlist deleted successfully.", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             showAlert("Error", "Could not delete playlist:\n" + e.getMessage(), Alert.AlertType.ERROR);
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -290,8 +290,9 @@ public class MainViewController implements Initializable {
                     songList.scrollTo(newIndex);
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             showAlert("Error", "Could not load window:\n" + e.getMessage(), Alert.AlertType.ERROR);
+            throw new RuntimeException(e);
         }
     }
 
@@ -324,6 +325,7 @@ public class MainViewController implements Initializable {
             songList.setItems(songModel.getObservableSongs());
 
         } catch (Exception e) {
+            showAlert("Error", "Could not edit song", Alert.AlertType.ERROR);
             throw new RuntimeException(e);
         }
 
@@ -355,7 +357,7 @@ public class MainViewController implements Initializable {
             showAlert("Success", "Song deleted successfully.", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             showAlert("Error", "Could not delete song:\n" + e.getMessage(), Alert.AlertType.ERROR);
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
