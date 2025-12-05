@@ -246,17 +246,20 @@ public class MainViewController implements Initializable {
         Song selectedSong = getSelectedSong();
 
         // priority order:
-        // 1. if song selected in playlist view -> play that song from playlist at that index
-        // 2. if playlist selected and has songs -> play entire playlist
-        // 3. if song selected in main table -> play as single song
-        // 4. otherwise -> toggle current playback
-
+        // 1. if a song is selected in playlist view -> play that song from playlist at that index
         if (selectedPlaylistSongIndex >= 0) {
             playSongFromPlaylistAtIndex(selectedPlaylistSongIndex);
+
+            // 2. if a playlist is selected and has songs -> play entire playlist
         } else if (selectedPlaylist != null && playlistModel.getSongCount(selectedPlaylist) > 0) {
             playEntirePlaylist();
+
+            // 3. if a song is selected in the main table -> play as single song
         } else if (selectedSong != null) {
+            // this will now toggle pause if the song is already playing
             playbackManager.playSong(selectedSong);
+
+            // 4. otherwise -> toggle current playback
         } else {
             playbackManager.togglePlayPause();
         }

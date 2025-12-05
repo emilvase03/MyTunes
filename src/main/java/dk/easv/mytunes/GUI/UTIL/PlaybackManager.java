@@ -65,31 +65,21 @@ public class PlaybackManager {
      * Play a single song (standalone, not part of playlist context)
      */
     public void playSong(Song song) {
-        if (song == null || !isValidSong(song)) {
-            return;
-        }
+        if (song == null || !isValidSong(song)) return;
 
-        // Check if we're currently in playlist mode
-        // If so, we need to start fresh even if it's the same song
-        if (isInPlaylistMode()) {
-            // Switch to single song mode
-            clearPlaylistContext();
-            loadAndPlay(song);
-            return;
-        }
-
-        // If same song is already loaded in single-song mode, toggle playback
-        if (isSameLoadedSong(song)) {
+        // If the song is already loaded AND we're not switching playlists, just toggle
+        if (!isInPlaylistMode() && isSameLoadedSong(song)) {
             togglePlayPause();
             return;
         }
 
-        // Clear playlist context - this is a standalone song
+        // If we are in playlist mode, or it's a different song, clear playlist context
         clearPlaylistContext();
 
         // Load and play the song
         loadAndPlay(song);
     }
+
 
     /**
      * Play a playlist starting from the first song
