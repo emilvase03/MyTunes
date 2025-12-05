@@ -352,7 +352,7 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void onBtnAddToPlaylist() {
+    private void onBtnClickAddToPlaylist() {
         Playlist selectedPlaylist = getSelectedPlaylist();
         Song selectedSong = getSelectedSong();
 
