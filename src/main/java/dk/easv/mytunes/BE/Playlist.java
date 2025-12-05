@@ -1,30 +1,27 @@
 package dk.easv.mytunes.BE;
 
-// Java imports
-import java.util.List;
-
 public class Playlist {
 
     private int id;
     private int userId;
     private String name;
-    private List<Song> allSongs;
+    private String songFilepaths;
     private String duration;
 
-    public Playlist(int id, int userId, String name, List<Song> allSongs, String duration) {
-        this.id = id;
-        this.userId = userId;
-        this.name = name;
-        this.allSongs = allSongs;
-        this.duration = duration;
+    public Playlist(int id, int userId, String name, String songFilepaths, String duration) {
+        setId(id);
+        setUserId(userId);
+        setName(name);
+        setSongFilepaths(songFilepaths);
+        setDuration(duration);
     }
 
     public Playlist(String name, int userId) {
-        this.name = name;
-        this.userId = userId;
+        setName(name);
+        setUserId(userId);
 
         this.id = -1;
-        this.allSongs = null; // This doesn't seem correct??
+        this.songFilepaths = "";
         this.duration = "00:00";
     }
 
@@ -33,7 +30,8 @@ public class Playlist {
     }
 
     public void setId(int id) {
-        this.id = id;
+        if (id > 0)
+            this.id = id;
     }
 
     public int getUserId() {
@@ -41,7 +39,8 @@ public class Playlist {
     }
 
     public void setUserId(int userId) {
-        this.userId = userId;
+        if (userId > 0)
+            this.userId = userId;
     }
 
     public String getName() {
@@ -49,11 +48,17 @@ public class Playlist {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name != null && !name.isBlank())
+            this.name = name;
     }
 
-    public List<Song> getAllSongsFromPlaylist() {
-        return allSongs;
+    public String getSongFilepaths() {
+        return songFilepaths;
+    }
+
+    public void setSongFilepaths(String songFilepaths) {
+        if (songFilepaths != null && !songFilepaths.isBlank())
+            this.songFilepaths = songFilepaths;
     }
 
     public String getDuration() {
@@ -61,7 +66,8 @@ public class Playlist {
     }
 
     public void setDuration(String duration) {
-        this.duration = duration;
+        if (duration != null && !duration.isBlank())
+            this.duration = duration;
     }
 
     @Override
