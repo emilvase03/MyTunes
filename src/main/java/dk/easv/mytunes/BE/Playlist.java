@@ -9,11 +9,19 @@ public class Playlist {
     private String duration;
 
     public Playlist(int id, int userId, String name, String songFilepaths, String duration) {
+<<<<<<< HEAD
         setId(id);
         setUserId(userId);
         setName(name);
         setSongFilepaths(songFilepaths);
         setDuration(duration);
+=======
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
+        this.songFilepaths = songFilepaths;
+        this.duration = duration;
+>>>>>>> 7a3a196 (redid playbackmanager, optimized mainviewcontroller, added support for viewing songs in playlists etc)
     }
 
     public Playlist(String name, int userId) {
@@ -57,8 +65,12 @@ public class Playlist {
     }
 
     public void setSongFilepaths(String songFilepaths) {
+<<<<<<< HEAD
         if (songFilepaths != null && !songFilepaths.isBlank())
             this.songFilepaths = songFilepaths;
+=======
+        this.songFilepaths = songFilepaths;
+>>>>>>> 7a3a196 (redid playbackmanager, optimized mainviewcontroller, added support for viewing songs in playlists etc)
     }
 
     public String getDuration() {
