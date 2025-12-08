@@ -1,11 +1,13 @@
 package dk.easv.mytunes.GUI.Controllers;
 
+// Project imports
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
 import dk.easv.mytunes.GUI.Models.SongModel;
 import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
 
+// Java imports
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
@@ -19,7 +21,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,11 +29,11 @@ import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
 
+    private final PlaybackManager playbackManager = new PlaybackManager();
     private PlaylistModel playlistModel;
     private SongModel songModel;
     private FilteredList<Song> filteredSongs;
     private boolean filterActive = false;
-    private final PlaybackManager playbackManager = new PlaybackManager();
 
     @FXML private TableView<Song> songList;
     @FXML private TableColumn<Song, String> colTitle;
