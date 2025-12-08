@@ -563,6 +563,8 @@ public class MainViewController implements Initializable {
         updateMoveButtonsState();
     }
 
+    // generic type <T> allows this method to work with both Song and Playlist TableViews
+    // avoids code duplication
     private <T> void selectAndScrollToLastItem(TableView<T> table, ObservableList<T> items) {
         int newIndex = items.size() - 1;
         if (newIndex >= 0) {
