@@ -1,13 +1,11 @@
 package dk.easv.mytunes.GUI.Controllers;
 
-// Project imports
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
 import dk.easv.mytunes.GUI.Models.SongModel;
 import dk.easv.mytunes.GUI.UTIL.PlaybackManager;
 
-// Java imports
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
@@ -30,52 +28,30 @@ import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
 
-    public Button moveSongUp;
-    public Button moveSongDown;
     private PlaylistModel playlistModel;
     private SongModel songModel;
     private FilteredList<Song> filteredSongs;
-    private boolean filterActive=false;
-
+    private boolean filterActive = false;
     private final PlaybackManager playbackManager = new PlaybackManager();
 
-    // songs
-    @FXML
-    private TableView<Song> songList;
-    @FXML
-    private TableColumn<Song, String> colTitle;
-    @FXML
-    private TableColumn<Song, String> colArtist;
-    @FXML
-    private TableColumn<Song, String> colGenre;
-    @FXML
-    private TableColumn<Song, String> colTime;
-    @FXML
-    private Button moveToPlaylist;
-
-    // playlists
-    @FXML
-    private TableView<Playlist> playlistView;
-    @FXML
-    private TableColumn<Playlist, String> colName;
-    @FXML
-    private TableColumn<Playlist, Integer> colSongs;
-    @FXML
-    private TableColumn<Playlist, String> colPlaylistTime;
-    @FXML
-    private ListView<Song> songListInPlaylist;
-
-    // playing songs
-    @FXML
-    private Button playPauseButton;
-    @FXML
-    private Slider volumeBar;
-    @FXML
-    private TextField songSearcherTxtField;
-    @FXML
-    private Label lblCurrentSong;
-    @FXML
-    private Button searchBtn;
+    @FXML private TableView<Song> songList;
+    @FXML private TableColumn<Song, String> colTitle;
+    @FXML private TableColumn<Song, String> colArtist;
+    @FXML private TableColumn<Song, String> colGenre;
+    @FXML private TableColumn<Song, String> colTime;
+    @FXML private Button moveToPlaylist;
+    @FXML private TableView<Playlist> playlistView;
+    @FXML private TableColumn<Playlist, String> colName;
+    @FXML private TableColumn<Playlist, Integer> colSongs;
+    @FXML private TableColumn<Playlist, String> colPlaylistTime;
+    @FXML private ListView<Song> songListInPlaylist;
+    @FXML private Button playPauseButton;
+    @FXML private Slider volumeBar;
+    @FXML private TextField songSearcherTxtField;
+    @FXML private Label lblCurrentSong;
+    @FXML private Button searchBtn;
+    @FXML private Button moveSongUp;
+    @FXML private Button moveSongDown;
 
     public MainViewController() {
         try {
@@ -97,13 +73,11 @@ public class MainViewController implements Initializable {
     }
 
     private void setupTables() {
-        // songs table
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
-        // playlists table
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colSongs.setCellValueFactory(cellData -> {
             Playlist playlist = cellData.getValue();
@@ -113,7 +87,6 @@ public class MainViewController implements Initializable {
         colPlaylistTime.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
         playlistView.setItems(playlistModel.getObservablePlaylists());
-
         filteredSongs = new FilteredList<>(songModel.getObservableSongs(), s -> true);
         songList.setItems(filteredSongs);
     }
@@ -122,7 +95,6 @@ public class MainViewController implements Initializable {
         volumeBar.setMin(0.0);
         volumeBar.setMax(1.0);
         volumeBar.setValue(playbackManager.getVolume());
-
         volumeBar.valueProperty().addListener((obs, oldVal, newVal) ->
                 playbackManager.setVolume(newVal.doubleValue())
         );
@@ -130,7 +102,9 @@ public class MainViewController implements Initializable {
 
     private void setupSearch() {
         songSearcherTxtField.textProperty().addListener((obs, oldText, newText) -> {
-            if (newText == null || newText.trim().isEmpty()) {
+            if (filterActive && isEmptyOrNull(newText)) {
+                resetFilter();
+            } else if (!filterActive && isEmptyOrNull(newText)) {
                 filteredSongs.setPredicate(s -> true);
             }
         });
@@ -144,21 +118,16 @@ public class MainViewController implements Initializable {
     private void setupPlaylistSelection() {
         playlistView.getSelectionModel().selectedItemProperty().addListener((obs, old, playlist) -> {
             if (playlist != null) {
-                songListInPlaylist.setItems(
-                        playlistModel.getObservableSongsInPlaylist(playlist)
-                );
+                songListInPlaylist.setItems(playlistModel.getObservableSongsInPlaylist(playlist));
             } else {
                 songListInPlaylist.setItems(null);
             }
-
-            // update up/down buttons when playlist changes
             updateMoveButtonsState();
         });
 
-        // when playlist list selection changes, update move button states
-        songListInPlaylist.getSelectionModel().selectedIndexProperty().addListener((obs, oldIdx, newIdx) -> {
-            updateMoveButtonsState();
-        });
+        songListInPlaylist.getSelectionModel().selectedIndexProperty().addListener((obs, oldIdx, newIdx) ->
+                updateMoveButtonsState()
+        );
 
         songListInPlaylist.setCellFactory(lv -> new ListCell<>() {
             @Override
@@ -172,22 +141,15 @@ public class MainViewController implements Initializable {
     private void updateMoveButtonsState() {
         Playlist selectedPlaylist = getSelectedPlaylist();
         int idx = songListInPlaylist.getSelectionModel().getSelectedIndex();
+        int size = songListInPlaylist.getItems().size();
 
-        boolean disableUp = (selectedPlaylist == null) || (idx <= 0);
-        boolean disableDown = (selectedPlaylist == null) || (idx < 0) || (idx >= songListInPlaylist.getItems().size() - 1);
-
-        moveSongUp.setDisable(disableUp);
-        moveSongDown.setDisable(disableDown);
+        moveSongUp.setDisable(selectedPlaylist == null || idx <= 0);
+        moveSongDown.setDisable(selectedPlaylist == null || idx < 0 || idx >= size - 1);
     }
 
     private void setupPlaybackListeners() {
-        playbackManager.playingProperty().addListener((obs, wasPlaying, isPlaying) ->
-                updatePlaybackUI()
-        );
-
-        playbackManager.currentSongProperty().addListener((obs, oldSong, newSong) ->
-                updatePlaybackUI()
-        );
+        playbackManager.playingProperty().addListener((obs, wasPlaying, isPlaying) -> updatePlaybackUI());
+        playbackManager.currentSongProperty().addListener((obs, oldSong, newSong) -> updatePlaybackUI());
     }
 
     private void updatePlaybackUI() {
@@ -202,8 +164,8 @@ public class MainViewController implements Initializable {
         }
 
         String statusText = isPlaying ? " ... is playing" : " ... is paused";
-
         String playlistInfo = "";
+
         if (playbackManager.isPlayingPlaylistMode()) {
             int current = playbackManager.getCurrentIndex() + 1;
             int total = playbackManager.getCurrentPlaylist().size();
@@ -248,21 +210,12 @@ public class MainViewController implements Initializable {
         Playlist selectedPlaylist = getSelectedPlaylist();
         Song selectedSong = getSelectedSong();
 
-        // priority order:
-        // 1. if a song is selected in playlist view -> play that song from playlist at that index
         if (selectedPlaylistSongIndex >= 0) {
             playSongFromPlaylistAtIndex(selectedPlaylistSongIndex);
-
-            // 2. if a playlist is selected and has songs -> play entire playlist
         } else if (selectedPlaylist != null && playlistModel.getSongCount(selectedPlaylist) > 0) {
             playEntirePlaylist();
-
-            // 3. if a song is selected in the main table -> play as single song
         } else if (selectedSong != null) {
-            // this will now toggle pause if the song is already playing
             playbackManager.playSong(selectedSong);
-
-            // 4. otherwise -> toggle current playback
         } else {
             playbackManager.togglePlayPause();
         }
@@ -292,11 +245,7 @@ public class MainViewController implements Initializable {
 
             NewPlaylistController controller = fxmlLoader.getController();
             if (controller.isPlaylistAdded()) {
-                int newIndex = playlistModel.getObservablePlaylists().size() - 1;
-                if (newIndex >= 0) {
-                    playlistView.getSelectionModel().select(newIndex);
-                    playlistView.scrollTo(newIndex);
-                }
+                selectAndScrollToLastItem(playlistView, playlistModel.getObservablePlaylists());
             }
         } catch (IOException e) {
             showAlert("Error", "Could not open New Playlist window:\n" + e.getMessage(), Alert.AlertType.ERROR);
@@ -306,7 +255,6 @@ public class MainViewController implements Initializable {
     @FXML
     private void onBtnClickEditPlaylist() {
         Playlist selectedPlaylist = getSelectedPlaylist();
-
         if (selectedPlaylist == null) {
             showAlert("No Selection", "Please select a playlist to edit.", Alert.AlertType.WARNING);
             return;
@@ -327,7 +275,6 @@ public class MainViewController implements Initializable {
             stage.showAndWait();
 
             playlistView.refresh();
-
         } catch (IOException e) {
             showAlert("Error", "Could not open Edit Playlist window:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -336,18 +283,15 @@ public class MainViewController implements Initializable {
     @FXML
     private void onBtnClickDeletePlaylist() {
         Playlist selectedPlaylist = getSelectedPlaylist();
-
         if (selectedPlaylist == null) {
             showAlert("No Selection", "Please select a playlist to delete.", Alert.AlertType.WARNING);
             return;
         }
 
-        boolean confirmed = showConfirmation(
-                "Delete Playlist",
-                "Are you sure you want to delete \"" + selectedPlaylist.getName() + "\"?"
-        );
-
-        if (!confirmed) return;
+        if (!showConfirmation("Delete Playlist",
+                "Are you sure you want to delete \"" + selectedPlaylist.getName() + "\"?")) {
+            return;
+        }
 
         try {
             playlistModel.deletePlaylist(selectedPlaylist.getId());
@@ -372,7 +316,6 @@ public class MainViewController implements Initializable {
             return;
         }
 
-        // --- Check for duplicates ---
         boolean alreadyInPlaylist = playlistModel.getObservableSongsInPlaylist(selectedPlaylist)
                 .stream()
                 .anyMatch(song -> song.getId() == selectedSong.getId());
@@ -386,17 +329,11 @@ public class MainViewController implements Initializable {
 
         try {
             playlistModel.addSongToPlaylist(selectedPlaylist, selectedSong);
-
             playlistView.refresh();
-            songListInPlaylist.setItems(
-                    playlistModel.getObservableSongsInPlaylist(selectedPlaylist)
-            );
-
+            songListInPlaylist.setItems(playlistModel.getObservableSongsInPlaylist(selectedPlaylist));
             showAlert("Success",
                     "\"" + selectedSong.getTitle() + "\" added to playlist \"" + selectedPlaylist.getName() + "\".",
-                    Alert.AlertType.INFORMATION
-            );
-
+                    Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             showAlert("Error", "Could not add song:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -411,16 +348,7 @@ public class MainViewController implements Initializable {
 
         try {
             playlistModel.moveSongUp(playlist, index);
-
-            // refresh UI list and keep moved item selected
-            songListInPlaylist.setItems(playlistModel.getObservableSongsInPlaylist(playlist));
-            int newIndex = Math.max(0, index - 1);
-            songListInPlaylist.getSelectionModel().select(newIndex);
-            songListInPlaylist.scrollTo(newIndex);
-
-            playlistView.refresh();
-            updateMoveButtonsState();
-
+            refreshPlaylistSongList(playlist, index - 1);
         } catch (Exception e) {
             showAlert("Error", "Could not move song:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -435,16 +363,7 @@ public class MainViewController implements Initializable {
 
         try {
             playlistModel.moveSongDown(playlist, index);
-
-            // refresh UI list and keep moved item selected
-            songListInPlaylist.setItems(playlistModel.getObservableSongsInPlaylist(playlist));
-            int newIndex = Math.min(songListInPlaylist.getItems().size() - 1, index + 1);
-            songListInPlaylist.getSelectionModel().select(newIndex);
-            songListInPlaylist.scrollTo(newIndex);
-
-            playlistView.refresh();
-            updateMoveButtonsState();
-
+            refreshPlaylistSongList(playlist, index + 1);
         } catch (Exception e) {
             showAlert("Error", "Could not move song:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -465,26 +384,18 @@ public class MainViewController implements Initializable {
             return;
         }
 
-        boolean confirmed = showConfirmation(
-                "Remove Song",
-                "Remove \"" + selectedSongInPlaylist.getTitle() + "\" from \"" + selectedPlaylist.getName() + "\"?"
-        );
-
-        if (!confirmed) return;
+        if (!showConfirmation("Remove Song",
+                "Remove \"" + selectedSongInPlaylist.getTitle() + "\" from \"" + selectedPlaylist.getName() + "\"?")) {
+            return;
+        }
 
         try {
             playlistModel.removeSongFromPlaylist(selectedPlaylist.getId(), selectedSongInPlaylist.getId());
-
             playlistView.refresh();
-            songListInPlaylist.setItems(
-                    playlistModel.getObservableSongsInPlaylist(selectedPlaylist)
-            );
-
+            songListInPlaylist.setItems(playlistModel.getObservableSongsInPlaylist(selectedPlaylist));
             showAlert("Success",
                     "\"" + selectedSongInPlaylist.getTitle() + "\" removed from playlist.",
-                    Alert.AlertType.INFORMATION
-            );
-
+                    Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             showAlert("Error", "Could not remove song:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -504,11 +415,7 @@ public class MainViewController implements Initializable {
 
             NewSongController controller = fxmlLoader.getController();
             if (controller.isSongAdded()) {
-                int newIndex = songModel.getObservableSongs().size() - 1;
-                if (newIndex >= 0) {
-                    songList.getSelectionModel().select(newIndex);
-                    songList.scrollTo(newIndex);
-                }
+                selectAndScrollToLastItem(songList, songModel.getObservableSongs());
             }
         } catch (IOException e) {
             showAlert("Error", "Could not load window:\n" + e.getMessage(), Alert.AlertType.ERROR);
@@ -518,7 +425,6 @@ public class MainViewController implements Initializable {
     @FXML
     private void onBtnEditSong() {
         Song selectedSong = getSelectedSong();
-
         if (selectedSong == null) {
             showAlert("No Selection", "Please select a song to edit.", Alert.AlertType.WARNING);
             return;
@@ -539,7 +445,6 @@ public class MainViewController implements Initializable {
             stage.showAndWait();
 
             songList.refresh();
-
         } catch (Exception e) {
             showAlert("Error", "Could not open Edit Song window:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -548,7 +453,6 @@ public class MainViewController implements Initializable {
     @FXML
     private void onBtnDeleteSong() {
         Song selectedSong = getSelectedSong();
-
         if (selectedSong == null) {
             showAlert("No Selection", "Please select a song to delete.", Alert.AlertType.WARNING);
             return;
@@ -559,12 +463,10 @@ public class MainViewController implements Initializable {
             return;
         }
 
-        boolean confirmed = showConfirmation(
-                "Delete Song",
-                "Are you sure you want to delete \"" + selectedSong.getTitle() + "\"?"
-        );
-
-        if (!confirmed) return;
+        if (!showConfirmation("Delete Song",
+                "Are you sure you want to delete \"" + selectedSong.getTitle() + "\"?")) {
+            return;
+        }
 
         try {
             songModel.deleteSong(selectedSong);
@@ -583,44 +485,36 @@ public class MainViewController implements Initializable {
     @FXML
     private void onBtnClickSearch() {
         if (!filterActive) {
-            String q = songSearcherTxtField.getText();
-            final String query = (q == null) ? "" : q.trim().toLowerCase();
-
-            if (query.isEmpty()) {
-                if (filteredSongs != null) {
-                    filteredSongs.setPredicate(s -> true);
-                }
-
-                filterActive = false;
-                if (searchBtn != null) searchBtn.setText("Search");
-                return;
-            }
-
-            if (filteredSongs != null) {
-                filteredSongs.setPredicate(song -> {
-                    String title  = song.getTitle()  == null ? "" : song.getTitle().toLowerCase();
-                    String artist = song.getArtist() == null ? "" : song.getArtist().toLowerCase();
-
-
-                    return title.contains(query) || artist.contains(query);
-                });
-            }
-
-            // Switch button to "Clear"
-            filterActive = true;
-            if (searchBtn != null) searchBtn.setText("Clear");
-
+            applySearchFilter();
         } else {
-
-            if (filteredSongs != null) {
-                filteredSongs.setPredicate(s -> true);  // show all songs
-            }
-            filterActive = false;
-            if (searchBtn != null) searchBtn.setText("Search");
-            if (songSearcherTxtField != null) songSearcherTxtField.clear();
+            resetFilter();
         }
     }
 
+    private void applySearchFilter() {
+        String query = songSearcherTxtField.getText();
+        if (isEmptyOrNull(query)) {
+            resetFilter();
+            return;
+        }
+
+        String lowerQuery = query.trim().toLowerCase();
+        filteredSongs.setPredicate(song -> {
+            String title = song.getTitle() == null ? "" : song.getTitle().toLowerCase();
+            String artist = song.getArtist() == null ? "" : song.getArtist().toLowerCase();
+            return title.contains(lowerQuery) || artist.contains(lowerQuery);
+        });
+
+        filterActive = true;
+        searchBtn.setText("Clear");
+    }
+
+    private void resetFilter() {
+        filteredSongs.setPredicate(s -> true);
+        filterActive = false;
+        searchBtn.setText("Search");
+        songSearcherTxtField.clear();
+    }
 
     private void playEntirePlaylist() {
         Playlist playlist = getSelectedPlaylist();
@@ -632,9 +526,7 @@ public class MainViewController implements Initializable {
                 showAlert("Empty Playlist", "This playlist has no songs.", Alert.AlertType.INFORMATION);
                 return;
             }
-
             playbackManager.playPlaylist(songs);
-
         } catch (Exception e) {
             showAlert("Error", "Could not play playlist:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -646,14 +538,9 @@ public class MainViewController implements Initializable {
 
         try {
             ObservableList<Song> songs = playlistModel.getObservableSongsInPlaylist(playlist);
-            if (songs.isEmpty() || index >= songs.size()) {
-                return;
-            }
-
-            Song targetSong = songs.get(index);
+            if (songs.isEmpty() || index >= songs.size()) return;
 
             List<Song> reorderedList = new ArrayList<>();
-
             for (int i = index; i < songs.size(); i++) {
                 reorderedList.add(songs.get(i));
             }
@@ -661,11 +548,31 @@ public class MainViewController implements Initializable {
                 reorderedList.add(songs.get(i));
             }
 
-            playbackManager.playSongFromPlaylist(reorderedList, targetSong);
-
+            playbackManager.playSongFromPlaylist(reorderedList, songs.get(index));
         } catch (Exception e) {
             showAlert("Error", "Could not play song:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    private void refreshPlaylistSongList(Playlist playlist, int newIndex) {
+        songListInPlaylist.setItems(playlistModel.getObservableSongsInPlaylist(playlist));
+        int clampedIndex = Math.max(0, Math.min(newIndex, songListInPlaylist.getItems().size() - 1));
+        songListInPlaylist.getSelectionModel().select(clampedIndex);
+        songListInPlaylist.scrollTo(clampedIndex);
+        playlistView.refresh();
+        updateMoveButtonsState();
+    }
+
+    private <T> void selectAndScrollToLastItem(TableView<T> table, ObservableList<T> items) {
+        int newIndex = items.size() - 1;
+        if (newIndex >= 0) {
+            table.getSelectionModel().select(newIndex);
+            table.scrollTo(newIndex);
+        }
+    }
+
+    private boolean isEmptyOrNull(String text) {
+        return text == null || text.trim().isEmpty();
     }
 
     private Song getSelectedSong() {
@@ -690,7 +597,6 @@ public class MainViewController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
-
         return alert.showAndWait()
                 .filter(response -> response == ButtonType.OK)
                 .isPresent();

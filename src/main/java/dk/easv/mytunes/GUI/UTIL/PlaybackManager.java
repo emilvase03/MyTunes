@@ -65,7 +65,6 @@ public class PlaybackManager {
         loadAndPlay(song);
     }
 
-
     // play a full playlist from the start
     public void playPlaylist(List<Song> songs) {
         if (songs == null || songs.isEmpty()) {
