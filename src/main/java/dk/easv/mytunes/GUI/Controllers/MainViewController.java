@@ -35,6 +35,7 @@ public class MainViewController implements Initializable {
     private PlaylistModel playlistModel;
     private SongModel songModel;
     private FilteredList<Song> filteredSongs;
+    private boolean filterActive=false;
 
     private final PlaybackManager playbackManager = new PlaybackManager();
 
@@ -73,6 +74,8 @@ public class MainViewController implements Initializable {
     private TextField songSearcherTxtField;
     @FXML
     private Label lblCurrentSong;
+    @FXML
+    private Button searchBtn;
 
     public MainViewController() {
         try {
@@ -579,26 +582,45 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void onBtnClickSearch() {
-        String query = songSearcherTxtField.getText();
+        if (!filterActive) {
+            String q = songSearcherTxtField.getText();
+            final String query = (q == null) ? "" : q.trim().toLowerCase();
 
-        if (query != null && !query.trim().isEmpty()) {
-            final String searchQuery = query.trim().toLowerCase();
+            if (query.isEmpty()) {
+                if (filteredSongs != null) {
+                    filteredSongs.setPredicate(s -> true);
+                }
 
-            filteredSongs.setPredicate(song -> {
-                String title = song.getTitle() == null ? "" : song.getTitle().toLowerCase();
-                String artist = song.getArtist() == null ? "" : song.getArtist().toLowerCase();
-                String genre = song.getGenre() == null ? "" : song.getGenre().toLowerCase();
-                String duration = song.getDuration() == null ? "" : song.getDuration().toLowerCase();
+                filterActive = false;
+                if (searchBtn != null) searchBtn.setText("Search");
+                return;
+            }
 
-                return title.contains(searchQuery)
-                        || artist.contains(searchQuery)
-                        || genre.contains(searchQuery)
-                        || duration.contains(searchQuery);
-            });
+            if (filteredSongs != null) {
+                filteredSongs.setPredicate(song -> {
+                    String title  = song.getTitle()  == null ? "" : song.getTitle().toLowerCase();
+                    String artist = song.getArtist() == null ? "" : song.getArtist().toLowerCase();
+
+
+                    return title.contains(query) || artist.contains(query);
+                });
+            }
+
+            // Switch button to "Clear"
+            filterActive = true;
+            if (searchBtn != null) searchBtn.setText("Clear");
+
         } else {
-            filteredSongs.setPredicate(s -> true);
+
+            if (filteredSongs != null) {
+                filteredSongs.setPredicate(s -> true);  // show all songs
+            }
+            filterActive = false;
+            if (searchBtn != null) searchBtn.setText("Search");
+            if (songSearcherTxtField != null) songSearcherTxtField.clear();
         }
     }
+
 
     private void playEntirePlaylist() {
         Playlist playlist = getSelectedPlaylist();
