@@ -90,6 +90,9 @@ public class MainViewController implements Initializable {
         playlistView.setItems(playlistModel.getObservablePlaylists());
         filteredSongs = new FilteredList<>(songModel.getObservableSongs(), s -> true);
         songList.setItems(filteredSongs);
+
+        songList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        playlistView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private void bindVolumeSlider() {
