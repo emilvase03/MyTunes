@@ -3,6 +3,8 @@
 }
 
 
+
+
 /*
  LoginView
 */
@@ -11,6 +13,91 @@
 #lblWelcome {
     -fx-fill: white;
 }
+#loginText{
+    -fx-fill: white;
+}
+#needAccounteTxt{
+    -fx-fill: white;
+}
+.text-field, .password-field {
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
+}
+
+/*  input fields glow */
+.text-input {
+    -fx-background-color: #222c40;
+    -fx-border-color: #6fb1ff;
+    -fx-border-width: 1.25;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(111,177,255,0.35), 10, 0.2, 0, 0);
+
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255,255,255,0.65);
+    -fx-caret-color: white;
+}
+
+
+
+/* white texts to alerts too  */
+
+
+.dialog-pane .header-panel .label {
+    -fx-text-fill: white;
+}
+
+.dialog-pane .content.label {
+    -fx-text-fill: white;
+}
+
+
+.dialog-pane .button,
+.dialog-pane .button:default {
+    -fx-background-color: #1b2230;
+    -fx-text-fill: white;
+
+    -fx-padding: 6 16;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-border-color: transparent;
+}
+
+/* Glow when hover */
+.dialog-pane .button:hover,
+.dialog-pane .button:default:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #222c40;
+    -fx-border-color: #6fb1ff;
+    -fx-effect: dropshadow(gaussian, rgba(111,177,255,0.6), 15, 0.3, 0, 0);
+}
+
+
+#logInButton {
+   -fx-background-color: #1b2230;
+    -fx-text-fill: white;
+
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-border-color: transparent;
+
+    -fx-padding: 2 7;
+    -fx-background-insets: 0;
+}
+
+
+#logInButton:hover {
+    -fx-background-color: #222c40;
+    -fx-border-color: #6fb1ff;
+    -fx-effect: dropshadow(gaussian, rgba(111,177,255,0.6), 15, 0.3, 0, 0);
+}
+
+
+
+
 
 .button {
     -fx-text-fill: white;
