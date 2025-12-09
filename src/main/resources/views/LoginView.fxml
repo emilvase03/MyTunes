@@ -9,7 +9,7 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="275.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.LoginViewController">
     <children>
-        <Text layoutX="102.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To MyTunes">
+        <Text fx:id="lblWelcome" layoutX="102.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To MyTunes">
             <font>
                 <Font size="26.0" />
             </font>

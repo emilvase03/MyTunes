@@ -1,3 +1,44 @@
 .root{
-
+    -fx-background-color: #121520;
 }
+
+
+/*
+ LoginView
+*/
+
+
+#lblWelcome {
+    -fx-fill: white;
+}
+
+.button {
+    -fx-text-fill: white;
+}
+
+/*
+ RegisterView
+*/
+
+/*
+ MainView
+*/
+
+/*
+ NewPlaylistView
+*/
+
+/*
+ NewSongView
+*/
+
+/*
+ EditSongView
+*/
+
+/*
+ EditPlaylistView
+*/
+
+
+
