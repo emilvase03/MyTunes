@@ -15,6 +15,7 @@ public class Main extends Application {
         primaryStage.setTitle("MyTunes");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));
+        Application.setUserAgentStylesheet(getClass().getResource("/css/GlobalCSS.css").toExternalForm());
         primaryStage.show();
     }
 
