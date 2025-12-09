@@ -1,4 +1,3 @@
-
 package dk.easv.mytunes.DAL.DAO;
 
 // Project imports
@@ -20,20 +19,17 @@ public class PlaylistDAO implements IPlaylistDataAccess {
 
     public PlaylistDAO() throws IOException {}
 
-    // ======================================================
-    // Playlists
-    // ======================================================
-
     @Override
     public List<Playlist> getAllPlaylists() throws Exception {
         List<Playlist> playlists = new ArrayList<>();
 
-        String sql = "SELECT id, user_id, name, song_filepaths, duration FROM playlists WHERE user_id = ? ORDER BY name";
+        String sql = "SELECT id, user_id, name, song_filepaths, duration " +
+                "FROM playlists WHERE user_id = ? ORDER BY name";
 
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, CurrentUser.getInstance().getCurrentUser().getId());
 
+            stmt.setInt(1, CurrentUser.getInstance().getCurrentUser().getId());
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -45,9 +41,11 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                         rs.getString("duration")
                 ));
             }
+
         } catch (Exception e) {
             throw new Exception("Could not get playlists", e);
         }
+
         return playlists;
     }
 
@@ -56,21 +54,25 @@ public class PlaylistDAO implements IPlaylistDataAccess {
         String sql = "INSERT INTO playlists (user_id, name, song_filepaths, duration) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt =
+                     conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, playlist.getUserId());
             stmt.setString(2, playlist.getName());
             stmt.setString(3, playlist.getSongFilepaths());
             stmt.setString(4, playlist.getDuration());
-            stmt.executeUpdate();
 
+            stmt.executeUpdate();
             ResultSet keys = stmt.getGeneratedKeys();
+
             if (keys.next()) {
                 playlist.setId(keys.getInt(1));
             }
+
         } catch (Exception e) {
-            throw new Exception("Could not create Playlist", e);
+            throw new Exception("Could not create playlist", e);
         }
+
         return playlist;
     }
 
@@ -84,7 +86,9 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             stmt.setString(1, playlist.getName());
             stmt.setInt(2, playlist.getId());
             stmt.setInt(3, playlist.getUserId());
+
             stmt.executeUpdate();
+
         } catch (Exception e) {
             throw new Exception("Could not update playlist", e);
         }
@@ -99,14 +103,11 @@ public class PlaylistDAO implements IPlaylistDataAccess {
 
             stmt.setInt(1, playlistId);
             stmt.executeUpdate();
+
         } catch (Exception e) {
             throw new Exception("Could not delete playlist", e);
         }
     }
-
-    // ======================================================
-    // Songs in playlist (JSON filepaths)
-    // ======================================================
 
     @Override
     public List<Song> getSongsInPlaylist(int playlistId) throws Exception {
@@ -125,11 +126,12 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             String json = rs.getString("song_filepaths");
             if (json == null || json.isBlank()) return songs;
 
-            // Convert JSON to list of filepaths
+            // convert json to list of filepaths (simple parsing to match existing behaviour)
             json = json.replace("[", "").replace("]", "").replace("\"", "");
             String[] filepaths = json.split(",");
 
-            String songQuery = "SELECT id, title, artist, category, duration, filepath FROM songs WHERE filepath = ?";
+            String songQuery = "SELECT id, user_id, filepath, title, artist, genre, duration " +
+                    "FROM songs WHERE filepath = ?";
 
             for (String path : filepaths) {
                 path = path.trim();
@@ -146,18 +148,19 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                                 srs.getString("filepath"),
                                 srs.getString("title"),
                                 srs.getString("artist"),
-                                srs.getString("category"),
+                                srs.getString("genre"),
                                 srs.getString("duration")
                         );
-                        s.setId(srs.getInt("id"));      // if Song has id
-                        s.setFilepath(path);            // store filepath
+
                         songs.add(s);
                     }
                 }
             }
+
         } catch (Exception e) {
             throw new Exception("Could not get songs in playlist", e);
         }
+
         return songs;
     }
 
@@ -176,8 +179,8 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             filepath = rs.getString("filepath");
         }
 
-        // Add filepath to JSON list
         updatePlaylistJson(playlistId, filepath, true);
+        updatePlaylistDuration(playlistId);
     }
 
     @Override
@@ -195,14 +198,46 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             filepath = rs.getString("filepath");
         }
 
-        // Remove filepath from JSON list
         updatePlaylistJson(playlistId, filepath, false);
+        updatePlaylistDuration(playlistId);
     }
 
-    // ======================================================
-    // Helper: Update JSON array in DB
-    // ======================================================
+    // --- public method to update the JSON filepaths directly (used for reordering) ---
+    public void updatePlaylistFilepaths(int playlistId, List<String> filepaths) throws Exception {
+        if (filepaths == null) filepaths = new ArrayList<>();
 
+        // Build JSON string: ["p1","p2","p3"]
+        String newJson;
+        if (filepaths.isEmpty()) {
+            newJson = "[]";
+        } else {
+            // Escape any existing double-quotes in filepaths (basic)
+            List<String> escaped = new ArrayList<>();
+            for (String fp : filepaths) {
+                if (fp == null) fp = "";
+                String safe = fp.replace("\"", "\\\"");
+                escaped.add(safe);
+            }
+            newJson = "[\"" + String.join("\",\"", escaped) + "\"]";
+        }
+
+        String update = "UPDATE playlists SET song_filepaths = ? WHERE id = ?";
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(update)) {
+
+            stmt.setString(1, newJson);
+            stmt.setInt(2, playlistId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception("Could not update playlist filepaths", e);
+        }
+
+        // Update duration after filepaths changed
+        updatePlaylistDuration(playlistId);
+    }
+
+    // --- internal helper used by add/removeSongFromPlaylist ---
     private void updatePlaylistJson(int playlistId, String filepath, boolean add) throws Exception {
         String sql = "SELECT song_filepaths FROM playlists WHERE id = ?";
         String json = "[]";
@@ -212,11 +247,13 @@ public class PlaylistDAO implements IPlaylistDataAccess {
 
             stmt.setInt(1, playlistId);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) json = rs.getString("song_filepaths");
         }
 
-        // Convert JSON to list
+        // convert json to list
         json = json.replace("[", "").replace("]", "").replace("\"", "");
+
         List<String> filepaths = new ArrayList<>();
 
         if (!json.isBlank()) {
@@ -231,7 +268,7 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             filepaths.remove(filepath);
         }
 
-        // Back to JSON format
+        // back to json
         String newJson = "[\"" + String.join("\",\"", filepaths) + "\"]";
 
         String update = "UPDATE playlists SET song_filepaths = ? WHERE id = ?";
@@ -244,7 +281,66 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             stmt.executeUpdate();
         }
     }
+
+    private void updatePlaylistDuration(int playlistId) throws Exception {
+        List<Song> songs = getSongsInPlaylist(playlistId);
+
+        int totalSeconds = 0;
+
+        for (Song song : songs) {
+            totalSeconds += parseDurationToSeconds(song.getDuration());
+        }
+
+        String totalDuration = formatSecondsToTime(totalSeconds);
+
+        String sql = "UPDATE playlists SET duration = ? WHERE id = ?";
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, totalDuration);
+            stmt.setInt(2, playlistId);
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new Exception("Could not update playlist duration", e);
+        }
+    }
+
+    private int parseDurationToSeconds(String duration) {
+        if (duration == null || duration.isBlank()) {
+            return 0;
+        }
+
+        try {
+            String[] parts = duration.split(":");
+
+            if (parts.length == 2) {
+                int minutes = Integer.parseInt(parts[0].trim());
+                int seconds = Integer.parseInt(parts[1].trim());
+                return (minutes * 60) + seconds;
+            } else if (parts.length == 3) {
+                int hours = Integer.parseInt(parts[0].trim());
+                int minutes = Integer.parseInt(parts[1].trim());
+                int seconds = Integer.parseInt(parts[2].trim());
+                return (hours * 3600) + (minutes * 60) + seconds;
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid duration format: " + duration);
+        }
+
+        return 0;
+    }
+
+    private String formatSecondsToTime(int totalSeconds) {
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+
+        if (hours > 0) {
+            return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            return String.format("%02d:%02d", minutes, seconds);
+        }
+    }
 }
-
-
-

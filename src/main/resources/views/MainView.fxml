@@ -10,12 +10,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="853.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.MainViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="853.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.MainViewController">
    <children>
       <Button fx:id="playPauseButton" layoutX="385.0" layoutY="485.0" mnemonicParsing="false" onAction="#onBtnClickPlayPause" prefHeight="26.0" prefWidth="50.0" text="Play" />
       <Button fx:id="previousSong" layoutX="334.0" layoutY="484.0" mnemonicParsing="false" onAction="#onBtnClickPreviousSong" text="&lt;&lt;" />
       <Button fx:id="nextSong" layoutX="454.0" layoutY="484.0" mnemonicParsing="false" onAction="#onBtnClickNextSong" text="&gt;&gt;" />
-      <Slider fx:id="volumeBar" layoutX="705.0" layoutY="490.0" prefHeight="14.0" prefWidth="102.0" />
+      <Slider fx:id="volumeBar" layoutX="526.0" layoutY="489.0" prefHeight="14.0" prefWidth="102.0" />
       <Text fx:id="playlistTxt" layoutX="25.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Playlists" />
       <TableView fx:id="playlistView" layoutX="25.0" layoutY="78.0" prefHeight="333.0" prefWidth="222.0">
         <columns>
@@ -49,10 +49,7 @@
       <Text fx:id="filterTxt" layoutX="617.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Filter :" />
       <TextField fx:id="songSearcherTxtField" layoutX="655.0" layoutY="22.0" prefWidth="101.0" />
       <Button fx:id="searchBtn" layoutX="761.0" layoutY="22.0" mnemonicParsing="false" onAction="#onBtnClickSearch" text="Search" />
-      <Slider fx:id="sliderDuration" layoutX="163.0" layoutY="520.0" prefHeight="14.0" prefWidth="501.0" />
-      <Text fx:id="volumeTxt" layoutX="736.0" layoutY="482.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" />
+      <Text fx:id="volumeTxt" layoutX="557.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" />
       <Text fx:id="songsTxt" layoutX="448.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs" />
-      <Label fx:id="lblCurrentDuration" layoutX="122.0" layoutY="519.0" text="Label" />
-      <Label fx:id="lblFullDuration" layoutX="677.0" layoutY="519.0" text="Label" />
    </children>
 </AnchorPane>

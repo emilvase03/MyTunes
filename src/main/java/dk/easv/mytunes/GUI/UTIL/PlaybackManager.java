@@ -1,130 +1,302 @@
 package dk.easv.mytunes.GUI.UTIL;
 
 import dk.easv.mytunes.BE.Song;
-
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlaybackManager {
 
     private MediaPlayer mediaPlayer;
-    private String currentFilePath;
+    private double volume = 0.5;
 
     private final ObjectProperty<Song> currentSong = new SimpleObjectProperty<>();
     private final BooleanProperty playing = new SimpleBooleanProperty(false);
 
-    public Song getCurrentSong() {
-        return currentSong.get();
-    }
+    private final List<Song> playlistContext = new ArrayList<>();
+    private int playlistIndex = -1;
 
-    public void setCurrentSong(Song song) {
-        currentSong.set(song);
-    }
+    private String currentLoadedFilePath = null;
 
     public ObjectProperty<Song> currentSongProperty() {
         return currentSong;
-    }
-
-    public boolean isPlaying() {
-        return playing.get();
-    }
-
-    public void setPlaying(boolean state) {
-        playing.set(state);
     }
 
     public BooleanProperty playingProperty() {
         return playing;
     }
 
+    public Song getCurrentSong() {
+        return currentSong.get();
+    }
+
+    public boolean isPlaying() {
+        return playing.get();
+    }
+
+    public double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(double value) {
+        this.volume = Math.max(0.0, Math.min(1.0, value));
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(this.volume);
+        }
+    }
+
+    // standalone, non-playlist song playback
     public void playSong(Song song) {
-        if (song == null || song.getFilepath() == null)
-            return;
+        if (song == null || !isValidSong(song)) return;
 
-        String path = song.getFilepath();
-
-        if (path.equals(currentFilePath) && mediaPlayer != null) {
-            togglePause();
+        if (!isInPlaylistMode() && isSameLoadedSong(song)) {
+            togglePlayPause();
             return;
         }
 
-        stopCurrentPlayer();
+        clearPlaylistContext();
 
-        currentFilePath = path;
-        setCurrentSong(song);
-
-        Media media = new Media(new File(path).toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
-
-        mediaPlayer.statusProperty().addListener((obs, oldStatus, newStatus) -> {
-            setPlaying(newStatus == MediaPlayer.Status.PLAYING);
-        });
-
-        mediaPlayer.setOnEndOfMedia(() -> {
-            setPlaying(false);
-            // next song automatically here.
-        });
-
-        mediaPlayer.play();
+        loadAndPlay(song);
     }
 
-    public void togglePause() {
-        if (mediaPlayer == null)
+    // play a full playlist from the start
+    public void playPlaylist(List<Song> songs) {
+        if (songs == null || songs.isEmpty()) {
             return;
+        }
 
-        if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+        setupPlaylistContext(songs, 0);
+
+        loadAndPlay(playlistContext.get(0));
+    }
+
+    // play a specific song from a playlist, maintain context
+    public void playSongFromPlaylist(List<Song> songs, Song targetSong) {
+        if (songs == null || songs.isEmpty() || targetSong == null) {
+            return;
+        }
+
+        int targetIndex = findSongIndex(songs, targetSong);
+        if (targetIndex == -1) {
+            targetIndex = 0;
+        }
+
+        if (isInPlaylistMode() &&
+                playlistIndex == targetIndex &&
+                playlistsMatch(songs) &&
+                isSameLoadedSong(targetSong)) {
+            togglePlayPause();
+            return;
+        }
+
+        // setup context
+        setupPlaylistContext(songs, targetIndex);
+
+        loadAndPlay(playlistContext.get(playlistIndex));
+    }
+
+    public void togglePlayPause() {
+        if (mediaPlayer == null) {
+            return;
+        }
+
+        MediaPlayer.Status status = mediaPlayer.getStatus();
+
+        if (status == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
-            setPlaying(false);
-        } else {
+            playing.set(false);
+        } else if (status == MediaPlayer.Status.PAUSED || status == MediaPlayer.Status.READY) {
             mediaPlayer.play();
-            setPlaying(true);
+            playing.set(true);
         }
     }
 
-    public void stop() {
-        stopCurrentPlayer();
-        currentFilePath = null;
-        setCurrentSong(null);
-        setPlaying(false);
+    // next song in playlist context
+    public void next() {
+        if (!hasNext()) {
+            return;
+        }
+
+        playlistIndex++;
+        loadAndPlay(playlistContext.get(playlistIndex));
     }
 
-    private void stopCurrentPlayer() {
+    // previous song in playlist context
+    public void prev() {
+        if (!hasPrev()) {
+            return;
+        }
+
+        playlistIndex--;
+        loadAndPlay(playlistContext.get(playlistIndex));
+    }
+
+    public boolean hasNext() {
+        return isInPlaylistMode() && playlistIndex < playlistContext.size() - 1;
+    }
+
+    public boolean hasPrev() {
+        return isInPlaylistMode() && playlistIndex > 0;
+    }
+
+    public boolean isPlayingPlaylistMode() {
+        return isInPlaylistMode();
+    }
+
+    public ObservableList<Song> getCurrentPlaylist() {
+        return FXCollections.observableArrayList(playlistContext);
+    }
+
+    public int getCurrentIndex() {
+        return playlistIndex;
+    }
+
+    // check if given song is currently playing
+    // includes id, filepath, and playing status
+    public boolean isCurrentSong(Song song) {
+        if (song == null || getCurrentSong() == null) {
+            return false;
+        }
+
+        return song.getId() == getCurrentSong().getId()
+                && song.getFilepath().equals(currentLoadedFilePath)
+                && isPlaying();
+    }
+
+    // stop playback and clear state
+    public void stop() {
+        disposeMediaPlayer();
+        currentSong.set(null);
+        currentLoadedFilePath = null;
+        playing.set(false);
+        clearPlaylistContext();
+    }
+
+    // core helpers
+    private void loadAndPlay(Song song) {
+        if (!isValidSong(song)) {
+            return;
+        }
+
+        disposeMediaPlayer();
+
+        currentSong.set(song);
+        currentLoadedFilePath = song.getFilepath();
+
+        try {
+            File file = new File(song.getFilepath());
+            if (!file.exists()) {
+                System.err.println("Audio file not found: " + song.getFilepath());
+                playing.set(false);
+                return;
+            }
+
+            Media media = new Media(file.toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setVolume(volume);
+
+            mediaPlayer.setOnEndOfMedia(this::handleEndOfMedia);
+
+            mediaPlayer.setOnError(() -> {
+                System.err.println("MediaPlayer error: " + mediaPlayer.getError());
+                playing.set(false);
+            });
+
+            mediaPlayer.play();
+            playing.set(true);
+
+        } catch (Exception e) {
+            System.err.println("Error loading song: " + e.getMessage());
+            e.printStackTrace();
+            playing.set(false);
+        }
+    }
+
+    private void handleEndOfMedia() {
+        if (hasNext()) {
+            next();
+        } else {
+            playing.set(false);
+
+            if (isInPlaylistMode() && !playlistContext.isEmpty()) {
+                playlistIndex = 0;
+                currentSong.set(playlistContext.get(0));
+            }
+        }
+    }
+
+    // clean up to prevent resource leaks
+    private void disposeMediaPlayer() {
         if (mediaPlayer != null) {
             try {
                 mediaPlayer.stop();
-            } catch (Exception ignored) {}
-            mediaPlayer.dispose();
+                mediaPlayer.dispose();
+            } catch (Exception e) {
+                // ignore errors during disposal
+            }
             mediaPlayer = null;
         }
     }
 
-    public void setVolume(double value) {
-        if (mediaPlayer != null)
-            mediaPlayer.setVolume(value);
+    // playlist context management
+    private void setupPlaylistContext(List<Song> songs, int startIndex) {
+        playlistContext.clear();
+        playlistContext.addAll(songs);
+        playlistIndex = startIndex;
     }
 
-    public double getVolume() {
-        return mediaPlayer != null ? mediaPlayer.getVolume() : 0.5;
+    // clear playlist context
+    private void clearPlaylistContext() {
+        playlistContext.clear();
+        playlistIndex = -1;
     }
 
-    public boolean isCurrentSong(Song song) {
-        return song != null && song.equals(getCurrentSong()) && isPlaying();
+    private boolean isInPlaylistMode() {
+        return !playlistContext.isEmpty() && playlistIndex >= 0;
     }
 
-    public boolean isSongLoaded(Song song) {
-        return song != null && song.equals(getCurrentSong());
+    private boolean isValidSong(Song song) {
+        return song != null
+                && song.getFilepath() != null
+                && !song.getFilepath().isBlank();
     }
 
-    public void next() {
-        // implement next track logic here
-        stop();
+    private boolean isSameLoadedSong(Song song) {
+        Song current = getCurrentSong();
+        return song != null
+                && current != null
+                && song.getId() == current.getId()
+                && song.getFilepath().equals(currentLoadedFilePath);
     }
 
-    public void prev() {
-        // implement previous track logic here
-        stop();
+    // compare current playlist context with new playlist
+    private boolean playlistsMatch(List<Song> newPlaylist) {
+        if (newPlaylist.size() != playlistContext.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < newPlaylist.size(); i++) {
+            if (newPlaylist.get(i).getId() != playlistContext.get(i).getId()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // find index of target song in given list
+    private int findSongIndex(List<Song> songs, Song targetSong) {
+        for (int i = 0; i < songs.size(); i++) {
+            if (songs.get(i).getId() == targetSong.getId()) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
-
