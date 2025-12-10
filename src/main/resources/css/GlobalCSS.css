@@ -9,74 +9,6 @@
  LoginView
 */
 
-/*
- RegisterView
-*/
-
-/*
- MainView
-*/
-
-.table-view {
-    -fx-background-color: #1a1d2e;
-    -fx-border-color: #3a3f5c;
-    -fx-border-width: 2px;
-}
-.table-view .column-header-background {
-    -fx-background-color: #1a1d2e;
-}
-
-.table-view .column-header .label {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-
-.table-view .table-cell{
-    -fx-text-fill: #e0e0e0;
-}
-
-.table-view .table-row-cell:hover .table-cell {
-    -fx-background-color: #252842;
-}
-
-.table-view .table-row-cell:selected .table-cell{
-    -fx-background-color: #2d3250;
-}
-
-.table-view .table-row-cell:odd {
-    -fx-background-color: #17182591;
-}
-
-.table-view .table-row-cell:even {
-    -fx-background-color: #4f5162;
-}
-
-.MainViewButtons {
-    -fx-background-insets: 0;
-    -fx-border-insets: 0;
-    -fx-background-color: #161822CF;
-    -fx-text-fill: white;
-    -fx-padding: 4 8 4 8;
-    -fx-background-radius: 10;
-    -fx-border-color: #3a3f5c;
-    -fx-border-radius: 10;
-    -fx-border-width: 2px;
-    -fx-cursor: hand;
-}
-
-.MainViewButtons:hover {
-    -fx-background-color: #1f2130;
-}
-
-.MainViewButtons:pressed {
-    -fx-background-color: #252842;
-}
-
-.MainViewLabels {
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
 #lblWelcome {
 
     -fx-fill: linear-gradient(to right, #DFF4FF, #BEE9FF, #9EDFFF, #7ECFFF, #5EBFFF);
@@ -88,25 +20,6 @@
     -fx-fill: white;
     -fx-text-fill: white;
 }
-.text-field, .password-field {
-    -fx-text-fill: white;
-    -fx-prompt-text-fill: white;
-}
-
-/*  input fields glow */
-.text-input {
-    -fx-background-color: #222c40;
-    -fx-border-color: #6fb1ff;
-    -fx-border-width: 1.25;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-effect: dropshadow(gaussian, rgba(111,177,255,0.35), 10, 0.2, 0, 0);
-
-    -fx-text-fill: white;
-    -fx-prompt-text-fill: rgba(255,255,255,0.65);
-    -fx-caret-color: white;
-}
-
 
 #registerAlreadyHave:hover{
     -fx-effect: dropshadow(gaussian, rgba(0,191,255,1), 12, 0.3, 0, 0);
@@ -134,8 +47,41 @@
 
 }
 
-/* white texts to alerts too  */
+#logInButton {
+    -fx-background-color: #1b2230;
+    -fx-text-fill: white;
 
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-border-color: transparent;
+
+    -fx-padding: 2 7;
+    -fx-background-insets: 0;
+}
+
+#logInButton:hover {
+    -fx-background-color: #222c40;
+    -fx-border-color: #6fb1ff;
+    -fx-effect: dropshadow(gaussian, rgba(111,177,255,0.6), 15, 0.3, 0, 0);
+}
+.text-field, .password-field {
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
+}
+
+.text-input {
+    -fx-background-color: #222c40;
+    -fx-border-color: #6fb1ff;
+    -fx-border-width: 1.25;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(111,177,255,0.35), 10, 0.2, 0, 0);
+
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255,255,255,0.65);
+    -fx-caret-color: white;
+}
 
 .dialog-pane .header-panel .label {
     -fx-text-fill: white;
@@ -144,7 +90,6 @@
 .dialog-pane .content.label {
     -fx-text-fill: white;
 }
-
 
 .dialog-pane .button,
 .dialog-pane .button:default {
@@ -160,8 +105,6 @@
     -fx-alignment: CENTER;
 }
 
-
-/* Glow when hover */
 .dialog-pane .button:hover,
 .dialog-pane .button:default:hover {
     -fx-text-fill: white;
@@ -170,58 +113,6 @@
     -fx-effect: dropshadow(gaussian, rgba(111,177,255,0.6), 15, 0.3, 0, 0);
 }
 
-
-#logInButton {
-   -fx-background-color: #1b2230;
-    -fx-text-fill: white;
-
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-border-width: 1.5;
-    -fx-border-color: transparent;
-
-    -fx-padding: 2 7;
-    -fx-background-insets: 0;
-}
-
-
-#logInButton:hover {
-    -fx-background-color: #222c40;
-    -fx-border-color: #6fb1ff;
-    -fx-effect: dropshadow(gaussian, rgba(111,177,255,0.6), 15, 0.3, 0, 0);
-}
-
-
-
-
-
-.slider .track {
-    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
-    -fx-background-radius: 5;
-    -fx-pref-height: 6px;
-}
-
-.slider .thumb {
-    -fx-background-color: white;
-    -fx-background-radius: 8;
-    -fx-pref-width: 12;
-    -fx-pref-height: 12;
-
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 1);
-}
-
-#songSearcherTxtField {
-    -fx-background-color: #1f2130;
-    -fx-background-radius: 10;
-    -fx-background-insets: 0;
-    -fx-border-insets: 0;
-    -fx-padding: 5 10 5 10;
-    -fx-text-fill: white;
-}
-
-#songListInPlaylist {
-    -fx-background-color: #11141C;
-}
 /*
  RegisterView
 */
@@ -256,6 +147,102 @@
 
 #playPauseButton:pressed {
     -fx-background-color: rgba(0, 212, 255, 0.2);
+}
+
+/*
+ MainView
+*/
+
+.table-view {
+    -fx-background-color: #1a1d2e;
+    -fx-border-color: #3a3f5c;
+    -fx-border-width: 2px;
+}
+.table-view .column-header-background {
+    -fx-background-color: #1a1d2e;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: #e0e0e0;
+}
+
+.table-view .table-row-cell:hover .table-cell {
+    -fx-background-color: #252842;
+}
+
+.table-view .table-row-cell:selected .table-cell{
+    -fx-background-color: #2d3250;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #2a2f45 ;
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: #262b40 ;
+}
+
+.MainViewButtons {
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-color: #161822CF;
+    -fx-text-fill: white;
+    -fx-padding: 4 8 4 8;
+    -fx-background-radius: 10;
+    -fx-border-color: #3a3f5c;
+    -fx-border-radius: 10;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+}
+
+.MainViewButtons:hover {
+    -fx-background-color: #1f2130;
+}
+
+.MainViewButtons:pressed {
+    -fx-background-color: #252842;
+}
+
+.MainViewLabels {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+.slider .track {
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+    -fx-background-radius: 5;
+    -fx-pref-height: 6px;
+}
+
+.slider .thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 1);
+}
+
+.list-view .list-cell {
+    -fx-text-fill: white;
+}
+
+#songSearcherTxtField {
+    -fx-background-color: #1f2130;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-padding: 5 10 5 10;
+    -fx-text-fill: white;
+}
+
+#songListInPlaylist {
+    -fx-background-color: #11141C;
 }
 
 /*
