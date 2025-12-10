@@ -5,11 +5,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="103.0" prefWidth="310.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.NewPlaylistController">
+<AnchorPane prefHeight="103.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.NewPlaylistController">
     <children>
         <TextField fx:id="txtTitle" layoutX="70.0" layoutY="26.0" prefHeight="26.0" prefWidth="222.0" />
-        <Button layoutX="232.0" layoutY="59.0" mnemonicParsing="false" onAction="#onBtnSave" prefHeight="26.0" prefWidth="59.0" text="Save" />
-        <Button layoutX="170.0" layoutY="60.0" mnemonicParsing="false" onAction="#onBtnCancel" text="Cancel" />
-          <Label layoutX="26.0" layoutY="30.0" text="Title:" />
+        <Button fx:id="newPllstSave" alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="60.0" mnemonicParsing="false" onAction="#onBtnSave" prefHeight="26.0" prefWidth="59.0" text="Save" />
+        <Button fx:id="newPllstCancel" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="60.0" mnemonicParsing="false" onAction="#onBtnCancel" text="Cancel" />
+          <Label fx:id="newPllstTitle" layoutX="26.0" layoutY="30.0" text="Title:" />
     </children>
 </AnchorPane>
