@@ -9,15 +9,25 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="275.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.LoginViewController">
     <children>
-        <Text fx:id="lblWelcome" layoutX="102.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To MyTunes">
+        <Text fx:id="lblWelcome" layoutX="86.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To MyTunes">
             <font>
-                <Font size="26.0" />
+                <Font name="Comic Sans MS" size="26.0" />
             </font>
         </Text>
-        <Text fx:id="loginText" layoutX="162.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please login to enter" />
+        <Text fx:id="loginText" layoutX="155.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please login to enter">
+         <font>
+            <Font name="Comic Sans MS" size="13.0" />
+         </font></Text>
         <TextField fx:id="txtUsername" alignment="CENTER" layoutX="145.0" layoutY="138.0" promptText="Username" />
         <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="146.0" layoutY="171.0" onKeyPressed="#onEnterLogin" promptText="Password" />
-        <Button fx:id="logInButton" alignment="CENTER" contentDisplay="CENTER" layoutX="194.0" layoutY="206.0" mnemonicParsing="false" onAction="#onBtnLoginClick" text="Login" />
-        <Text fx:id="needAccounteTxt" layoutX="176.0" layoutY="258.0" onMouseClicked="#onTxtRegisterClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Need an account?" />
+        <Button fx:id="logInButton" alignment="CENTER" contentDisplay="CENTER" layoutX="189.0" layoutY="206.0" mnemonicParsing="false" onAction="#onBtnLoginClick" text="Login">
+         <font>
+            <Font name="Comic Sans MS" size="12.0" />
+         </font></Button>
+        <Text fx:id="needAccounteTxt" layoutX="166.0" layoutY="261.0" onMouseClicked="#onTxtRegisterClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Need an account?" wrappingWidth="101.92901611328125">
+         <font>
+            <Font name="Comic Sans MS" size="12.0" />
+         </font></Text>
     </children>
+
 </AnchorPane>

@@ -9,15 +9,24 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="275.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.RegisterViewController">
    <children>
-      <Text layoutX="102.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To MyTunes">
+      <Text fx:id="registerWelcome" layoutX="86.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To MyTunes">
          <font>
-            <Font size="26.0" />
+            <Font name="Comic Sans MS" size="26.0" />
          </font>
       </Text>
-      <Text layoutX="159.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please register to enter" />
+      <Text fx:id="registerPlsReg" layoutX="148.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please register to enter">
+         <font>
+            <Font name="Comic Sans MS" size="12.0" />
+         </font></Text>
       <TextField fx:id="txtUsername" alignment="CENTER" layoutX="145.0" layoutY="138.0" promptText="Username" />
       <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="146.0" layoutY="171.0" onKeyPressed="#onEnterRegister" promptText="Password" />
-      <Button layoutX="171.0" layoutY="211.0" mnemonicParsing="false" onAction="#onBtnRegisterClick" text="Create account" />
-      <Text layoutX="151.0" layoutY="257.0" onMouseClicked="#onTxtLoginClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?" />
+      <Button fx:id="registerCreateAccount" layoutX="164.0" layoutY="211.0" mnemonicParsing="false" onAction="#onBtnRegisterClick" text="Create account">
+         <font>
+            <Font name="Comic Sans MS" size="12.0" />
+         </font></Button>
+      <Text fx:id="registerAlreadyHave" layoutX="147.0" layoutY="257.0" onMouseClicked="#onTxtLoginClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account?">
+         <font>
+            <Font name="Comic Sans MS" size="12.0" />
+         </font></Text>
    </children>
 </AnchorPane>
