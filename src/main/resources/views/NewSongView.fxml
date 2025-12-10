@@ -6,24 +6,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="255.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.NewSongController">
+<AnchorPane prefHeight="255.0" prefWidth="375.0" stylesheets="@../css/GlobalCSS.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.GUI.Controllers.NewSongController">
    <children>
       <VBox alignment="CENTER_RIGHT" layoutX="8.0" layoutY="28.0" prefHeight="171.0" prefWidth="46.0" spacing="20.0">
          <children>
-            <Label text="Title:" />
-            <Label text="Artist:" />
-            <Label text="Genre:" />
-            <Label text="Time:" />
-            <Label text="File:" />
+            <Label styleClass="NewSongLabels" text="Title:" />
+            <Label styleClass="NewSongLabels" text="Artist:" />
+            <Label styleClass="NewSongLabels" text="Genre:" />
+            <Label styleClass="NewSongLabels" text="Time:" />
+            <Label styleClass="NewSongLabels" text="File:" />
          </children>
       </VBox>
-      <TextField fx:id="txtTitle" layoutX="70.0" layoutY="26.0" prefHeight="26.0" prefWidth="222.0" />
-      <TextField fx:id="txtArtist" layoutX="70.0" layoutY="63.0" prefHeight="26.0" prefWidth="222.0" />
-      <TextField fx:id="txtGenre" layoutX="70.0" layoutY="100.0" prefHeight="26.0" prefWidth="222.0" />
-      <TextField fx:id="txtTime" disable="true" layoutX="70.0" layoutY="139.0" prefHeight="26.0" prefWidth="72.0" />
-      <TextField fx:id="txtFilePath" disable="true" layoutX="70.0" layoutY="176.0" prefHeight="26.0" prefWidth="222.0" promptText="Path" />
-      <Button layoutX="304.0" layoutY="176.0" mnemonicParsing="false" onAction="#onBtnChoose" text="Choose" />
-      <Button layoutX="304.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnSave" prefHeight="26.0" prefWidth="59.0" text="Save" />
-      <Button layoutX="240.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnCancel" text="Cancel" />
+      <TextField fx:id="txtTitle" layoutX="70.0" layoutY="26.0" prefHeight="26.0" prefWidth="222.0" styleClass="NewSongTxtFields" />
+      <TextField fx:id="txtArtist" layoutX="70.0" layoutY="63.0" prefHeight="26.0" prefWidth="222.0" styleClass="NewSongTxtFields" />
+      <TextField fx:id="txtGenre" layoutX="70.0" layoutY="100.0" prefHeight="26.0" prefWidth="222.0" styleClass="NewSongTxtFields" />
+      <TextField fx:id="txtTime" disable="true" layoutX="70.0" layoutY="139.0" prefHeight="26.0" prefWidth="72.0" styleClass="NewSongTxtFields" />
+      <TextField fx:id="txtFilePath" disable="true" layoutX="70.0" layoutY="176.0" prefHeight="26.0" prefWidth="222.0" promptText="Path" styleClass="NewSongTxtFields" />
+      <Button layoutX="304.0" layoutY="176.0" mnemonicParsing="false" onAction="#onBtnChoose" styleClass="NewSongButtons" text="Choose" />
+      <Button fx:id="saveBtn" layoutX="303.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnSave" prefHeight="29.0" prefWidth="60.0" styleClass="NewSongButtons" text="Save" />
+      <Button layoutX="233.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnCancel" prefHeight="26.0" prefWidth="59.0" styleClass="NewSongButtons" text="Cancel" />
    </children>
 </AnchorPane>

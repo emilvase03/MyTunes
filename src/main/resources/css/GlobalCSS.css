@@ -157,10 +157,90 @@
 /*
  NewSongView
 */
+.text-field {
+    -fx-text-fill: white;
+}
+
+.NewSongLabels {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+.NewSongTxtFields {
+    -fx-background-color: #1f2130;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-padding: 5 10 5 10;
+    -fx-text-fill: white;
+}
+
+.NewSongButtons {
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-color: #161822CF;
+    -fx-text-fill: white;
+    -fx-padding: 4 8 4 8;
+    -fx-background-radius: 10;
+    -fx-border-color: #3a3f5c;
+    -fx-border-radius: 10;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+}
+
+.NewSongButtons:hover {
+    -fx-background-color: #1f2130;
+}
+
+.NewSongButtons:pressed {
+    -fx-background-color: #252842;
+}
+
+#saveBtn {
+    -fx-padding: 4 8 4 14
+}
 
 /*
  EditSongView
 */
+.EditSongLabels {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+.EditSongTxtFields {
+    -fx-background-color: #1f2130;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-padding: 5 10 5 10;
+    -fx-text-fill: white;
+}
+
+.EditSongButtons {
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-color: #161822CF;
+    -fx-text-fill: white;
+    -fx-padding: 4 8 4 8;
+    -fx-background-radius: 10;
+    -fx-border-color: #3a3f5c;
+    -fx-border-radius: 10;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+}
+
+.EditSongButtons:hover {
+    -fx-background-color: #1f2130;
+}
+
+.EditSongButtons:pressed {
+    -fx-background-color: #252842;
+}
+
+#editBtn {
+    -fx-padding: 4 8 4 14
+}
 
 
 /*
