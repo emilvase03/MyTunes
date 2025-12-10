@@ -180,11 +180,11 @@
 }
 
 .table-view .table-row-cell:odd {
-    -fx-background-color: #2a2f45 ;
+    -fx-background-color: #2a2f45;
 }
 
 .table-view .table-row-cell:even {
-    -fx-background-color: #262b40 ;
+    -fx-background-color: #262b40;
 }
 
 .MainViewButtons {
@@ -242,7 +242,7 @@
 }
 
 #songListInPlaylist {
-    -fx-background-color: #11141C;
+    -fx-background-color: #262b40;
 }
 
 /*
