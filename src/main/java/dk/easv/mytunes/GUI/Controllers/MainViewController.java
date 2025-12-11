@@ -29,12 +29,6 @@ import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
 
-    private final PlaybackManager playbackManager = new PlaybackManager();
-    private PlaylistModel playlistModel;
-    private SongModel songModel;
-    private FilteredList<Song> filteredSongs;
-    private boolean filterActive = false;
-
     @FXML private TableView<Song> songList;
     @FXML private TableColumn<Song, String> colTitle;
     @FXML private TableColumn<Song, String> colArtist;
@@ -53,6 +47,12 @@ public class MainViewController implements Initializable {
     @FXML private Button searchBtn;
     @FXML private Button moveSongUp;
     @FXML private Button moveSongDown;
+
+    private final PlaybackManager playbackManager = new PlaybackManager();
+    private PlaylistModel playlistModel;
+    private SongModel songModel;
+    private FilteredList<Song> filteredSongs;
+    private boolean filterActive = false;
 
     public MainViewController() {
         try {
