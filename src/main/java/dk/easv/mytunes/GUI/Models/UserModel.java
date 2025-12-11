@@ -3,7 +3,6 @@ package dk.easv.mytunes.GUI.Models;
 // Project imports
 import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.BLL.UserManager;
-import dk.easv.mytunes.DAL.DAO.UserDAO;
 
 // Java imports
 import java.util.List;

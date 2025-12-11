@@ -2,10 +2,9 @@ package dk.easv.mytunes.GUI.Controllers;
 
 // Project imports
 import dk.easv.mytunes.BE.User;
-import dk.easv.mytunes.BLL.UserManager;
+import dk.easv.mytunes.GUI.Models.UserModel;
 
 // Java imports
-import dk.easv.mytunes.GUI.Models.UserModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;

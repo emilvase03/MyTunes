@@ -1,6 +1,9 @@
 package dk.easv.mytunes.GUI.UTIL;
 
+// Project imports
 import dk.easv.mytunes.BE.Song;
+
+// Java imports
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

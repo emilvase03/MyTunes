@@ -4,13 +4,11 @@ package dk.easv.mytunes.GUI.Models;
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.BE.Song;
 import dk.easv.mytunes.BLL.PlaylistManager;
-import dk.easv.mytunes.DAL.DAO.PlaylistDAO;
 
 // Java imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
