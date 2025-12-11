@@ -232,6 +232,15 @@
     -fx-text-fill: white;
 }
 
+.list-view .list-cell:hover {
+    -fx-background-color: #2a2f45;
+    -fx-cursor: hand;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #2d3250;
+}
+
 #songSearcherTxtField {
     -fx-background-color: #1f2130;
     -fx-background-radius: 10;
