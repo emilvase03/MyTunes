@@ -255,6 +255,10 @@
     -fx-background-color: rgba(0, 212, 255, 0.2);
 }
 
+#playPauseButton:paused {
+    -fx-padding: 0 0 2 10;
+}
+
 /*
  NewPlaylistView
 *
