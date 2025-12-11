@@ -140,6 +140,10 @@
     -fx-cursor: hand;
 }
 
+#playPauseButton:paused {
+    -fx-padding: 0 0 2 10;
+}
+
 #playPauseButton:hover {
     -fx-background-color: rgba(0, 212, 255, 0.1);
     -fx-border-color: #33ddff;

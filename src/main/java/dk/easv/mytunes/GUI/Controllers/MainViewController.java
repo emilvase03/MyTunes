@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,6 +35,7 @@ public class MainViewController implements Initializable {
     private SongModel songModel;
     private FilteredList<Song> filteredSongs;
     private boolean filterActive = false;
+    PseudoClass paused = PseudoClass.getPseudoClass("paused");
 
     @FXML private TableView<Song> songList;
     @FXML private TableColumn<Song, String> colTitle;
@@ -161,6 +163,7 @@ public class MainViewController implements Initializable {
         boolean isPlaying = playbackManager.isPlaying();
 
         playPauseButton.setText(isPlaying ? "Pause" : "Play");
+        playPauseButton.pseudoClassStateChanged(paused, isPlaying);
 
         if (currentSong == null) {
             lblCurrentSong.setText("nothing is playing...");
