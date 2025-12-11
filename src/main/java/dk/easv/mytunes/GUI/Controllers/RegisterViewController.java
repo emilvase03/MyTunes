@@ -2,7 +2,7 @@ package dk.easv.mytunes.GUI.Controllers;
 
 // Project imports
 import dk.easv.mytunes.BE.User;
-import dk.easv.mytunes.BLL.UserManager;
+import dk.easv.mytunes.GUI.Models.UserModel;
 
 // Java imports
 import javafx.fxml.FXML;
@@ -26,13 +26,13 @@ public class RegisterViewController {
     @FXML
     private PasswordField txtPassword;
 
-    private UserManager userManager;
+    private UserModel userModel;
 
     @FXML
     private void onBtnRegisterClick() {
         String username = txtUsername.getText().trim();
         String password = txtPassword.getText().trim();
-        userManager = new UserManager();
+        userModel = new UserModel();
 
         // Validate input
         if (username.isEmpty() || password.isEmpty()) {
@@ -52,7 +52,7 @@ public class RegisterViewController {
 
 
         try {
-            User createdUser = userManager.createUser(username, password);
+            User createdUser = userModel.createUser(username, password);
             if (createdUser == null) {
                 showAlert("Registration Error", "Username already exists. Choose another.", Alert.AlertType.ERROR);
                 return;

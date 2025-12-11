@@ -236,6 +236,15 @@
     -fx-text-fill: white;
 }
 
+.list-view .list-cell:hover {
+    -fx-background-color: #2a2f45;
+    -fx-cursor: hand;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #2d3250;
+}
+
 #songSearcherTxtField {
     -fx-background-color: #1f2130;
     -fx-background-radius: 10;
@@ -251,7 +260,69 @@
 
 /*
  NewPlaylistView
-*/
+*
+}
+
+ */
+#newPllstTitle {
+    -fx-fill: white;
+    -fx-text-fill: white;
+
+}
+#newPllstSave{
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-color: #161822CF;
+    -fx-text-fill: white;
+    -fx-padding: 4 8 4 8;
+    -fx-background-radius: 10;
+    -fx-border-color: #3a3f5c;
+    -fx-border-radius: 10;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+}
+
+#newPllstSave:hover {
+    -fx-background-color: #1f2130;
+}
+
+#newPllstSave:pressed {
+    -fx-background-color: #252842;
+}
+
+#newPllstSave {
+    -fx-padding: 4 8 4 14
+}
+#newPllstCancel{ -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-color: #161822CF;
+    -fx-text-fill: white;
+    -fx-padding: 4 8 4 8;
+    -fx-background-radius: 10;
+    -fx-border-color: #3a3f5c;
+    -fx-border-radius: 10;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;}
+#newPllstCancel:hover {
+    -fx-background-color: #1f2130;
+}
+
+#newPllstCancel:pressed {
+    -fx-background-color: #252842;
+}
+
+#newPllstCancel {
+    -fx-padding: 4 8 4 14
+}
+#txtTitle{
+
+    -fx-text-fill: white;
+
+}
+
+
+
+
 
 /*
  NewSongView
@@ -344,7 +415,46 @@
 
 /*
  EditPlaylistView
-*/
+*/#txtPlaylistName{
+      -fx-fill: white;
+      -fx-text-fill: white;
+  }
+  #btnSaveChanges{
+      -fx-background-insets: 0;
+      -fx-border-insets: 0;
+      -fx-background-color: #161822CF;
+      -fx-text-fill: white;
+      -fx-padding: 4 8 4 8;
+      -fx-background-radius: 10;
+      -fx-border-color: #3a3f5c;
+      -fx-border-radius: 10;
+      -fx-border-width: 2px;
+      -fx-cursor: hand;
+  }
+#btnSaveChanges:hover{
+    -fx-background-color: #1f2130;}
+#btnSaveChanges:pressed{
+    -fx-background-color: #252842;
+}
+
+  #btnCancelChanges:hover{-fx-background-color: #1f2130;
+
+  }
+  #btnCancelChanges{
+      -fx-background-insets: 0;
+      -fx-border-insets: 0;
+      -fx-background-color: #161822CF;
+      -fx-text-fill: white;
+      -fx-padding: 4 8 4 8;
+      -fx-background-radius: 10;
+      -fx-border-color: #3a3f5c;
+      -fx-border-radius: 10;
+      -fx-border-width: 2px;
+      -fx-cursor: hand;
+  }
+  #btnCancelChanges:pressed{
+      -fx-background-color: #252842;
+  }
 
 
 

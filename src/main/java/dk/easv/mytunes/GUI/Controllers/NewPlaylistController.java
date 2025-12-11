@@ -1,8 +1,11 @@
 package dk.easv.mytunes.GUI.Controllers;
 
+// Project imports
 import dk.easv.mytunes.BE.CurrentUser;
 import dk.easv.mytunes.BE.Playlist;
 import dk.easv.mytunes.GUI.Models.PlaylistModel;
+
+// Java imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
