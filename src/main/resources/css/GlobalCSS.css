@@ -128,30 +128,6 @@
     -fx-fill: linear-gradient(to right, #DFF4FF, #BEE9FF, #9EDFFF, #7ECFFF, #5EBFFF);
 }
 
-#playPauseButton {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-padding: 0 0 2 16;
-    -fx-background-radius: 10;
-    -fx-border-color: #00d4ff;
-    -fx-border-radius: 5;
-    -fx-border-width: 2px;
-    -fx-font-size: 14px;
-    -fx-cursor: hand;
-}
-
-#playPauseButton:paused {
-    -fx-padding: 0 0 2 10;
-}
-
-#playPauseButton:hover {
-    -fx-background-color: rgba(0, 212, 255, 0.1);
-    -fx-border-color: #33ddff;
-}
-
-#playPauseButton:pressed {
-    -fx-background-color: rgba(0, 212, 255, 0.2);
-}
 
 /*
  MainView
@@ -256,6 +232,27 @@
 
 #songListInPlaylist {
     -fx-background-color: #262b40;
+}
+
+#playPauseButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-padding: 0 0 2 16;
+    -fx-background-radius: 10;
+    -fx-border-color: #00d4ff;
+    -fx-border-radius: 5;
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+#playPauseButton:hover {
+    -fx-background-color: rgba(0, 212, 255, 0.1);
+    -fx-border-color: #33ddff;
+}
+
+#playPauseButton:pressed {
+    -fx-background-color: rgba(0, 212, 255, 0.2);
 }
 
 /*
