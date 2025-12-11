@@ -6,6 +6,7 @@ import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.BLL.UserManager;
 
 // Java imports
+import dk.easv.mytunes.GUI.Models.UserModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,7 +41,7 @@ public class LoginViewController implements Initializable {
     private boolean loginSuccess = false;
     private CurrentUser currentUser = CurrentUser.getInstance();
 
-    private final UserManager userManager = new UserManager();
+    private final UserModel userModel = new UserModel();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,7 +58,7 @@ public class LoginViewController implements Initializable {
             showAlert("Login failed", "Please enter both username and password", Alert.AlertType.ERROR);
             return;
         }
-        User user = userManager.loginUser(username, password);
+        User user = userModel.loginUser(username, password);
 
         if (user != null) {
             // SUCCESS
