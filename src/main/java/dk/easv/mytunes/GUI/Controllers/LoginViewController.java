@@ -3,11 +3,9 @@ package dk.easv.mytunes.GUI.Controllers;
 // Project imports
 import dk.easv.mytunes.BE.CurrentUser;
 import dk.easv.mytunes.BE.User;
-import dk.easv.mytunes.BLL.UserManager;
 
 // Java imports
 import dk.easv.mytunes.GUI.Models.UserModel;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
