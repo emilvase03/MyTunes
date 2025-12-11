@@ -38,7 +38,7 @@ public class LoginViewController {
     private final UserModel userModel = new UserModel();
 
     @FXML
-    private void handleLogin() throws IOException {
+    private void handleLogin(){
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
@@ -47,28 +47,34 @@ public class LoginViewController {
             return;
         }
 
-        User user = userModel.loginUser(username, password);
-        if (user != null) {
-            showAlert("Login success", "Logged in successfully", Alert.AlertType.INFORMATION);
-            loginSuccess = true;
-            currentUser.setCurrentUser(user);
+        try {
+            User user = userModel.loginUser(username, password);
+            if (user != null) {
+                showAlert("Login success", "Logged in successfully", Alert.AlertType.INFORMATION);
+                loginSuccess = true;
+                currentUser.setCurrentUser(user);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainView.fxml"));
-            Parent root = loader.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainView.fxml"));
+                Parent root = loader.load();
 
-            Stage mainStage = new Stage();
-            mainStage.setTitle("MyTunes");
-            mainStage.initModality(Modality.APPLICATION_MODAL);
-            mainStage.setScene(new Scene(root));
-            mainStage.setResizable(false);
-            mainStage.show();
+                Stage mainStage = new Stage();
+                mainStage.setTitle("MyTunes");
+                mainStage.initModality(Modality.APPLICATION_MODAL);
+                mainStage.setScene(new Scene(root));
+                mainStage.setResizable(false);
+                mainStage.show();
 
-            closeStage();
-        } else {
-            showAlert("Login failed", "Invalid username or password", Alert.AlertType.ERROR);
-            txtPassword.clear();
-            loginSuccess = false;
+                closeStage();
+            } else {
+                showAlert("Login failed", "Invalid username or password", Alert.AlertType.ERROR);
+                txtPassword.clear();
+                loginSuccess = false;
+            }
+        } catch (Exception e) {
+            showAlert("Error", "Could not login", Alert.AlertType.ERROR);
+            throw new RuntimeException(e);
         }
+
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {

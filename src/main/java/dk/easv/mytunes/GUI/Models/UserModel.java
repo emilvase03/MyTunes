@@ -9,10 +9,15 @@ import java.util.List;
 
 public class UserModel {
 
-    private final UserManager userManager = new UserManager();
+    private final UserManager userManager;
 
 
     public UserModel() {
+        try {
+            userManager = new UserManager();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -24,7 +29,7 @@ public class UserModel {
         return userManager.createUser(username, password);
     }
 
-    public User loginUser(String username, String password) {
+    public User loginUser(String username, String password) throws Exception {
         return userManager.loginUser(username, password);
     }
 
