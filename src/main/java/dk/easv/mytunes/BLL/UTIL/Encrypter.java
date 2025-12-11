@@ -1,5 +1,6 @@
 package dk.easv.mytunes.BLL.UTIL;
 
+// Java imports
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
