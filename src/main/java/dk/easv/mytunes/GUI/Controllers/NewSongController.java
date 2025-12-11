@@ -12,10 +12,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import java.io.File;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-
-import java.io.File;
 
 public class NewSongController {
     @FXML
@@ -38,7 +37,6 @@ public class NewSongController {
             songModel = SongModel.getInstance();
         } catch (Exception e) {
             showAlert("Error", "SongModel failed", Alert.AlertType.ERROR);
-            throw new RuntimeException(e);
         }
     }
 
@@ -95,7 +93,6 @@ public class NewSongController {
 
         } catch (Exception e) {
             showAlert("Error","Could not save song. Do you already have this song?", Alert.AlertType.ERROR);
-            throw new RuntimeException(e);
         }
     }
 
@@ -121,8 +118,8 @@ public class NewSongController {
 
         } catch (Exception e) {
             showAlert("Error", "Failed to get song duration", Alert.AlertType.ERROR);
-            throw new RuntimeException(e);
         }
+        return filePath;
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {
@@ -132,5 +129,4 @@ public class NewSongController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
 }

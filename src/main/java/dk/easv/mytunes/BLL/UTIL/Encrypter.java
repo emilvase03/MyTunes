@@ -1,12 +1,9 @@
 package dk.easv.mytunes.BLL.UTIL;
 
 // Java imports
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
@@ -18,7 +15,7 @@ public class Encrypter {
     private static final int KEY_LENGTH = 256;        // bits
 
     public static String hashPassword(String password)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+            throws Exception {
 
         byte[] salt = generateSalt();
         char[] pwChars = password.toCharArray();
@@ -36,7 +33,7 @@ public class Encrypter {
     }
 
     public static boolean verifyPassword(String password, String stored)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+            throws Exception {
 
         String[] parts = stored.split(":");
         if (parts.length != 2)
@@ -58,7 +55,7 @@ public class Encrypter {
     }
 
     private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int keyLength)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+            throws Exception {
 
         PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);
         SecretKeyFactory skf = SecretKeyFactory.getInstance(ALGORITHM);

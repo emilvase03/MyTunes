@@ -24,7 +24,6 @@ public class NewPlaylistController {
             playlistModel = PlaylistModel.getInstance();
         } catch (Exception e) {
             showAlert("Error", "Could not instantiate PlaylistModel", Alert.AlertType.ERROR);
-            throw new RuntimeException(e);
         }
     }
 
@@ -48,7 +47,6 @@ public class NewPlaylistController {
         }
         else {
             showAlert("Error", "Please give your playlist a title", Alert.AlertType.ERROR);
-            return;
         }
 
     }

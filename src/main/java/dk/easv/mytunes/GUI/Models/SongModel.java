@@ -7,9 +7,7 @@ import dk.easv.mytunes.BLL.SongManager;
 // Java imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.util.List;
-
 
 public class SongModel {
     private static SongModel instance;

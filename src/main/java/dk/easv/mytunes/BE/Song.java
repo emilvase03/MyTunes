@@ -22,8 +22,6 @@ public class Song {
         setGenre(genre);
         setDuration(duration);
         setUser_id(user_id);
-
-
     }
 
     public String getTitle() {
@@ -88,12 +86,12 @@ public class Song {
        if(user_id!=-1)
         this.user_id = user_id;
     }
-//so index would find the correct song
+
+    // so index would find the correct song
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Song)) return false;
-        Song song = (Song) o;
+        if (!(o instanceof Song song)) return false;
         return id == song.id;
     }
 
