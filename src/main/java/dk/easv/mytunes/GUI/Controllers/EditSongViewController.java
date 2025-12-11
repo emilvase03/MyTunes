@@ -14,7 +14,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-
 import java.io.File;
 
 public class EditSongViewController {
@@ -55,8 +54,8 @@ public class EditSongViewController {
 
         } catch (Exception e) {
             showAlert("Error", "Failed to get song duration", Alert.AlertType.ERROR);
-            throw new RuntimeException(e);
         }
+        return filePath;
     }
 
     @FXML
@@ -87,7 +86,6 @@ public class EditSongViewController {
 
     @FXML
     private void onBtnSaveEdit(ActionEvent actionEvent) {
-
         try {
             String title = txtTitleEdit.getText();
             String artist = txtArtistEdit.getText();
@@ -96,48 +94,35 @@ public class EditSongViewController {
             String genre = txtGenreEdit.getText();
             int userId = currentUser.getCurrentUser().getId();
 
-            if (title.isBlank() || artist.isBlank() || duration.isBlank() ||filePath.isBlank() || genre.isBlank()) {
-                showAlert("Could not edit song", "Please fill in every field", Alert.AlertType.ERROR);
+        if (title.isBlank() || artist.isBlank() || duration.isBlank() ||filePath.isBlank() || genre.isBlank()) {
+            showAlert("Could not edit song", "Please fill in every field", Alert.AlertType.ERROR);
+            return;
+        }
+
+
+
+        if (!filePath.equals(song.getFilepath())) {
+            String lowerPath = filePath.toLowerCase().trim();
+            if (!(lowerPath.endsWith(".mp3") || lowerPath.endsWith(".wav"))) {
+                showAlert("Incorrect file type", "Please only use MP3 or WAV files", Alert.AlertType.ERROR);
                 return;
             }
+            duration = getSongDuration(filePath);
+        }
 
+        song.setTitle(title);
+        song.setArtist(artist);
+        song.setDuration(duration);
+        song.setFilepath(filePath);
+        song.setGenre(genre);
+        songModel.updateSong(song);
 
-
-           if (!filePath.equals(song.getFilepath())) {
-                String lowerPath = filePath.toLowerCase().trim();
-                if (!(lowerPath.endsWith(".mp3") || lowerPath.endsWith(".wav"))) {
-                    showAlert("Incorrect file type", "Please only use MP3 or WAV files", Alert.AlertType.ERROR);
-                    return;
-                }
-                duration = getSongDuration(filePath);
-
-
-          }
-// Update song details
-            song.setTitle(title);
-            song.setArtist(artist);
-            song.setDuration(duration);
-            song.setFilepath(filePath);
-            song.setGenre(genre);
-
-            songModel.updateSong(song);
-
-            songAdded = true;
-            closeStage();
-
+        songAdded = true;
+        closeStage();
         } catch (Exception e) {
             showAlert("Error","Could not save song", Alert.AlertType.ERROR);
             throw new RuntimeException(e);
         }
-    }
-
-    private void closeStage() {
-        Stage stage = (Stage) txtTitleEdit.getScene().getWindow();
-        stage.close();
-    }
-
-    public boolean isSongAdded() {
-        return songAdded;
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {
@@ -146,16 +131,19 @@ public class EditSongViewController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-}
+    }
 
     public void setSong(Song song) {
-
         this.song = song;
         txtTitleEdit.setText(song.getTitle());
         txtArtistEdit.setText(song.getArtist());
         txtGenreEdit.setText(song.getGenre());
-       txtTimeEdit.setText(song.getDuration());
-       txtFilePathEdit.setText(song.getFilepath());
+        txtTimeEdit.setText(song.getDuration());
+        txtFilePathEdit.setText(song.getFilepath());
+    }
 
+    private void closeStage() {
+        Stage stage = (Stage) txtTitleEdit.getScene().getWindow();
+        stage.close();
     }
 }

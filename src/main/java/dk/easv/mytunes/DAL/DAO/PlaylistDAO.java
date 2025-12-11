@@ -42,8 +42,6 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                 ));
             }
 
-        } catch (Exception e) {
-            throw new Exception("Could not get playlists", e);
         }
 
         return playlists;
@@ -69,8 +67,6 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                 playlist.setId(keys.getInt(1));
             }
 
-        } catch (Exception e) {
-            throw new Exception("Could not create playlist", e);
         }
 
         return playlist;
@@ -89,8 +85,6 @@ public class PlaylistDAO implements IPlaylistDataAccess {
 
             stmt.executeUpdate();
 
-        } catch (Exception e) {
-            throw new Exception("Could not update playlist", e);
         }
     }
 
@@ -104,8 +98,6 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             stmt.setInt(1, playlistId);
             stmt.executeUpdate();
 
-        } catch (Exception e) {
-            throw new Exception("Could not delete playlist", e);
         }
     }
 
@@ -151,16 +143,11 @@ public class PlaylistDAO implements IPlaylistDataAccess {
                                 srs.getString("genre"),
                                 srs.getString("duration")
                         );
-
                         songs.add(s);
                     }
                 }
             }
-
-        } catch (Exception e) {
-            throw new Exception("Could not get songs in playlist", e);
         }
-
         return songs;
     }
 
@@ -202,16 +189,16 @@ public class PlaylistDAO implements IPlaylistDataAccess {
         updatePlaylistDuration(playlistId);
     }
 
-    // --- public method to update the JSON filepaths directly (used for reordering) ---
+    // public method to update the json filepaths directly (used for reordering)
     public void updatePlaylistFilepaths(int playlistId, List<String> filepaths) throws Exception {
         if (filepaths == null) filepaths = new ArrayList<>();
 
-        // Build JSON string: ["p1","p2","p3"]
+        // build json string: ["p1","p2","p3"]
         String newJson;
         if (filepaths.isEmpty()) {
             newJson = "[]";
         } else {
-            // Escape any existing double-quotes in filepaths (basic)
+            // escape any existing double-quotes in filepaths (basic)
             List<String> escaped = new ArrayList<>();
             for (String fp : filepaths) {
                 if (fp == null) fp = "";
@@ -233,11 +220,11 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             throw new Exception("Could not update playlist filepaths", e);
         }
 
-        // Update duration after filepaths changed
+        // update duration after filepaths changed
         updatePlaylistDuration(playlistId);
     }
 
-    // --- internal helper used by add/removeSongFromPlaylist ---
+    // helper used by add/removeSongFromPlaylist
     private void updatePlaylistJson(int playlistId, String filepath, boolean add) throws Exception {
         String sql = "SELECT song_filepaths FROM playlists WHERE id = ?";
         String json = "[]";
@@ -301,9 +288,6 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             stmt.setString(1, totalDuration);
             stmt.setInt(2, playlistId);
             stmt.executeUpdate();
-
-        } catch (Exception e) {
-            throw new Exception("Could not update playlist duration", e);
         }
     }
 
@@ -312,24 +296,29 @@ public class PlaylistDAO implements IPlaylistDataAccess {
             return 0;
         }
 
-        try {
-            String[] parts = duration.split(":");
-
-            if (parts.length == 2) {
-                int minutes = Integer.parseInt(parts[0].trim());
-                int seconds = Integer.parseInt(parts[1].trim());
-                return (minutes * 60) + seconds;
-            } else if (parts.length == 3) {
-                int hours = Integer.parseInt(parts[0].trim());
-                int minutes = Integer.parseInt(parts[1].trim());
-                int seconds = Integer.parseInt(parts[2].trim());
-                return (hours * 3600) + (minutes * 60) + seconds;
-            }
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid duration format: " + duration);
+        String[] parts = duration.split(":");
+        if (parts.length < 2 || parts.length > 3) {
+            return 0;
         }
 
-        return 0;
+        for (int i = 0; i < parts.length; i++) {
+            if (!parts[i].trim().matches("\\d+")) {
+                return 0;
+            }
+        }
+
+        int[] nums = new int[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            nums[i] = Integer.parseInt(parts[i].trim());
+        }
+
+        if (nums.length == 2) {
+            // mm:ss
+            return nums[0] * 60 + nums[1];
+        } else {
+            // hh:mm:ss
+            return nums[0] * 3600 + nums[1] * 60 + nums[2];
+        }
     }
 
     private String formatSecondsToTime(int totalSeconds) {

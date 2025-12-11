@@ -7,7 +7,6 @@ import dk.easv.mytunes.BLL.UserManager;
 // Java imports
 import java.util.List;
 
-
 public class UserModel {
 
     private final UserManager userManager = new UserManager();

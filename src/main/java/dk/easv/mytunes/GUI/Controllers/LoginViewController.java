@@ -8,7 +8,6 @@ import dk.easv.mytunes.BE.User;
 import dk.easv.mytunes.GUI.Models.UserModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,12 +19,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class LoginViewController implements Initializable {
+public class LoginViewController {
 
     @FXML
     private AnchorPane rootPane;
@@ -41,30 +37,22 @@ public class LoginViewController implements Initializable {
 
     private final UserModel userModel = new UserModel();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
     @FXML
     private void handleLogin() throws IOException {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
-        // Validate
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Login failed", "Please enter both username and password", Alert.AlertType.ERROR);
             return;
         }
-        User user = userModel.loginUser(username, password);
 
+        User user = userModel.loginUser(username, password);
         if (user != null) {
-            // SUCCESS
             showAlert("Login success", "Logged in successfully", Alert.AlertType.INFORMATION);
             loginSuccess = true;
             currentUser.setCurrentUser(user);
 
-            // Open MyTunes MainView Window
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainView.fxml"));
             Parent root = loader.load();
 
@@ -75,10 +63,8 @@ public class LoginViewController implements Initializable {
             mainStage.setResizable(false);
             mainStage.show();
 
-            // close loginUser window
             closeStage();
         } else {
-            // FAIL
             showAlert("Login failed", "Invalid username or password", Alert.AlertType.ERROR);
             txtPassword.clear();
             loginSuccess = false;
@@ -93,27 +79,17 @@ public class LoginViewController implements Initializable {
         alert.showAndWait();
     }
 
-    @FXML
-    private void handleCancel() {
-       closeStage();
-    }
-
     private void closeStage() {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
-    }
-
-    public boolean isLoginSuccess() {
-        return loginSuccess;
     }
 
     @FXML
     private void onBtnLoginClick() {
         try {
             handleLogin();
-        } catch (IOException e) {
+        } catch (Exception e) {
             showAlert("Error", "Login failed", Alert.AlertType.ERROR);
-            throw new RuntimeException(e);
         }
     }
 
@@ -121,9 +97,8 @@ public class LoginViewController implements Initializable {
     private void onTxtRegisterClick(MouseEvent mouseEvent) {
         try {
             showRegisterPage();
-        } catch (IOException e) {
+        } catch (Exception e) {
             showAlert("Error", "Could not open register window", Alert.AlertType.ERROR);
-            throw new RuntimeException(e);
         }
     }
 

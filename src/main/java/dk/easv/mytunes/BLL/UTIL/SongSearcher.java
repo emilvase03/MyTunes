@@ -15,12 +15,9 @@ public class SongSearcher {
             return new ArrayList<>(searchBase); // return all if query empty
         }
 
-
         String q = query.toLowerCase().trim();
 
-
         for (Song song : searchBase) {
-
             if (comparedTo(song.getTitle(), q) ||
                     comparedTo(song.getArtist(), q) ||
                     comparedTo(song.getGenre(), q)) {
@@ -35,7 +32,4 @@ public class SongSearcher {
         return field != null &&
                 field.toLowerCase().contains(query);
     }
-
-
-
 }

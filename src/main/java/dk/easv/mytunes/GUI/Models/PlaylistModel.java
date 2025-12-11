@@ -8,7 +8,6 @@ import dk.easv.mytunes.BLL.PlaylistManager;
 // Java imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -109,16 +108,6 @@ public class PlaylistModel {
         }
     }
 
-    // Reordering helpers --------------------------------------------------
-
-    /**
-     * Move the song at index `index` one position up (towards 0).
-     * Persists change to DB and refreshes the playlist in the observable list.
-     *
-     * @param playlist the playlist to mutate
-     * @param index    the current index of the song in the playlist (0-based)
-     * @throws Exception on DB / IO errors
-     */
     public void moveSongUp(Playlist playlist, int index) throws Exception {
         if (playlist == null) return;
         if (index <= 0) return;
@@ -134,14 +123,6 @@ public class PlaylistModel {
         refreshPlaylist(playlist.getId());
     }
 
-    /**
-     * Move the song at index `index` one position down.
-     * Persists change to DB and refreshes the playlist in the observable list.
-     *
-     * @param playlist the playlist to mutate
-     * @param index    the current index of the song in the playlist (0-based)
-     * @throws Exception on DB / IO errors
-     */
     public void moveSongDown(Playlist playlist, int index) throws Exception {
         if (playlist == null) return;
 
@@ -183,11 +164,7 @@ public class PlaylistModel {
 
         return count;
     }
-
-    /**
-     * Parse the DB JSON string (which is stored like ["path1","path2"]) into a List<String>.
-     * Uses the same simple parsing rules as existing DAO (keeps behaviour stable).
-     */
+    
     private List<String> parseFilepathsJson(String json) {
         List<String> filepaths = new ArrayList<>();
         if (json == null || json.isBlank()) return filepaths;

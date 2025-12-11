@@ -7,6 +7,7 @@ import dk.easv.mytunes.GUI.Models.PlaylistModel;
 // Java imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -15,13 +16,11 @@ public class EditPlaylistViewController {
 
     @FXML
     private AnchorPane rootPane;
-
     @FXML
     private TextField txtPlaylistName;
 
     private Playlist playlistToEdit;
     private PlaylistModel playlistModel;
-
 
     public void setData(Playlist playlist, PlaylistModel model) {
         this.playlistToEdit = playlist;
@@ -43,8 +42,16 @@ public class EditPlaylistViewController {
             stage.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            showAlert("Error", "Could not save changes:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML

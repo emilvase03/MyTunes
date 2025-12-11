@@ -7,7 +7,6 @@ import dk.easv.mytunes.BE.User;
 import java.util.List;
 
 public interface IUserDataAccess {
-
     List<User> getAllUsers() throws Exception;
 
     User createUser(User newUser) throws Exception;
@@ -15,5 +14,4 @@ public interface IUserDataAccess {
     void updateUser(User user) throws Exception;
 
     void deleteUser(User user) throws Exception;
-
 }

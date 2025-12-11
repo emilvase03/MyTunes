@@ -50,8 +50,6 @@ public class PlaylistManager {
     public void updatePlaylistFilepaths(int playlistId, List<String> filepaths) throws Exception {
         if (playlistDAO instanceof PlaylistDAO dao) {
             dao.updatePlaylistFilepaths(playlistId, filepaths);
-        } else {
-            throw new UnsupportedOperationException("PlaylistDAO does not support updatePlaylistFilepaths");
         }
     }
 }

@@ -15,15 +15,10 @@ public class UserDAO implements IUserDataAccess {
 
     private final DBConnector databaseConnector;
 
-    public UserDAO() {
-        try {
-            databaseConnector = new DBConnector();
-        } catch (IOException e) {
-            throw new RuntimeException("DatabaseConnector failed", e);
-        }
+    public UserDAO() throws Exception {
+        databaseConnector = new DBConnector();
     }
 
-    /** Get all users from DB */
     public List<User> getAllUsers() throws Exception {
         List<User> allUsers = new ArrayList<>();
 
@@ -40,9 +35,6 @@ public class UserDAO implements IUserDataAccess {
                 ));
             }
             return allUsers;
-
-        } catch (Exception e) {
-            throw new Exception("Could not get users from database", e);
         }
     }
 
@@ -57,8 +49,6 @@ public class UserDAO implements IUserDataAccess {
                 return rs.getInt(1) > 0;
             }
             return false;
-        } catch (Exception e) {
-            throw new Exception("Could not check username", e);
         }
     }
 
@@ -83,9 +73,6 @@ public class UserDAO implements IUserDataAccess {
             if (rs.next()) id = rs.getInt(1);
 
             return new User(id, newUser.getUsername(), newUser.getPassword_hash());
-
-        } catch (Exception e) {
-            throw new Exception("Could not create user", e);
         }
     }
 
@@ -100,9 +87,6 @@ public class UserDAO implements IUserDataAccess {
             stmt.setString(2, user.getPassword_hash());
             stmt.setInt(3, user.getId());
             stmt.executeUpdate();
-
-        } catch (Exception e) {
-            throw new Exception("Could not update user", e);
         }
     }
 
@@ -115,9 +99,6 @@ public class UserDAO implements IUserDataAccess {
 
             stmt.setInt(1, user.getId());
             stmt.executeUpdate();
-
-        } catch (Exception e) {
-            throw new Exception("Could not delete user", e);
         }
     }
 }

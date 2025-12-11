@@ -7,7 +7,6 @@ import dk.easv.mytunes.DAL.DB.DBConnector;
 import dk.easv.mytunes.DAL.ISongDataAccess;
 
 // Java imports
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 public class SongDAO implements ISongDataAccess {
     private DBConnector databaseConnector;
 
-    public SongDAO() throws IOException {//introduces the path to database,where we get connection from
+    public SongDAO() throws Exception {//introduces the path to database,where we get connection from
         databaseConnector = new DBConnector();
     }
 
@@ -45,9 +44,6 @@ public class SongDAO implements ISongDataAccess {
                 allSongs.add(song);
             }
             return allSongs;
-
-        } catch (SQLException ex) {
-            throw new Exception("Could not get songs from database", ex);
         }
     }
     @Override
@@ -58,7 +54,7 @@ public class SongDAO implements ISongDataAccess {
         try (Connection conn = databaseConnector.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            // Bind parameters
+            // bind parameters
             stmt.setInt   (1, newSong.getUser_id());
             stmt.setString(2, newSong.getFilepath());
             stmt.setString(3, newSong.getTitle());
@@ -66,10 +62,8 @@ public class SongDAO implements ISongDataAccess {
             stmt.setString(5, newSong.getGenre());
             stmt.setString(6, newSong.getDuration());
 
-            // Run the specified SQL statement
             stmt.executeUpdate();
 
-            // Get the generated ID from the DB
             ResultSet rs = stmt.getGeneratedKeys();
             int id = 0;
 
@@ -77,13 +71,8 @@ public class SongDAO implements ISongDataAccess {
                 id = rs.getInt(1);
             }
 
-
             Song createdSong = new Song(id,newSong.getUser_id(),newSong.getFilepath(),newSong.getTitle(), newSong.getArtist(),newSong.getGenre(),newSong.getDuration());
-
-
             return createdSong;
-        } catch (Exception e) {
-            throw new Exception("Could not create song", e);
         }
     }
 
@@ -94,9 +83,7 @@ public class SongDAO implements ISongDataAccess {
 
         try (Connection conn = databaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // Bind parameters
-
-           ;
+            // bind parameters
             stmt.setInt   (1,song.getUser_id());
             stmt.setString(2, song.getFilepath());
             stmt.setString(3, song.getTitle());
@@ -105,31 +92,19 @@ public class SongDAO implements ISongDataAccess {
             stmt.setString(6, song.getDuration());
             stmt.setInt   (7, song.getId());
 
-
-
-            // Run the specified SQL statement
             stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new Exception("Could not update song from database.", e);
         }
     }
 
-
     @Override
     public void deleteSong(Song song) throws Exception {
-        // SQL command
         String sql = "DELETE FROM songs WHERE id = ?;";
 
         try (Connection conn = databaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, song.getId());
 
-            // Run the specified SQL statement
             stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new Exception("Could not delete song from database.", e);
-
         }
     }
-
 }
